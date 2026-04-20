@@ -1,12 +1,17 @@
 const express = require('express')
 const cors = require('cors')
 const fs = require('fs')
+const path = require('path')
 require('dotenv').config()
 
 const app = express()
 app.use(cors())
 app.use(express.json())
 app.use(express.static('public'))
+
+app.get('/', (req, res) => {
+  res.sendFile(path.join(__dirname, 'public', 'index.html'))
+})
 
 const readData = (file) =>
   JSON.parse(fs.readFileSync(`./data/${file}`, 'utf8'))
