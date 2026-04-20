@@ -1,0 +1,392 @@
+<!doctype html>
+<html lang="fr">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Jeremy OS - Roadmap 2026/2027</title>
+    <style>
+      :root {
+        --bg: #0b1020;
+        --panel: #121a31;
+        --panel-2: #182243;
+        --text: #e8ecff;
+        --muted: #aeb8d9;
+        --ok: #45d483;
+        --accent: #6ea8ff;
+        --warn: #ffcf5a;
+        --border: #2a3766;
+      }
+
+      * {
+        box-sizing: border-box;
+      }
+
+      body {
+        margin: 0;
+        font-family: Inter, system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
+        background: linear-gradient(180deg, #090d1c 0%, var(--bg) 30%);
+        color: var(--text);
+      }
+
+      .wrap {
+        max-width: 980px;
+        margin: 0 auto;
+        padding: 24px 16px 64px;
+      }
+
+      .hero {
+        background: var(--panel);
+        border: 1px solid var(--border);
+        border-radius: 14px;
+        padding: 20px;
+        margin-bottom: 16px;
+      }
+
+      h1,
+      h2,
+      h3 {
+        margin: 0 0 10px;
+      }
+
+      h1 {
+        font-size: 1.45rem;
+      }
+
+      h2 {
+        font-size: 1.1rem;
+      }
+
+      .muted {
+        color: var(--muted);
+      }
+
+      .grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+        gap: 12px;
+      }
+
+      .card {
+        background: var(--panel);
+        border: 1px solid var(--border);
+        border-radius: 12px;
+        padding: 14px;
+      }
+
+      .kpis {
+        display: grid;
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+        gap: 8px;
+        margin-top: 10px;
+      }
+
+      .kpi {
+        background: var(--panel-2);
+        border: 1px solid var(--border);
+        border-radius: 10px;
+        padding: 10px;
+      }
+
+      .kpi .label {
+        font-size: 0.8rem;
+        color: var(--muted);
+      }
+
+      .kpi .value {
+        font-size: 1.25rem;
+        font-weight: 700;
+        margin-top: 4px;
+      }
+
+      .phase {
+        margin-top: 14px;
+        background: var(--panel);
+        border: 1px solid var(--border);
+        border-radius: 12px;
+        padding: 14px;
+      }
+
+      .phase h3 {
+        font-size: 1rem;
+      }
+
+      .tag {
+        display: inline-block;
+        font-size: 0.75rem;
+        background: #243562;
+        color: #d9e6ff;
+        border: 1px solid #385091;
+        border-radius: 999px;
+        padding: 3px 9px;
+        margin-bottom: 8px;
+      }
+
+      .checklist {
+        list-style: none;
+        padding: 0;
+        margin: 0;
+        display: grid;
+        gap: 8px;
+      }
+
+      .item {
+        display: flex;
+        gap: 10px;
+        align-items: flex-start;
+        background: var(--panel-2);
+        border: 1px solid var(--border);
+        border-radius: 10px;
+        padding: 10px;
+      }
+
+      .item input[type="checkbox"] {
+        margin-top: 2px;
+        transform: scale(1.1);
+      }
+
+      .item.done label {
+        opacity: 0.6;
+        text-decoration: line-through;
+      }
+
+      .row {
+        display: flex;
+        justify-content: space-between;
+        gap: 10px;
+        flex-wrap: wrap;
+      }
+
+      .pill {
+        border: 1px solid var(--border);
+        border-radius: 999px;
+        padding: 5px 10px;
+        font-size: 0.8rem;
+      }
+
+      .ok {
+        color: var(--ok);
+      }
+
+      .warn {
+        color: var(--warn);
+      }
+
+      .actions {
+        margin-top: 12px;
+        display: flex;
+        gap: 8px;
+        flex-wrap: wrap;
+      }
+
+      button {
+        background: #2b63d8;
+        color: white;
+        border: none;
+        border-radius: 9px;
+        padding: 9px 12px;
+        cursor: pointer;
+      }
+
+      button.secondary {
+        background: #2b355b;
+      }
+
+      footer {
+        margin-top: 18px;
+        color: var(--muted);
+        font-size: 0.9rem;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="wrap">
+      <header class="hero">
+        <h1>Jeremy OS - Plan d'execution 2026 -> 2027</h1>
+        <p class="muted">
+          Focus unique: closing. Objectif final: vivre aux Philippines en 2027 avec revenu stable, admin propre
+          et routine solide.
+        </p>
+        <div class="kpis">
+          <div class="kpi">
+            <div class="label">Cases cochees</div>
+            <div class="value" id="doneCount">0</div>
+          </div>
+          <div class="kpi">
+            <div class="label">Total actions</div>
+            <div class="value" id="totalCount">0</div>
+          </div>
+          <div class="kpi">
+            <div class="label">Progression</div>
+            <div class="value" id="progressPct">0%</div>
+          </div>
+        </div>
+        <div class="actions">
+          <button id="expandAll">Tout afficher</button>
+          <button class="secondary" id="collapseAll">Tout reduire</button>
+          <button class="secondary" id="resetAll">Reset checklist</button>
+        </div>
+      </header>
+
+      <section class="grid">
+        <article class="card">
+          <h2>Regles d'or</h2>
+          <ul class="muted">
+            <li>Une seule priorite business: closing.</li>
+            <li>Aucune dispersion: idees dans Parking, execution plus tard.</li>
+            <li>Declarations admin en temps et en heure.</li>
+            <li>Constance 30 jours avant d'optimiser.</li>
+          </ul>
+        </article>
+        <article class="card">
+          <h2>Routine minimale quotidienne</h2>
+          <ul class="muted">
+            <li>2h prospection</li>
+            <li>2-4 calls ou suivi</li>
+            <li>1h entrainement script/review</li>
+            <li>Sport + sommeil fixe</li>
+          </ul>
+        </article>
+      </section>
+
+      <details class="phase" open>
+        <summary>
+          <span class="tag">Phase 1</span>
+          <strong>Maintenant -> 5 mai 2026 (Preparation parfaite)</strong>
+        </summary>
+        <ul class="checklist">
+          <li class="item"><input data-id="p1-1" type="checkbox" /><label>Creer dossier ADMIN_2026_JEREMY + 5 sous-dossiers.</label></li>
+          <li class="item"><input data-id="p1-2" type="checkbox" /><label>Ranger piece d'identite, RIB, justificatif domicile, contrat.</label></li>
+          <li class="item"><input data-id="p1-3" type="checkbox" /><label>Preparer checklist documents RH du 5 mai.</label></li>
+          <li class="item"><input data-id="p1-4" type="checkbox" /><label>Ecrire description activite micro version closing pur.</label></li>
+          <li class="item"><input data-id="p1-5" type="checkbox" /><label>Preparer message France Travail (ARE/ARCE, conditions ecrites).</label></li>
+          <li class="item"><input data-id="p1-6" type="checkbox" /><label>Installer scan mobile + regle nommage PDF.</label></li>
+        </ul>
+      </details>
+
+      <details class="phase" open>
+        <summary>
+          <span class="tag">Phase 2</span>
+          <strong>5 mai -> 31 mai 2026 (Droits + lancement propre)</strong>
+        </summary>
+        <ul class="checklist">
+          <li class="item"><input data-id="p2-1" type="checkbox" /><label>05/05: recuperer attestation employeur, certificat travail, solde, bulletins.</label></li>
+          <li class="item"><input data-id="p2-2" type="checkbox" /><label>Scanner tous les documents et sauvegarder local + cloud.</label></li>
+          <li class="item"><input data-id="p2-3" type="checkbox" /><label>06/05: inscription France Travail + depot dossier ARE.</label></li>
+          <li class="item"><input data-id="p2-4" type="checkbox" /><label>Creation micro + demande ACRE.</label></li>
+          <li class="item"><input data-id="p2-5" type="checkbox" /><label>Decision ARE vs ARCE apres validation reelle du dossier.</label></li>
+          <li class="item"><input data-id="p2-6" type="checkbox" /><label>Activer rappels mensuels: actualisation, declarations, suivi preuves.</label></li>
+        </ul>
+      </details>
+
+      <details class="phase">
+        <summary>
+          <span class="tag">Phase 3</span>
+          <strong>Juin -> Aout 2026 (Asie test, execution pure)</strong>
+        </summary>
+        <ul class="checklist">
+          <li class="item"><input data-id="p3-1" type="checkbox" /><label>Conserver une adresse administrative stable en France.</label></li>
+          <li class="item"><input data-id="p3-2" type="checkbox" /><label>Maintenir routine: prospection, calls, suivi, sport, sommeil.</label></li>
+          <li class="item"><input data-id="p3-3" type="checkbox" /><label>Suivre KPI hebdo: messages, reponses, RDV, closes, CA.</label></li>
+          <li class="item"><input data-id="p3-4" type="checkbox" /><label>Archiver contrats, factures, encaissements, echanges admin.</label></li>
+        </ul>
+      </details>
+
+      <details class="phase">
+        <summary>
+          <span class="tag">Phase 4</span>
+          <strong>Septembre -> Decembre 2026 (Stabilisation)</strong>
+        </summary>
+        <ul class="checklist">
+          <li class="item"><input data-id="p4-1" type="checkbox" /><label>Standardiser le process closing de lead a encaissement.</label></li>
+          <li class="item"><input data-id="p4-2" type="checkbox" /><label>Construire reserve de securite (3 a 6 mois).</label></li>
+          <li class="item"><input data-id="p4-3" type="checkbox" /><label>Audit fiscal international avant decision structure (LLC ou autre).</label></li>
+          <li class="item"><input data-id="p4-4" type="checkbox" /><label>Valider un revenu mensuel stable et repetable.</label></li>
+        </ul>
+      </details>
+
+      <details class="phase">
+        <summary>
+          <span class="tag">Phase 5</span>
+          <strong>2027 (Objectif final: Philippines a l'annee)</strong>
+        </summary>
+        <ul class="checklist">
+          <li class="item"><input data-id="p5-1" type="checkbox" /><label>Installer base de vie longue duree aux Philippines.</label></li>
+          <li class="item"><input data-id="p5-2" type="checkbox" /><label>Maintenir activite remote stable avec clients FR/intl.</label></li>
+          <li class="item"><input data-id="p5-3" type="checkbox" /><label>Piloter mensuellement cashflow, conformite et energie.</label></li>
+          <li class="item"><input data-id="p5-4" type="checkbox" /><label>Lancer ton offre long terme apres stabilisation du closing.</label></li>
+        </ul>
+      </details>
+
+      <section class="phase">
+        <div class="row">
+          <div class="pill ok">Mission: Execution, pas dispersion</div>
+          <div class="pill warn">Une decision strategique par semaine max</div>
+        </div>
+      </section>
+
+      <footer>
+        Fichier autonome. Ouvre <code>index.html</code> dans ton navigateur et coche au fur et a mesure.
+      </footer>
+    </div>
+
+    <script>
+      const KEY = "jeremy_os_checklist_v1";
+      const checks = Array.from(document.querySelectorAll('input[type="checkbox"][data-id]'));
+      const doneCount = document.getElementById("doneCount");
+      const totalCount = document.getElementById("totalCount");
+      const progressPct = document.getElementById("progressPct");
+      const allDetails = Array.from(document.querySelectorAll("details.phase"));
+
+      function loadState() {
+        try {
+          return JSON.parse(localStorage.getItem(KEY) || "{}");
+        } catch {
+          return {};
+        }
+      }
+
+      function saveState(state) {
+        localStorage.setItem(KEY, JSON.stringify(state));
+      }
+
+      function refresh() {
+        const total = checks.length;
+        const done = checks.filter((c) => c.checked).length;
+        totalCount.textContent = String(total);
+        doneCount.textContent = String(done);
+        progressPct.textContent = `${Math.round((done / total) * 100) || 0}%`;
+        checks.forEach((c) => c.closest(".item").classList.toggle("done", c.checked));
+      }
+
+      const state = loadState();
+      checks.forEach((c) => {
+        c.checked = !!state[c.dataset.id];
+        c.addEventListener("change", () => {
+          state[c.dataset.id] = c.checked;
+          saveState(state);
+          refresh();
+        });
+      });
+
+      document.getElementById("expandAll").addEventListener("click", () => {
+        allDetails.forEach((d) => (d.open = true));
+      });
+
+      document.getElementById("collapseAll").addEventListener("click", () => {
+        allDetails.forEach((d) => (d.open = false));
+      });
+
+      document.getElementById("resetAll").addEventListener("click", () => {
+        if (!confirm("Confirmer la remise a zero des cases ?")) return;
+        checks.forEach((c) => {
+          c.checked = false;
+          state[c.dataset.id] = false;
+        });
+        saveState(state);
+        refresh();
+      });
+
+      refresh();
+    </script>
+  </body>
+</html>
