@@ -80,6 +80,7 @@ body::before {
   pointer-events: none; z-index: 0;
 }
 
+
 /* ── NAV ── */
 nav {
   position: fixed; top: 0; left: 0; right: 0;
@@ -948,6 +949,191 @@ footer {
   letter-spacing: 0.06em;
 }
 
+/* ── LOGIN ROUTE (hidden page) ── */
+.page-shell.route-hidden {
+  display: none;
+}
+
+.login-route {
+  min-height: 100vh;
+  display: none;
+  align-items: center;
+  justify-content: center;
+  padding: 40px 24px;
+  position: relative;
+  z-index: 2;
+}
+
+.login-route.active {
+  display: flex;
+}
+
+.login-card {
+  width: 100%;
+  max-width: 420px;
+  background: rgba(10,10,18,0.9);
+  border: 1px solid rgba(255,255,255,0.06);
+  border-radius: 14px;
+  padding: 34px 30px 28px;
+  box-shadow: 0 20px 60px rgba(0,0,0,0.35);
+}
+
+.login-badge {
+  display: inline-flex;
+  align-items: center;
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 10px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--muted);
+  margin-bottom: 20px;
+}
+
+.login-badge::before {
+  content: none;
+}
+
+.login-title {
+  font-family: 'IBM Plex Sans', sans-serif;
+  font-size: 34px;
+  line-height: 1.05;
+  letter-spacing: -0.03em;
+  margin-bottom: 12px;
+  color: var(--white);
+  font-weight: 600;
+}
+
+.login-subtitle {
+  font-size: 14px;
+  line-height: 1.6;
+  color: var(--muted);
+  margin-bottom: 24px;
+  max-width: 320px;
+}
+
+.login-form {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.login-input {
+  width: 100%;
+  background: rgba(255,255,255,0.02);
+  border: 1px solid rgba(255,255,255,0.06);
+  color: var(--white);
+  font-family: 'IBM Plex Sans', sans-serif;
+  font-size: 14px;
+  padding: 14px 15px;
+  border-radius: 10px;
+  outline: none;
+  transition: border-color 0.2s, background 0.2s;
+}
+
+.login-input:focus {
+  border-color: rgba(99,210,255,0.45);
+  background: rgba(255,255,255,0.03);
+}
+
+.login-submit {
+  width: 100%;
+  border: none;
+  border-radius: 10px;
+  padding: 14px 18px;
+  background: var(--cyan);
+  color: #071018;
+  font-family: 'IBM Plex Sans', sans-serif;
+  font-size: 14px;
+  font-weight: 600;
+  letter-spacing: 0;
+  text-transform: none;
+  cursor: pointer;
+  transition: transform 0.2s, opacity 0.2s;
+  margin-top: 4px;
+}
+
+.login-submit:hover {
+  opacity: 0.95;
+  transform: translateY(-1px);
+}
+
+.login-note {
+  margin-top: 14px;
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 10px;
+  letter-spacing: 0.04em;
+  color: var(--muted2);
+}
+
+.login-back {
+  display: inline-block;
+  margin-top: 16px;
+  font-family: 'IBM Plex Sans', sans-serif;
+  font-size: 13px;
+  letter-spacing: 0;
+  text-transform: none;
+  color: var(--muted);
+  text-decoration: none;
+}
+
+.login-back:hover {
+  color: var(--white);
+}
+
+.login-error {
+  min-height: 18px;
+  margin-top: 2px;
+  font-size: 12px;
+  color: var(--red);
+}
+
+.app-card {
+  max-width: 560px;
+}
+
+.app-user {
+  margin-bottom: 18px;
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 11px;
+  color: var(--cyan);
+  letter-spacing: 0.04em;
+}
+
+.app-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 10px;
+  margin: 6px 0 18px;
+}
+
+.app-box {
+  background: rgba(255,255,255,0.02);
+  border: 1px solid rgba(255,255,255,0.06);
+  border-radius: 10px;
+  padding: 14px;
+}
+
+.app-box-label {
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 10px;
+  color: var(--muted);
+  margin-bottom: 6px;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+}
+
+.app-box-value {
+  font-size: 22px;
+  font-weight: 600;
+  color: var(--white);
+}
+
+@media (max-width: 640px) {
+  .app-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
 /* ── SCROLL REVEAL ── */
 .reveal {
   opacity: 0;
@@ -983,6 +1169,7 @@ footer {
 <div class="glow-1"></div>
 <div class="glow-2"></div>
 
+<div class="page-shell" id="marketingPage">
 <!-- NAV -->
 <nav>
   <div class="nav-logo">
@@ -1323,8 +1510,94 @@ footer {
   <div class="footer-logo">QYRAZE</div>
   <div class="footer-copy">© 2026 Qyraze — MVP en construction</div>
 </footer>
+</div>
 
-<script>
+<section class="login-route" id="loginRoute">
+  <div class="login-card">
+    <div class="login-badge">Espace privé</div>
+    <h1 class="login-title">Connexion à Qyraze</h1>
+    <p class="login-subtitle">Connecte-toi pour accéder à ton espace de pilotage Qyraze.</p>
+    <form class="login-form" id="loginForm">
+      <input class="login-input" id="loginEmail" type="email" placeholder="Email" autocomplete="email">
+      <input class="login-input" id="loginPassword" type="password" placeholder="Mot de passe" autocomplete="current-password">
+      <button class="login-submit" id="loginSubmit" type="submit">Se connecter</button>
+    </form>
+    <div class="login-error" id="loginError"></div>
+    <div class="login-note">Accès privé · qyraze.com/connexion</div>
+    <a class="login-back" href="/">Retour au site</a>
+  </div>
+</section>
+
+<section class="login-route" id="appRoute">
+  <div class="login-card app-card">
+    <div class="login-badge">Espace connecté</div>
+    <h1 class="login-title">Dashboard Qyraze</h1>
+    <p class="login-subtitle">Connexion réussie. Cette page est protégée par session Supabase.</p>
+    <div class="app-user" id="appUserEmail"></div>
+    <div class="app-grid">
+      <div class="app-box">
+        <div class="app-box-label">Leads actifs</div>
+        <div class="app-box-value">24</div>
+      </div>
+      <div class="app-box">
+        <div class="app-box-label">CA mois</div>
+        <div class="app-box-value">€8,400</div>
+      </div>
+      <div class="app-box">
+        <div class="app-box-label">Tâches du jour</div>
+        <div class="app-box-value">7</div>
+      </div>
+      <div class="app-box">
+        <div class="app-box-label">Pipeline</div>
+        <div class="app-box-value">6 RDV</div>
+      </div>
+    </div>
+    <button class="login-submit" id="logoutBtn" type="button">Se déconnecter</button>
+    <a class="login-back" href="/">Retour au site</a>
+  </div>
+</section>
+
+<script type="module">
+
+import { createClient } from 'https://esm.sh/@supabase/supabase-js@2'
+
+let supabase = null;
+
+async function initSupabase() {
+  const res = await fetch('/api/config');
+  const config = await res.json();
+
+  if (!config.supabaseUrl || !config.supabaseAnonKey) {
+    throw new Error('Configuration Supabase manquante');
+  }
+
+  supabase = createClient(config.supabaseUrl, config.supabaseAnonKey);
+  return supabase;
+}
+
+const currentPath = window.location.pathname;
+const isConnexionRoute = currentPath === '/connexion';
+const isAppRoute = currentPath === '/app';
+const marketingPage = document.getElementById('marketingPage');
+const loginRoute = document.getElementById('loginRoute');
+const appRoute = document.getElementById('appRoute');
+const loginForm = document.getElementById('loginForm');
+const loginEmail = document.getElementById('loginEmail');
+const loginPassword = document.getElementById('loginPassword');
+const loginError = document.getElementById('loginError');
+const loginSubmit = document.getElementById('loginSubmit');
+const logoutBtn = document.getElementById('logoutBtn');
+const appUserEmail = document.getElementById('appUserEmail');
+
+if (isConnexionRoute || isAppRoute) {
+  document.title = isConnexionRoute ? 'Connexion — Qyraze' : 'App — Qyraze';
+  if (marketingPage) marketingPage.classList.add('route-hidden');
+} else {
+  if (loginRoute) loginRoute.classList.remove('active');
+  if (appRoute) appRoute.classList.remove('active');
+}
+
+if (!isConnexionRoute && !isAppRoute) {
 // Scroll reveal
 const observer = new IntersectionObserver((entries) => {
   entries.forEach(e => {
@@ -1338,6 +1611,87 @@ document.querySelectorAll('.reveal').forEach((el, i) => {
   el.style.transitionDelay = (i % 4) * 0.08 + 's';
   observer.observe(el);
 });
+
+// Smooth nav active
+window.addEventListener('scroll', () => {
+  const sections = ['problem','solution','diff','market','cta'];
+  const links = document.querySelectorAll('.nav-links a');
+  let current = '';
+  sections.forEach(id => {
+    const el = document.getElementById(id);
+    if (el && window.scrollY >= el.offsetTop - 100) current = id;
+  });
+  links.forEach(l => {
+    l.style.color = l.getAttribute('href') === '#' + current ? 'var(--white)' : '';
+  });
+});
+}
+
+async function bootAuth() {
+  if (!isConnexionRoute && !isAppRoute) return;
+
+  try {
+    await initSupabase();
+  } catch (error) {
+    if (loginError) loginError.textContent = error.message;
+    return;
+  }
+
+  const { data: { session } } = await supabase.auth.getSession();
+
+  if (isConnexionRoute) {
+    if (session) {
+      window.location.href = '/app';
+      return;
+    }
+    if (loginRoute) loginRoute.classList.add('active');
+  }
+
+  if (isAppRoute) {
+    if (!session) {
+      window.location.href = '/connexion';
+      return;
+    }
+    if (appRoute) appRoute.classList.add('active');
+    if (appUserEmail) {
+      appUserEmail.textContent = session.user?.email || '';
+    }
+  }
+
+  if (loginForm) {
+    loginForm.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      if (!supabase) return;
+
+      if (loginError) loginError.textContent = '';
+      if (loginSubmit) loginSubmit.disabled = true;
+
+      const { error } = await supabase.auth.signInWithPassword({
+        email: loginEmail.value.trim(),
+        password: loginPassword.value,
+      });
+
+      if (loginSubmit) loginSubmit.disabled = false;
+
+      if (error) {
+        if (loginError) loginError.textContent = 'Identifiants incorrects.';
+        return;
+      }
+
+      window.location.href = '/app';
+    });
+  }
+
+  if (logoutBtn) {
+    logoutBtn.addEventListener('click', async () => {
+      if (!supabase) return;
+      await supabase.auth.signOut();
+      window.location.href = '/connexion';
+    });
+  }
+}
+
+bootAuth();
 
 // CTA submit
 function handleSubmit() {
@@ -1355,20 +1709,6 @@ function handleSubmit() {
   input.placeholder = 'Tu es sur la liste !';
   input.disabled = true;
 }
-
-// Smooth nav active
-window.addEventListener('scroll', () => {
-  const sections = ['problem','solution','diff','market','cta'];
-  const links = document.querySelectorAll('.nav-links a');
-  let current = '';
-  sections.forEach(id => {
-    const el = document.getElementById(id);
-    if (el && window.scrollY >= el.offsetTop - 100) current = id;
-  });
-  links.forEach(l => {
-    l.style.color = l.getAttribute('href') === '#' + current ? 'var(--white)' : '';
-  });
-});
 </script>
 </body>
 </html>
