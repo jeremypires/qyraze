@@ -359,6 +359,86 @@
         font-size: 0.86rem;
       }
 
+      .cockpit-grid {
+        display: grid;
+        grid-template-columns: 1.7fr 1.3fr;
+        gap: 14px;
+      }
+
+      @media (max-width: 960px) {
+        .cockpit-grid {
+          grid-template-columns: 1fr;
+        }
+      }
+
+      .mini-grid {
+        display: grid;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 8px;
+      }
+
+      @media (max-width: 700px) {
+        .mini-grid {
+          grid-template-columns: 1fr;
+        }
+      }
+
+      .field {
+        display: grid;
+        gap: 4px;
+      }
+
+      .field label {
+        color: var(--muted);
+        font-size: 0.78rem;
+      }
+
+      .field input {
+        width: 100%;
+        background: rgba(8, 14, 28, 0.75);
+        border: 1px solid rgba(122, 153, 255, 0.3);
+        color: var(--text);
+        border-radius: 10px;
+        padding: 8px 9px;
+        font-size: 0.94rem;
+      }
+
+      .field input:focus {
+        outline: 1px solid rgba(126, 240, 193, 0.45);
+        border-color: rgba(126, 240, 193, 0.45);
+      }
+
+      .result-grid {
+        margin-top: 10px;
+        display: grid;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 8px;
+      }
+
+      .result {
+        background: rgba(10, 18, 35, 0.65);
+        border: 1px solid rgba(122, 153, 255, 0.2);
+        border-radius: 10px;
+        padding: 10px;
+      }
+
+      .result .k {
+        color: var(--muted);
+        font-size: 0.78rem;
+      }
+
+      .result .v {
+        margin-top: 4px;
+        font-size: 1.02rem;
+        font-weight: 700;
+      }
+
+      .divider {
+        margin: 12px 0;
+        height: 1px;
+        background: rgba(122, 153, 255, 0.2);
+      }
+
       .status-ok {
         color: var(--accent-2);
       }
@@ -572,11 +652,147 @@
           </div>
         </main>
       </div>
+
+      <section class="cockpit-grid">
+        <article class="panel">
+          <div class="panel-head">
+            <h2>Cockpit Budget & Investissement</h2>
+            <p>Tout ton argent mensuel pilote depuis ici.</p>
+          </div>
+          <div class="panel-body">
+            <div class="mini-grid">
+              <div class="field">
+                <label for="income">Revenus mensuels (€)</label>
+                <input id="income" data-store type="number" min="0" step="10" value="2500" />
+              </div>
+              <div class="field">
+                <label for="fixedCosts">Charges fixes mensuelles (€)</label>
+                <input id="fixedCosts" data-store type="number" min="0" step="10" value="1000" />
+              </div>
+              <div class="field">
+                <label for="variableCosts">Charges variables mensuelles (€)</label>
+                <input id="variableCosts" data-store type="number" min="0" step="10" value="300" />
+              </div>
+              <div class="field">
+                <label for="investPct">Investissement mensuel (%)</label>
+                <input id="investPct" data-store type="number" min="0" max="100" step="1" value="40" />
+              </div>
+              <div class="field">
+                <label for="safetyPct">Reserve securite (%)</label>
+                <input id="safetyPct" data-store type="number" min="0" max="100" step="1" value="20" />
+              </div>
+            </div>
+
+            <div class="result-grid">
+              <div class="result">
+                <div class="k">Cash disponible</div>
+                <div class="v" id="cashAvailable">0 €</div>
+              </div>
+              <div class="result">
+                <div class="k">Montant a investir</div>
+                <div class="v" id="investAmount">0 €</div>
+              </div>
+              <div class="result">
+                <div class="k">Montant reserve securite</div>
+                <div class="v" id="safetyAmount">0 €</div>
+              </div>
+              <div class="result">
+                <div class="k">Reste libre mensuel</div>
+                <div class="v" id="freeCash">0 €</div>
+              </div>
+            </div>
+
+            <div class="divider"></div>
+
+            <h3>Prediction de placement</h3>
+            <div class="mini-grid">
+              <div class="field">
+                <label for="capitalNow">Capital actuel (€)</label>
+                <input id="capitalNow" data-store type="number" min="0" step="50" value="5000" />
+              </div>
+              <div class="field">
+                <label for="monthlyInvest">Invest mensuel reel (€)</label>
+                <input id="monthlyInvest" data-store type="number" min="0" step="10" value="500" />
+              </div>
+              <div class="field">
+                <label for="annualReturn">Rendement annuel estime (%)</label>
+                <input id="annualReturn" data-store type="number" min="0" step="0.1" value="8" />
+              </div>
+              <div class="field">
+                <label for="horizonMonths">Horizon (mois)</label>
+                <input id="horizonMonths" data-store type="number" min="1" step="1" value="12" />
+              </div>
+            </div>
+
+            <div class="result-grid">
+              <div class="result">
+                <div class="k">Projection capital final</div>
+                <div class="v" id="projectedCapital">0 €</div>
+              </div>
+              <div class="result">
+                <div class="k">Gain estime</div>
+                <div class="v" id="projectedGain">0 €</div>
+              </div>
+            </div>
+          </div>
+        </article>
+
+        <article class="panel">
+          <div class="panel-head">
+            <h2>Cockpit Leads & Closing</h2>
+            <p>Tu mesures ton pipeline et ton chiffre en live.</p>
+          </div>
+          <div class="panel-body">
+            <div class="mini-grid">
+              <div class="field">
+                <label for="visitors">Prospects touches / mois</label>
+                <input id="visitors" data-store type="number" min="0" step="1" value="600" />
+              </div>
+              <div class="field">
+                <label for="leads">Leads qualifies / mois</label>
+                <input id="leads" data-store type="number" min="0" step="1" value="120" />
+              </div>
+              <div class="field">
+                <label for="calls">Appels tenus / mois</label>
+                <input id="calls" data-store type="number" min="0" step="1" value="40" />
+              </div>
+              <div class="field">
+                <label for="closes">Closes / mois</label>
+                <input id="closes" data-store type="number" min="0" step="1" value="8" />
+              </div>
+              <div class="field">
+                <label for="ticket">Panier moyen (€)</label>
+                <input id="ticket" data-store type="number" min="0" step="10" value="1200" />
+              </div>
+            </div>
+
+            <div class="result-grid">
+              <div class="result">
+                <div class="k">Tx lead (leads/contacts)</div>
+                <div class="v" id="leadRate">0%</div>
+              </div>
+              <div class="result">
+                <div class="k">Tx booking (calls/leads)</div>
+                <div class="v" id="bookingRate">0%</div>
+              </div>
+              <div class="result">
+                <div class="k">Tx close (closes/calls)</div>
+                <div class="v" id="closeRate">0%</div>
+              </div>
+              <div class="result">
+                <div class="k">Chiffre d'affaires mensuel estime</div>
+                <div class="v" id="monthlyRevenue">0 €</div>
+              </div>
+            </div>
+          </div>
+        </article>
+      </section>
     </div>
 
     <script>
       const KEY = "jeremy_os_checklist_v2";
       const checks = [...document.querySelectorAll('input[type="checkbox"][data-id]')];
+      const storeInputs = [...document.querySelectorAll("input[data-store]")];
       const phases = [...document.querySelectorAll(".phase")];
       const doneCount = document.getElementById("doneCount");
       const totalCount = document.getElementById("totalCount");
@@ -584,6 +800,18 @@
       const progressText = document.getElementById("progressText");
       const globalProgress = document.getElementById("globalProgress");
       const activePhase = document.getElementById("activePhase");
+
+      function n(id) {
+        return Number(document.getElementById(id)?.value || 0);
+      }
+
+      function eur(value) {
+        return `${Math.round(value).toLocaleString("fr-FR")} €`;
+      }
+
+      function pct(value) {
+        return `${value.toFixed(1)}%`;
+      }
 
       function getState() {
         try {
@@ -640,9 +868,71 @@
 
         updatePhaseProgress();
         updateActivePhase();
+        refreshCockpit();
+      }
+
+      function refreshCockpit() {
+        const income = n("income");
+        const fixedCosts = n("fixedCosts");
+        const variableCosts = n("variableCosts");
+        const investPct = n("investPct");
+        const safetyPct = n("safetyPct");
+
+        const cashAvailable = Math.max(0, income - fixedCosts - variableCosts);
+        const investAmount = Math.max(0, cashAvailable * (investPct / 100));
+        const safetyAmount = Math.max(0, cashAvailable * (safetyPct / 100));
+        const freeCash = Math.max(0, cashAvailable - investAmount - safetyAmount);
+
+        document.getElementById("cashAvailable").textContent = eur(cashAvailable);
+        document.getElementById("investAmount").textContent = eur(investAmount);
+        document.getElementById("safetyAmount").textContent = eur(safetyAmount);
+        document.getElementById("freeCash").textContent = eur(freeCash);
+
+        const capitalNow = n("capitalNow");
+        const monthlyInvest = n("monthlyInvest");
+        const annualReturn = n("annualReturn") / 100;
+        const horizonMonths = Math.max(1, n("horizonMonths"));
+        const monthlyRate = annualReturn / 12;
+        const projectedCapital =
+          monthlyRate === 0
+            ? capitalNow + monthlyInvest * horizonMonths
+            : capitalNow * Math.pow(1 + monthlyRate, horizonMonths) +
+              monthlyInvest * ((Math.pow(1 + monthlyRate, horizonMonths) - 1) / monthlyRate);
+        const investedTotal = capitalNow + monthlyInvest * horizonMonths;
+        const projectedGain = projectedCapital - investedTotal;
+
+        document.getElementById("projectedCapital").textContent = eur(projectedCapital);
+        document.getElementById("projectedGain").textContent = eur(projectedGain);
+
+        const visitors = n("visitors");
+        const leads = n("leads");
+        const calls = n("calls");
+        const closes = n("closes");
+        const ticket = n("ticket");
+
+        const leadRate = visitors ? (leads / visitors) * 100 : 0;
+        const bookingRate = leads ? (calls / leads) * 100 : 0;
+        const closeRate = calls ? (closes / calls) * 100 : 0;
+        const monthlyRevenue = closes * ticket;
+
+        document.getElementById("leadRate").textContent = pct(leadRate);
+        document.getElementById("bookingRate").textContent = pct(bookingRate);
+        document.getElementById("closeRate").textContent = pct(closeRate);
+        document.getElementById("monthlyRevenue").textContent = eur(monthlyRevenue);
       }
 
       const state = getState();
+      storeInputs.forEach((input) => {
+        if (state[input.id] !== undefined) {
+          input.value = state[input.id];
+        }
+        input.addEventListener("input", () => {
+          state[input.id] = input.value;
+          setState(state);
+          refreshCockpit();
+        });
+      });
+
       checks.forEach((c) => {
         c.checked = !!state[c.dataset.id];
         c.addEventListener("change", () => {
@@ -682,6 +972,11 @@
           c.checked = false;
           state[c.dataset.id] = false;
         });
+        storeInputs.forEach((input) => {
+          const resetValue = input.defaultValue || "";
+          input.value = resetValue;
+          state[input.id] = resetValue;
+        });
         setState(state);
         refresh();
       });
@@ -690,4 +985,3 @@
     </script>
   </body>
 </html>
-
