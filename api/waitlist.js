@@ -82,7 +82,7 @@ export default async function handler(req, res) {
           </p>
 
           <p style="margin:0 0 24px 0;font-size:16px;color:#374151;">
-            Votre inscription est bien confirmée. Vous ferez partie des premiers informés lors de l’ouverture de la bêta privée.
+            Votre inscription est confirmée. Vous ferez partie des premiers à découvrir Qyraze, l’Operating System conçu pour synchroniser vos outils, centraliser vos opérations et réunir votre travail dans une interface unique.
           </p>
 
           <div style="background:#f9fafb;border:1px solid #e5e7eb;border-radius:16px;padding:20px 22px;margin:0 0 24px 0;">
@@ -103,17 +103,13 @@ export default async function handler(req, res) {
             </div>
           </div>
 
-          <p style="margin:0 0 6px 0;font-size:16px;color:#374151;">
-            Merci pour votre confiance.
-          </p>
-
-          <p style="margin:0 0 28px 0;font-size:16px;color:#374151;">
+          <p style="margin:0 0 24px 0;font-size:16px;color:#374151;">
             Merci pour votre confiance.
           </p>
 
           <p style="margin:0 0 24px 0;font-size:16px;color:#374151;">
             À bientôt,<br />
-            <strong>Jérémy Pereira Pires</strong><br />
+            <strong>Jérémy Pereira</strong><br />
             Fondateur — Qyraze
           </p>
 
@@ -140,7 +136,7 @@ export default async function handler(req, res) {
                       Support • Inscriptions • Accès plateforme
                     </div>
                     <div style="margin-top:6px;font-size:12px;color:#666666;line-height:18px;">
-                      Gérez, analysez et automatisez vos opérations depuis un seul espace.
+                      Synchronisez vos outils et centralisez vos opérations dans une interface unique.
                     </div>
                     <div style="margin-top:14px;font-size:12px;line-height:22px;color:#222222;">
                       <a style="color:#222;text-decoration:none;" href="mailto:contact@qyrazeos.fr">contact@qyrazeos.fr</a>
