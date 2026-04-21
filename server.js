@@ -4,6 +4,8 @@ const fs = require('fs')
 const path = require('path')
 const session = require('express-session')
 const { google } = require('googleapis')
+const nodemailer = require('nodemailer')
+const { createClient } = require('@supabase/supabase-js')
 require('dotenv').config()
 
 const app = express()
@@ -42,6 +44,21 @@ const googleOauth2Client = new google.auth.OAuth2(
   googleRedirectUri
 )
 
+const supabaseAdmin = createClient(
+  process.env.SUPABASE_URL,
+  process.env.SUPABASE_SERVICE_ROLE_KEY
+)
+
+const mailTransporter = nodemailer.createTransport({
+  host: process.env.SMTP_HOST,
+  port: Number(process.env.SMTP_PORT || 587),
+  secure: Number(process.env.SMTP_PORT) === 465,
+  auth: {
+    user: process.env.SMTP_USER,
+    pass: process.env.SMTP_PASS,
+  },
+})
+
 app.get('/', (req, res) => {
   res.sendFile(path.join(__dirname, 'public', 'index.html'))
 })
@@ -60,6 +77,9 @@ app.get('/api/config', (req, res) => {
     supabaseAnonKey: process.env.SUPABASE_ANON_KEY,
   })
 })
+
+const isValidEmail = (email) =>
+  typeof email === 'string' && /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)
 
 const startGoogleAuth = (req, res) => {
   const authUrl = googleOauth2Client.generateAuthUrl({
@@ -159,6 +179,47 @@ const logoutGoogle = (req, res) => {
 
 app.post('/auth/google/logout', logoutGoogle)
 app.post('/api/google/disconnect', logoutGoogle)
+
+app.post('/api/waitlist', async (req, res) => {
+  const email = req.body?.email?.trim().toLowerCase()
+
+  if (!isValidEmail(email)) {
+    return res.status(400).json({ error: 'Email invalide' })
+  }
+
+  try {
+    const { error } = await supabaseAdmin
+      .from('waitlist_emails')
+      .insert([{ email }])
+
+    if (error) {
+      if (error.code === '23505') {
+        return res.status(409).json({ error: 'Email déjà inscrit' })
+      }
+
+      throw error
+    }
+
+    await mailTransporter.sendMail({
+      from: process.env.SMTP_FROM,
+      to: email,
+      subject: 'Bienvenue dans la bêta Qyraze',
+      html: `
+        <div style="font-family:Arial,sans-serif;line-height:1.6;color:#111">
+          <h2>Bienvenue chez Qyraze</h2>
+          <p>Ton inscription à la liste d’attente est bien confirmée.</p>
+          <p>Tu seras informé en priorité dès l’ouverture de la bêta.</p>
+          <p>À très vite,<br />Jérémy<br />Qyraze</p>
+        </div>
+      `,
+    })
+
+    res.json({ ok: true })
+  } catch (error) {
+    console.error('Waitlist signup error:', error.message)
+    res.status(500).json({ error: 'Impossible d’inscrire cet email pour le moment' })
+  }
+})
 
 const readData = (file) =>
   JSON.parse(fs.readFileSync(path.join(__dirname, 'data', file), 'utf8'))
