@@ -1,5 +1,3 @@
-
-
 import { createClient } from 'https://esm.sh/@supabase/supabase-js@2';
 
 let supabase = null;
@@ -195,6 +193,21 @@ function syncGoogleButtons(isConnected) {
   if (disconnectGoogleBtn) disconnectGoogleBtn.style.display = isConnected ? 'inline-flex' : 'none';
 }
 
+function persistGoogleProviderToken(session) {
+  const providerToken = session?.provider_token;
+  if (providerToken) {
+    localStorage.setItem('google_provider_token', providerToken);
+  }
+}
+
+function getStoredGoogleProviderToken() {
+  return localStorage.getItem('google_provider_token');
+}
+
+function clearStoredGoogleProviderToken() {
+  localStorage.removeItem('google_provider_token');
+}
+
 function renderWeek(events) {
   const ws = startOfWeek(startOfToday());
   const days = Array.from({ length: 7 }, (_, i) => addDays(ws, i));
@@ -292,7 +305,7 @@ async function loadGoogleCalendarData() {
     return;
   }
 
-  const providerToken = session?.provider_token;
+  const providerToken = session?.provider_token || getStoredGoogleProviderToken();
 
   if (!providerToken) {
     googleStatusText.textContent = 'Google connecté, mais token calendrier indisponible';
@@ -344,6 +357,10 @@ async function bootAuth() {
   const { data: { session } } = await supabase.auth.getSession();
   console.log('SESSION SUPABASE', session);
   console.log('PROVIDER TOKEN', session?.provider_token);
+  persistGoogleProviderToken(session);
+  supabase.auth.onAuthStateChange((_event, nextSession) => {
+    persistGoogleProviderToken(nextSession);
+  });
 
   if (isConnexionRoute) {
     if (session) {
@@ -428,11 +445,13 @@ async function bootAuth() {
       googleStatusText.textContent = 'Déconnexion Google...';
       googleStatusText.classList.remove('connected');
     }
+    clearStoredGoogleProviderToken();
     await supabase.auth.signOut();
     window.location.href = '/connexion';
   });
 
   logoutBtn?.addEventListener('click', async () => {
+    clearStoredGoogleProviderToken();
     await supabase.auth.signOut();
     window.location.href = '/connexion';
   });
