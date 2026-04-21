@@ -108,8 +108,16 @@ export default async function handler(req, res) {
           </p>
 
           <p style="margin:0 0 28px 0;font-size:16px;color:#374151;">
-            À bientôt,
+            Merci pour votre confiance.
           </p>
+
+          <p style="margin:0 0 24px 0;font-size:16px;color:#374151;">
+            À bientôt,<br />
+            <strong>Jérémy Pereira Pires</strong><br />
+            Fondateur — Qyraze
+          </p>
+
+          <hr style="margin:30px 0;border:none;border-top:1px solid #e5e7eb;" />
 
           <div style="padding-top:24px;border-top:1px solid #e5e7eb;">
             <table style="font-family:Arial,Helvetica,sans-serif;border-collapse:collapse;max-width:620px;" cellspacing="0" cellpadding="0">
