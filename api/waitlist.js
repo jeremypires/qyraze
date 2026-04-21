@@ -82,7 +82,7 @@ export default async function handler(req, res) {
           </p>
 
           <p style="margin:0 0 24px 0;font-size:16px;color:#374151;">
-            Votre inscription est confirmée. Vous ferez partie des premiers à découvrir Qyraze, l’Operating System conçu pour synchroniser vos outils, centraliser vos opérations et réunir votre travail dans une interface unique.
+            Votre inscription est confirmée. Vous ferez partie des premiers à découvrir Qyraze, l’<strong style="color:#111827;">Operating System</strong> conçu pour synchroniser vos outils et centraliser votre travail dans une interface unique.
           </p>
 
           <div style="background:#f9fafb;border:1px solid #e5e7eb;border-radius:16px;padding:20px 22px;margin:0 0 24px 0;">
@@ -109,7 +109,7 @@ export default async function handler(req, res) {
 
           <p style="margin:0 0 24px 0;font-size:16px;color:#374151;">
             À bientôt,<br />
-            <strong>Jérémy Pereira</strong><br />
+            <strong>Jérémy Pereira Pires</strong><br />
             Fondateur — Qyraze
           </p>
 
