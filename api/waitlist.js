@@ -54,89 +54,101 @@ export default async function handler(req, res) {
   to: email,
   subject: 'Bienvenue dans la bêta privée Qyraze',
   html: `
-    <div style="font-family:Arial,Helvetica,sans-serif;max-width:620px;margin:auto;color:#111;line-height:1.6;">
+    <div style="margin:0;padding:0;background-color:#f5f7fb;">
+      <div style="max-width:640px;margin:0 auto;padding:40px 20px;font-family:Arial,Helvetica,sans-serif;color:#111827;line-height:1.6;">
 
-      <p style="font-size:15px;margin:0 0 16px 0;">
-        Bonjour,
-      </p>
+        <div style="background:#ffffff;border:1px solid #e5e7eb;border-radius:20px;padding:40px 40px 28px 40px;box-shadow:0 1px 2px rgba(16,24,40,0.04);">
 
-      <p style="font-size:15px;margin:0 0 16px 0;">
-        Merci d’avoir rejoint la liste d’attente de <strong>Qyraze</strong>.
-      </p>
+          <div style="text-align:center;margin-bottom:28px;">
+            <img
+              src="https://qyraze.com/logo.png"
+              alt="Qyraze OS"
+              width="56"
+              height="56"
+              style="display:inline-block;border-radius:14px;"
+            />
+          </div>
 
-      <p style="font-size:15px;margin:0 0 16px 0;">
-        Votre inscription est bien confirmée. Vous ferez partie des premiers informés lors de l’ouverture de la bêta privée.
-      </p>
+          <h1 style="margin:0 0 18px 0;font-size:30px;line-height:1.15;font-weight:800;color:#111827;letter-spacing:-0.03em;text-align:left;">
+            Bienvenue dans la bêta privée Qyraze
+          </h1>
 
-      <p style="font-size:15px;margin:0 0 12px 0;">
-        Nous partagerons prochainement :
-      </p>
+          <p style="margin:0 0 16px 0;font-size:16px;color:#374151;">
+            Bonjour,
+          </p>
 
-      <ul style="font-size:15px;color:#222;margin:0 0 20px 20px;padding:0;">
-        <li style="margin-bottom:8px;">l’accès anticipé à la plateforme</li>
-        <li style="margin-bottom:8px;">les nouveautés produit</li>
-        <li style="margin-bottom:8px;">les premières invitations utilisateurs</li>
-      </ul>
+          <p style="margin:0 0 16px 0;font-size:16px;color:#374151;">
+            Merci d’avoir rejoint la liste d’attente de <strong style="color:#111827;">Qyraze</strong>.
+          </p>
 
-      <div style="background:#f6f8fb;padding:18px 20px;border-radius:12px;font-size:14px;color:#222;margin:24px 0;">
-        Accès bêta privé — Places limitées.<br />
-        Nous contacterons les premiers inscrits en priorité.
+          <p style="margin:0 0 24px 0;font-size:16px;color:#374151;">
+            Votre inscription est bien confirmée. Vous ferez partie des premiers informés lors de l’ouverture de la bêta privée.
+          </p>
+
+          <div style="background:#f9fafb;border:1px solid #e5e7eb;border-radius:16px;padding:20px 22px;margin:0 0 24px 0;">
+            <div style="margin:0 0 10px 0;font-size:14px;font-weight:700;color:#111827;">
+              Nous partagerons prochainement :
+            </div>
+            <div style="margin:0 0 8px 0;font-size:15px;color:#374151;">• l’accès anticipé à la plateforme</div>
+            <div style="margin:0 0 8px 0;font-size:15px;color:#374151;">• les nouveautés produit</div>
+            <div style="margin:0;font-size:15px;color:#374151;">• les premières invitations utilisateurs</div>
+          </div>
+
+          <div style="background:#eef2ff;border:1px solid #dbe4ff;border-radius:16px;padding:18px 20px;margin:0 0 28px 0;">
+            <div style="margin:0 0 6px 0;font-size:15px;font-weight:700;color:#111827;">
+              Accès bêta privé — Places limitées.
+            </div>
+            <div style="margin:0;font-size:15px;color:#4b5563;">
+              Nous contacterons les premiers inscrits en priorité.
+            </div>
+          </div>
+
+          <p style="margin:0 0 6px 0;font-size:16px;color:#374151;">
+            Merci pour votre confiance.
+          </p>
+
+          <p style="margin:0 0 28px 0;font-size:16px;color:#374151;">
+            À bientôt,
+          </p>
+
+          <div style="padding-top:24px;border-top:1px solid #e5e7eb;">
+            <table style="font-family:Arial,Helvetica,sans-serif;border-collapse:collapse;max-width:620px;" cellspacing="0" cellpadding="0">
+              <tbody>
+                <tr>
+                  <td style="padding-right:20px;vertical-align:middle;">
+                    <img
+                      style="display:block;border-radius:14px;"
+                      src="https://qyraze.com/logo.png"
+                      alt="Qyraze OS"
+                      width="81"
+                      height="81"
+                    />
+                  </td>
+                  <td style="border-left:1px solid #d8d8d8;padding-left:20px;vertical-align:middle;">
+                    <div style="font-size:22px;font-weight:800;color:#111111;letter-spacing:0.6px;line-height:24px;">
+                      QYRAZE OS
+                    </div>
+                    <div style="margin-top:6px;font-size:13px;font-weight:600;color:#444444;line-height:18px;">
+                      Support • Inscriptions • Accès plateforme
+                    </div>
+                    <div style="margin-top:6px;font-size:12px;color:#666666;line-height:18px;">
+                      Gérez, analysez et automatisez vos opérations depuis un seul espace.
+                    </div>
+                    <div style="margin-top:14px;font-size:12px;line-height:22px;color:#222222;">
+                      <a style="color:#222;text-decoration:none;" href="mailto:contact@qyrazeos.fr">contact@qyrazeos.fr</a>
+                      &nbsp;&nbsp;|&nbsp;&nbsp;
+                      <a style="color:#222;text-decoration:none;" href="https://qyraze.com">qyraze.com</a>
+                      &nbsp;&nbsp;|&nbsp;&nbsp;
+                      France
+                    </div>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+
+        </div>
       </div>
-
-      <p style="font-size:15px;margin:0 0 16px 0;">
-        Merci pour votre confiance.
-      </p>
-
-      <p style="font-size:15px;margin:0 0 24px 0;">
-        À très bientôt,<br />
-        <strong>Jérémy Pereira</strong><br />
-        Fondateur — Qyraze
-      </p>
-
-      <hr style="margin:30px 0;border:none;border-top:1px solid #ddd;" />
-
-      <table style="font-family: Arial,Helvetica,sans-serif; max-width: 620px; border-collapse: collapse;" cellspacing="0" cellpadding="0">
-        <tbody>
-          <tr>
-            <td style="padding: 20px 24px 0 0;">
-              <table cellspacing="0" cellpadding="0">
-                <tbody>
-                  <tr>
-                    <td style="padding-right: 20px; vertical-align: middle;">
-                      <img
-                        style="display: block; border-radius: 14px;"
-                        src="https://qyraze.com/logo.png"
-                        alt="Qyraze OS"
-                        width="81"
-                        height="81"
-                      />
-                    </td>
-                    <td style="border-left: 1px solid #d8d8d8; padding-left: 20px; vertical-align: middle;">
-                      <div style="font-size: 22px; font-weight: 800; color: #111111; letter-spacing: 0.6px; line-height: 24px;">
-                        QYRAZE OS
-                      </div>
-                      <div style="margin-top: 6px; font-size: 13px; font-weight: 600; color: #444444; line-height: 18px;">
-                        Support • Inscriptions • Accès plateforme
-                      </div>
-                      <div style="margin-top: 6px; font-size: 12px; color: #666666; line-height: 18px;">
-                        Gérez, analysez et automatisez vos opérations depuis un seul espace.
-                      </div>
-                      <div style="margin-top: 14px; font-size: 12px; line-height: 22px; color: #222222;">
-                        <a style="color: #222; text-decoration: none;" href="mailto:contact@qyrazeos.fr">contact@qyrazeos.fr</a>
-                        &nbsp;&nbsp;|&nbsp;&nbsp;
-                        <a style="color: #222; text-decoration: none;" href="https://qyraze.com">qyraze.com</a>
-                        &nbsp;&nbsp;|&nbsp;&nbsp;
-                        France
-                      </div>
-                    </td>
-                  </tr>
-                </tbody>
-              </table>
-            </td>
-          </tr>
-        </tbody>
-      </table>
-
     </div>
   `,
 })
