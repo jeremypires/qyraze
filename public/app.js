@@ -292,35 +292,42 @@ async function loadGoogleCalendarData() {
     return;
   }
 
-  try {
-    const statusRes = await fetch('/api/google/status');
-    if (!statusRes.ok) {
-      throw new Error('google_status_unavailable');
-    }
-    const status = await statusRes.json();
+  const providerToken = session?.provider_token;
 
-    if (!status.connected) {
-      googleStatusText.textContent = 'Google Calendar connecté, synchronisation indisponible pour le moment';
-      googleStatusText.classList.add('connected');
-      googleEventsList.innerHTML = '<div class="calendar-empty">Connexion Google détectée. Le backend de synchronisation Calendar n\'est pas encore disponible.</div>';
-      return;
-    }
-
-    googleStatusText.textContent = `Connecté · ${status.profile?.email || 'Compte Google connecté'}`;
+  if (!providerToken) {
+    googleStatusText.textContent = 'Google connecté, mais token calendrier indisponible';
     googleStatusText.classList.add('connected');
+    googleEventsList.innerHTML = '<div class="calendar-empty">Connexion Google détectée, mais aucun token Google Calendar n\'a été trouvé dans la session.</div>';
+    return;
+  }
 
-    const eventsRes = await fetch('/api/google/events');
-    if (!eventsRes.ok) {
-      throw new Error('google_events_unavailable');
+  try {
+    const now = new Date();
+    const inSevenDays = new Date();
+    inSevenDays.setDate(inSevenDays.getDate() + 7);
+
+    const url = `https://www.googleapis.com/calendar/v3/calendars/primary/events?timeMin=${encodeURIComponent(now.toISOString())}&timeMax=${encodeURIComponent(inSevenDays.toISOString())}&singleEvents=true&orderBy=startTime&maxResults=20`;
+
+    const res = await fetch(url, {
+      headers: {
+        Authorization: `Bearer ${providerToken}`
+      }
+    });
+
+    const data = await res.json();
+
+    if (!res.ok) {
+      throw new Error(data?.error?.message || 'Erreur Google Calendar');
     }
 
-    const { events } = await eventsRes.json();
-    renderGoogleEvents(events || []);
+    googleStatusText.textContent = 'Google Calendar connecté';
+    googleStatusText.classList.add('connected');
+    renderGoogleEvents(data.items || []);
   } catch (error) {
     console.error('Erreur Google Calendar:', error);
-    googleStatusText.textContent = 'Google Calendar connecté, synchronisation indisponible pour le moment';
-    googleStatusText.classList.add('connected');
-    googleEventsList.innerHTML = '<div class="calendar-empty">Connexion Google détectée. Le backend de synchronisation Calendar n\'est pas encore disponible.</div>';
+    googleStatusText.textContent = 'Erreur de synchronisation Google Calendar';
+    googleStatusText.classList.remove('connected');
+    googleEventsList.innerHTML = '<div class="calendar-empty">Impossible de charger les événements Google.</div>';
   }
 }
 
@@ -335,6 +342,8 @@ async function bootAuth() {
   }
 
   const { data: { session } } = await supabase.auth.getSession();
+  console.log('SESSION SUPABASE', session);
+  console.log('PROVIDER TOKEN', session?.provider_token);
 
   if (isConnexionRoute) {
     if (session) {
