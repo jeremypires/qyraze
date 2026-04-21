@@ -49,6 +49,7 @@ const ctaSuccess = $('ctaSuccess');
 
 ctaBtn?.addEventListener('click', async () => {
   const email = ctaEmail?.value.trim().toLowerCase();
+
   if (!email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
     ctaEmail?.focus();
     ctaEmail?.setCustomValidity('Email invalide');
@@ -80,6 +81,7 @@ ctaBtn?.addEventListener('click', async () => {
         ctaSuccess.classList.add('visible');
         return;
       }
+
       throw error;
     }
 
@@ -104,7 +106,10 @@ ctaBtn?.addEventListener('click', async () => {
 });
 
 const fmtHM = d =>
-  new Intl.DateTimeFormat('fr-FR', { hour: '2-digit', minute: '2-digit' }).format(d);
+  new Intl.DateTimeFormat('fr-FR', {
+    hour: '2-digit',
+    minute: '2-digit'
+  }).format(d);
 
 function startOfToday() {
   const d = new Date();
@@ -134,13 +139,18 @@ const sameDay = (a, b) =>
 const hoursArr = () => Array.from({ length: 13 }, (_, i) => i + 11);
 
 const buildGridLines = () =>
-  hoursArr().map((_, i) => `<div class="calendar-grid-line" style="top:${i * 60}px"></div>`).join('');
+  hoursArr()
+    .map((_, i) => `<div class="calendar-grid-line" style="top:${i * 60}px"></div>`)
+    .join('');
 
 const buildTimeCol = () =>
   `<div class="calendar-time-column">${
-    hoursArr().map((h, i) =>
-      `<div class="calendar-time-slot" style="top:${i * 60}px">${String(h).padStart(2, '0')}:00</div>`
-    ).join('')
+    hoursArr()
+      .map(
+        (h, i) =>
+          `<div class="calendar-time-slot" style="top:${i * 60}px">${String(h).padStart(2, '0')}:00</div>`
+      )
+      .join('')
   }</div>`;
 
 function normalizeEv(ev) {
@@ -189,8 +199,12 @@ function sessionHasGoogle(session) {
 }
 
 function syncGoogleButtons(isConnected) {
-  if (connectGoogleBtn) connectGoogleBtn.style.display = isConnected ? 'none' : 'inline-flex';
-  if (disconnectGoogleBtn) disconnectGoogleBtn.style.display = isConnected ? 'inline-flex' : 'none';
+  if (connectGoogleBtn) {
+    connectGoogleBtn.style.display = isConnected ? 'none' : 'inline-flex';
+  }
+  if (disconnectGoogleBtn) {
+    disconnectGoogleBtn.style.display = isConnected ? 'inline-flex' : 'none';
+  }
 }
 
 function persistGoogleProviderToken(session) {
@@ -208,6 +222,18 @@ function clearStoredGoogleProviderToken() {
   localStorage.removeItem('google_provider_token');
 }
 
+function markGoogleCalendarDisconnected() {
+  localStorage.setItem('google_calendar_disabled', '1');
+}
+
+function clearGoogleCalendarDisconnected() {
+  localStorage.removeItem('google_calendar_disabled');
+}
+
+function isGoogleCalendarDisconnected() {
+  return localStorage.getItem('google_calendar_disabled') === '1';
+}
+
 function renderWeek(events) {
   const ws = startOfWeek(startOfToday());
   const days = Array.from({ length: 7 }, (_, i) => addDays(ws, i));
@@ -221,21 +247,31 @@ function renderWeek(events) {
   const timed = norm.filter(e => !e.isAllDay);
 
   const header = `<div class="calendar-agenda-header week"><div class="calendar-agenda-head-cell"></div>${
-    days.map(d => `<div class="calendar-agenda-head-cell">
+    days
+      .map(
+        d => `<div class="calendar-agenda-head-cell">
       <div class="calendar-day-label">${d.toLocaleDateString('fr-FR', { weekday: 'short' })}</div>
       <div class="calendar-day-date">${d.toLocaleDateString('fr-FR', { day: '2-digit', month: '2-digit' })}</div>
-    </div>`).join('')
+    </div>`
+      )
+      .join('')
   }</div>`;
 
   const allDayRow = allDay.length
-    ? `<div class="calendar-all-day-row">${allDay.map(e => `<div class="calendar-all-day-chip">${e.summary}</div>`).join('')}</div>`
+    ? `<div class="calendar-all-day-row">${allDay
+        .map(e => `<div class="calendar-all-day-chip">${e.summary}</div>`)
+        .join('')}</div>`
     : '';
 
   const body = `<div class="calendar-agenda-body week">${buildTimeCol()}${
-    days.map(d => `<div class="calendar-day-column">
+    days
+      .map(
+        d => `<div class="calendar-day-column">
       <div class="calendar-grid-lines">${buildGridLines()}</div>
       <div class="calendar-events-layer">${timed.filter(e => sameDay(e.start, d)).map(evBlock).join('')}</div>
-    </div>`).join('')
+    </div>`
+      )
+      .join('')
   }</div>`;
 
   googleEventsList.innerHTML = `<div class="calendar-agenda-week">${header}${allDayRow}${body}</div>`;
@@ -248,7 +284,11 @@ function renderDay(events) {
   const timed = norm.filter(e => !e.isAllDay);
 
   if (calendarRangeLabel) {
-    calendarRangeLabel.textContent = `Vue du ${today.toLocaleDateString('fr-FR', { weekday: 'long', day: '2-digit', month: 'long' })}`;
+    calendarRangeLabel.textContent = `Vue du ${today.toLocaleDateString('fr-FR', {
+      weekday: 'long',
+      day: '2-digit',
+      month: 'long'
+    })}`;
   }
 
   const header = `<div class="calendar-agenda-header day"><div class="calendar-agenda-head-cell"></div>
@@ -258,7 +298,9 @@ function renderDay(events) {
     </div></div>`;
 
   const allDayRow = allDay.length
-    ? `<div class="calendar-all-day-row">${allDay.map(e => `<div class="calendar-all-day-chip">${e.summary}</div>`).join('')}</div>`
+    ? `<div class="calendar-all-day-row">${allDay
+        .map(e => `<div class="calendar-all-day-chip">${e.summary}</div>`)
+        .join('')}</div>`
     : '';
 
   const body = `<div class="calendar-agenda-body day">${buildTimeCol()}
@@ -295,7 +337,7 @@ async function loadGoogleCalendarData() {
   if (!googleStatusText || !googleEventsList) return;
 
   const { data: { session } } = await supabase.auth.getSession();
-  const hasGoogle = sessionHasGoogle(session);
+  const hasGoogle = sessionHasGoogle(session) && !isGoogleCalendarDisconnected();
   syncGoogleButtons(hasGoogle);
 
   if (!hasGoogle) {
@@ -310,7 +352,7 @@ async function loadGoogleCalendarData() {
   if (!providerToken) {
     googleStatusText.textContent = 'Google connecté, mais token calendrier indisponible';
     googleStatusText.classList.add('connected');
-    googleEventsList.innerHTML = '<div class="calendar-empty">Connexion Google détectée, mais aucun token Google Calendar n\'a été trouvé dans la session.</div>';
+    googleEventsList.innerHTML = '<div class="calendar-empty">Connexion Google détectée, mais aucun token Google Calendar n’a été trouvé dans la session.</div>';
     return;
   }
 
@@ -357,7 +399,9 @@ async function bootAuth() {
   const { data: { session } } = await supabase.auth.getSession();
   console.log('SESSION SUPABASE', session);
   console.log('PROVIDER TOKEN', session?.provider_token);
+
   persistGoogleProviderToken(session);
+
   supabase.auth.onAuthStateChange((_event, nextSession) => {
     persistGoogleProviderToken(nextSession);
   });
@@ -376,15 +420,18 @@ async function bootAuth() {
       return;
     }
     appRoute?.classList.add('active');
-    if (appUserEmail) appUserEmail.textContent = session.user?.email || '';
+    if (appUserEmail) {
+      appUserEmail.textContent = session.user?.email || '';
+    }
     await loadGoogleCalendarData();
   }
 
-  syncGoogleButtons(sessionHasGoogle(session));
+  syncGoogleButtons(sessionHasGoogle(session) && !isGoogleCalendarDisconnected());
 
   loginForm?.addEventListener('submit', async e => {
     e.preventDefault();
     if (!supabase) return;
+
     if (loginError) loginError.textContent = '';
     if (loginSubmit) loginSubmit.disabled = true;
 
@@ -397,7 +444,9 @@ async function bootAuth() {
 
     if (error) {
       console.error('Erreur login complète:', error);
-      if (loginError) loginError.textContent = error.message || 'Identifiants incorrects.';
+      if (loginError) {
+        loginError.textContent = error.message || 'Identifiants incorrects.';
+      }
       return;
     }
 
@@ -422,6 +471,8 @@ async function bootAuth() {
       googleStatusText.classList.remove('connected');
     }
 
+    clearGoogleCalendarDisconnected();
+
     const { error } = await supabase.auth.signInWithOAuth({
       provider: 'google',
       options: {
@@ -441,17 +492,27 @@ async function bootAuth() {
   });
 
   disconnectGoogleBtn?.addEventListener('click', async () => {
+    markGoogleCalendarDisconnected();
+    clearStoredGoogleProviderToken();
+    syncGoogleButtons(false);
+
     if (googleStatusText) {
-      googleStatusText.textContent = 'Déconnexion Google...';
+      googleStatusText.textContent = 'Google Calendar déconnecté';
       googleStatusText.classList.remove('connected');
     }
-    clearStoredGoogleProviderToken();
-    await supabase.auth.signOut();
-    window.location.href = '/connexion';
+
+    if (googleEventsList) {
+      googleEventsList.innerHTML = '<div class="calendar-empty">Google Calendar a été déconnecté pour cette session. Clique sur « Connecter Google » pour le réactiver.</div>';
+    }
+
+    if (calendarRangeLabel) {
+      calendarRangeLabel.textContent = 'Google Calendar déconnecté';
+    }
   });
 
   logoutBtn?.addEventListener('click', async () => {
     clearStoredGoogleProviderToken();
+    clearGoogleCalendarDisconnected();
     await supabase.auth.signOut();
     window.location.href = '/connexion';
   });
