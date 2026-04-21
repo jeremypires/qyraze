@@ -48,7 +48,7 @@ export default async function handler(req, res) {
 
     // Temporairement désactivé pour isoler le problème SMTP Amen sur Vercel.
     // Décommente ce bloc quand la configuration SMTP sera validée.
-    /*
+    
     await transporter.sendMail({
       from: process.env.SMTP_FROM,
       to: email,
@@ -62,9 +62,9 @@ export default async function handler(req, res) {
         </div>
       `,
     })
-    */
+    
 
-    return res.status(200).json({ ok: true, emailSent: false })
+    return res.status(200).json({ ok: true, emailSent: true })
   } catch (error) {
     console.error('Waitlist signup error:', error)
     return res.status(500).json({
