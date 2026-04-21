@@ -10,16 +10,13 @@
   <meta name="description" content="Qyraze centralise planning, CRM, finances et automatisations dans une interface unique." />
   <link rel="icon" type="image/png" href="/logo.png" />
   <link rel="stylesheet" href="/style.css" />
+  <script type="module" src="/app.js"></script>
 </head>
 <body>
   <noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-MC2DR98S" height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 
-  <!-- ══════════════════════════════════
-       MARKETING PAGE
-  ══════════════════════════════════ -->
   <main class="marketing-page" id="marketingPage">
 
-    <!-- NAV — no access link -->
     <nav class="nav">
       <div class="nav-inner">
         <div class="brand">
@@ -35,9 +32,7 @@
       </div>
     </nav>
 
-    <!-- ══ HERO — centred ══ -->
     <section class="hero container">
-
       <div class="hero-kicker">MVP en construction &nbsp;·&nbsp; Bêta 2026</div>
 
       <h1 class="hero-title">
@@ -54,7 +49,6 @@
         <a class="btn-secondary" href="#solution">Voir le produit</a>
       </div>
 
-      <!-- Stats bar -->
       <div class="hero-stats">
         <div class="hero-stat">
           <div class="hero-stat-num">7+</div>
@@ -70,7 +64,6 @@
         </div>
       </div>
 
-      <!-- Mock dashboard card — compact 2-col layout -->
       <div class="hero-card">
         <div class="card-titlebar">
           <span class="tbar-dot"></span>
@@ -80,7 +73,6 @@
         </div>
 
         <div class="card-body">
-          <!-- Left column -->
           <div class="card-col">
             <div class="card-tile">
               <div class="card-tile-label">CA ce mois</div>
@@ -105,7 +97,6 @@
             </div>
           </div>
 
-          <!-- Right column -->
           <div class="card-col">
             <div class="card-tile">
               <div class="card-tile-label">Leads actifs</div>
@@ -139,12 +130,10 @@
           </div>
         </div>
       </div>
-
     </section>
 
     <div class="section-divider"></div>
 
-    <!-- ══ PROBLEM ══ -->
     <section class="section" id="problem">
       <div class="container">
         <div class="section-head">
@@ -201,7 +190,6 @@
 
     <div class="section-divider"></div>
 
-    <!-- ══ SOLUTION ══ -->
     <section class="section" id="solution">
       <div class="container">
         <div class="section-head">
@@ -283,7 +271,6 @@
 
     <div class="section-divider"></div>
 
-    <!-- ══ POSITIONING ══ -->
     <section class="section">
       <div class="container">
         <div class="section-head">
@@ -317,7 +304,6 @@
 
     <div class="section-divider"></div>
 
-    <!-- ══ MARKET ══ -->
     <section class="section" id="market">
       <div class="container">
         <div class="section-head">
@@ -362,7 +348,6 @@
 
     <div class="section-divider"></div>
 
-    <!-- ══ CTA — email waitlist ══ -->
     <section class="cta-section" id="cta">
       <div class="container">
         <h2 class="cta-title">Prêt à piloter autrement ?</h2>
@@ -396,7 +381,6 @@
       </div>
     </section>
 
-    <!-- FOOTER -->
     <footer class="footer">
       <div class="container">
         <div class="footer-inner">
@@ -408,12 +392,8 @@
         </div>
       </div>
     </footer>
-
   </main>
 
-  <!-- ══════════════════════════════════
-       LOGIN ROUTE  (/connexion)
-  ══════════════════════════════════ -->
   <section class="login-route" id="loginRoute">
     <div class="login-card">
       <div class="login-badge">Espace privé</div>
@@ -421,7 +401,7 @@
       <p class="login-subtitle">Connecte-toi pour accéder à ton espace de pilotage Qyraze.</p>
 
       <form class="login-form" id="loginForm">
-        <input class="login-input" id="loginEmail"    type="email"    placeholder="Email"        autocomplete="email" />
+        <input class="login-input" id="loginEmail" type="email" placeholder="Email" autocomplete="email" />
         <input class="login-input" id="loginPassword" type="password" placeholder="Mot de passe" autocomplete="current-password" />
         <button class="login-submit" id="loginSubmit" type="submit">Se connecter</button>
       </form>
@@ -432,9 +412,6 @@
     </div>
   </section>
 
-  <!-- ══════════════════════════════════
-       APP ROUTE  (/app)
-  ══════════════════════════════════ -->
   <section class="login-route" id="appRoute">
     <div class="app-card">
       <div class="login-badge">Espace connecté</div>
@@ -461,7 +438,7 @@
             <div class="integration-subtitle">Connecte ton agenda pour afficher les prochains rendez-vous directement dans le dashboard.</div>
           </div>
           <div class="integration-actions">
-            <button class="login-submit"      id="connectGoogleBtn"    type="button">Connecter Google</button>
+            <button class="login-submit" id="connectGoogleBtn" type="button">Connecter Google</button>
             <button class="app-btn-secondary" id="disconnectGoogleBtn" type="button">Déconnecter</button>
           </div>
         </div>
@@ -476,7 +453,7 @@
           </div>
           <div class="calendar-view-switch">
             <button class="calendar-switch-btn active" id="calendarWeekBtn" type="button">Semaine</button>
-            <button class="calendar-switch-btn"        id="calendarDayBtn"  type="button">Jour</button>
+            <button class="calendar-switch-btn" id="calendarDayBtn" type="button">Jour</button>
           </div>
         </div>
         <div class="calendar-agenda-wrap" id="googleEventsList">
@@ -490,292 +467,5 @@
       </div>
     </div>
   </section>
-
-  <!-- ══════════════════════════════════
-       JAVASCRIPT
-  ══════════════════════════════════ -->
-  <script type="module">
-    import { createClient } from 'https://esm.sh/@supabase/supabase-js@2';
-
-    let supabase           = null;
-    let calendarViewMode   = 'week';
-    let cachedGoogleEvents = [];
-
-    async function initSupabase() {
-      if (supabase) return supabase;
-      const config = await fetch('/api/config').then(r => r.json());
-      if (!config.supabaseUrl || !config.supabaseAnonKey)
-        throw new Error('Configuration Supabase manquante');
-      supabase = createClient(config.supabaseUrl, config.supabaseAnonKey);
-      return supabase;
-    }
-
-    const path             = window.location.pathname;
-    const isConnexionRoute = path === '/connexion';
-    const isAppRoute       = path === '/app';
-    const $                = id => document.getElementById(id);
-
-    const marketingPage       = $('marketingPage');
-    const loginRoute          = $('loginRoute');
-    const appRoute            = $('appRoute');
-    const loginForm           = $('loginForm');
-    const loginEmail          = $('loginEmail');
-    const loginPassword       = $('loginPassword');
-    const loginError          = $('loginError');
-    const loginSubmit         = $('loginSubmit');
-    const logoutBtn           = $('logoutBtn');
-    const appUserEmail        = $('appUserEmail');
-    const connectGoogleBtn    = $('connectGoogleBtn');
-    const disconnectGoogleBtn = $('disconnectGoogleBtn');
-    const googleStatusText    = $('googleStatusText');
-    const googleEventsList    = $('googleEventsList');
-    const calendarWeekBtn     = $('calendarWeekBtn');
-    const calendarDayBtn      = $('calendarDayBtn');
-    const calendarRangeLabel  = $('calendarRangeLabel');
-
-    /* Hide marketing on auth routes */
-    if (isConnexionRoute || isAppRoute) {
-      document.title = isConnexionRoute ? 'Connexion — Qyraze' : 'App — Qyraze';
-      marketingPage?.classList.add('route-hidden');
-    }
-
-    /* ── CTA email waitlist ── */
-    const ctaForm    = $('ctaForm');
-    const ctaEmail   = $('ctaEmail');
-    const ctaBtn     = $('ctaBtn');
-    const ctaSuccess = $('ctaSuccess');
-
-    ctaBtn?.addEventListener('click', async () => {
-      const email = ctaEmail?.value.trim().toLowerCase();
-      if (!email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
-        ctaEmail?.focus();
-        ctaEmail?.setCustomValidity('Email invalide');
-        ctaEmail?.reportValidity();
-        return;
-      }
-
-      ctaEmail?.setCustomValidity('');
-      ctaBtn.disabled = true;
-      ctaBtn.textContent = 'Enregistrement...';
-
-      try {
-        await initSupabase();
-
-        const { error } = await supabase
-          .from('waitlist_emails')
-          .insert([{ email }]);
-
-        if (error) {
-          if (error.code === '23505') {
-            ctaForm.style.display = 'none';
-            ctaSuccess.innerHTML = `
-              <svg width="16" height="16" viewBox="0 0 16 16" fill="none" style="flex-shrink:0">
-                <circle cx="8" cy="8" r="7.5" stroke="#3dd68c" stroke-opacity=".6"/>
-                <path d="M4.5 8l2.5 2.5L11.5 5.5" stroke="#3dd68c" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
-              </svg>
-              Cet email est déjà enregistré sur la liste.
-            `;
-            ctaSuccess.classList.add('visible');
-            return;
-          }
-          throw error;
-        }
-
-        ctaForm.style.display = 'none';
-        ctaSuccess.innerHTML = `
-          <svg width="16" height="16" viewBox="0 0 16 16" fill="none" style="flex-shrink:0">
-            <circle cx="8" cy="8" r="7.5" stroke="#3dd68c" stroke-opacity=".6"/>
-            <path d="M4.5 8l2.5 2.5L11.5 5.5" stroke="#3dd68c" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
-          </svg>
-          Tu es sur la liste ! On te contacte dès l'ouverture de la bêta.
-        `;
-        ctaSuccess.classList.add('visible');
-      } catch (error) {
-        console.error('Erreur waitlist:', error);
-        ctaEmail?.focus();
-        ctaEmail?.setCustomValidity("Impossible d'enregistrer l'email pour le moment.");
-        ctaEmail?.reportValidity();
-      } finally {
-        ctaBtn.disabled = false;
-        ctaBtn.textContent = 'Rejoindre →';
-      }
-    });
-
-    /* ── Date helpers ── */
-    const fmtHM = d =>
-      new Intl.DateTimeFormat('fr-FR', { hour: '2-digit', minute: '2-digit' }).format(d);
-
-    function startOfToday() {
-      const d = new Date(); d.setHours(0,0,0,0); return d;
-    }
-
-    function startOfWeek(date) {
-      const d = new Date(date), day = d.getDay();
-      d.setDate(d.getDate() + (day === 0 ? -6 : 1 - day));
-      d.setHours(0,0,0,0); return d;
-    }
-
-    const addDays = (d, n) => { const c = new Date(d); c.setDate(c.getDate()+n); return c; };
-    const sameDay = (a,b) =>
-      a.getFullYear()===b.getFullYear() && a.getMonth()===b.getMonth() && a.getDate()===b.getDate();
-    const hoursArr = () => Array.from({length:13},(_,i)=>i+11);
-
-    const buildGridLines = () =>
-      hoursArr().map((_,i) => `<div class="calendar-grid-line" style="top:${i*60}px"></div>`).join('');
-
-    const buildTimeCol = () =>
-      `<div class="calendar-time-column">${
-        hoursArr().map((h,i) =>
-          `<div class="calendar-time-slot" style="top:${i*60}px">${String(h).padStart(2,'0')}:00</div>`
-        ).join('')
-      }</div>`;
-
-    function normalizeEv(ev) {
-      const isAllDay = !!ev.start?.date && !ev.start?.dateTime;
-      const start    = new Date(ev.start?.dateTime || ev.start?.date);
-      let   end      = new Date(ev.end?.dateTime || ev.end?.date || ev.start?.dateTime || ev.start?.date);
-      if (isAllDay) { end = new Date(start); end.setHours(23,59,59,999); }
-      return { summary: ev.summary||'Événement sans titre', location: ev.location||'', start, end, isAllDay };
-    }
-
-    function evBlock(ev) {
-      const sh = ev.start.getHours()+ev.start.getMinutes()/60;
-      const eh = ev.end.getHours()+ev.end.getMinutes()/60;
-      const vs = Math.max(11,sh), ve = Math.min(24,Math.max(vs+.25,eh));
-      const top = (vs-11)*60, height = Math.max(42,(ve-vs)*60);
-      const loc = ev.location ? `<div class="calendar-event-meta">${ev.location}</div>` : '';
-      return `<div class="calendar-event-block" style="top:${top}px;height:${height}px;">
-        <div class="calendar-event-title">${ev.summary}</div>
-        <div class="calendar-event-meta">${fmtHM(ev.start)} → ${fmtHM(ev.end)}</div>${loc}
-      </div>`;
-    }
-
-    const updateViewBtns = () => {
-      calendarWeekBtn?.classList.toggle('active', calendarViewMode==='week');
-      calendarDayBtn?.classList.toggle('active',  calendarViewMode==='day');
-    };
-
-    function renderWeek(events) {
-      const ws   = startOfWeek(startOfToday());
-      const days = Array.from({length:7},(_,i)=>addDays(ws,i));
-      if (calendarRangeLabel)
-        calendarRangeLabel.textContent =
-          `Semaine du ${ws.toLocaleDateString('fr-FR')} au ${addDays(ws,6).toLocaleDateString('fr-FR')}`;
-      const norm   = events.map(normalizeEv);
-      const allDay = norm.filter(e=>e.isAllDay), timed = norm.filter(e=>!e.isAllDay);
-      const header = `<div class="calendar-agenda-header week"><div class="calendar-agenda-head-cell"></div>${
-        days.map(d=>`<div class="calendar-agenda-head-cell">
-          <div class="calendar-day-label">${d.toLocaleDateString('fr-FR',{weekday:'short'})}</div>
-          <div class="calendar-day-date">${d.toLocaleDateString('fr-FR',{day:'2-digit',month:'2-digit'})}</div>
-        </div>`).join('')
-      }</div>`;
-      const allDayRow = allDay.length
-        ? `<div class="calendar-all-day-row">${allDay.map(e=>`<div class="calendar-all-day-chip">${e.summary}</div>`).join('')}</div>` : '';
-      const body = `<div class="calendar-agenda-body week">${buildTimeCol()}${
-        days.map(d=>`<div class="calendar-day-column">
-          <div class="calendar-grid-lines">${buildGridLines()}</div>
-          <div class="calendar-events-layer">${timed.filter(e=>sameDay(e.start,d)).map(evBlock).join('')}</div>
-        </div>`).join('')
-      }</div>`;
-      googleEventsList.innerHTML = `<div class="calendar-agenda-week">${header}${allDayRow}${body}</div>`;
-    }
-
-    function renderDay(events) {
-      const today = startOfToday();
-      const norm  = events.map(normalizeEv).filter(e=>sameDay(e.start,today));
-      const allDay = norm.filter(e=>e.isAllDay), timed = norm.filter(e=>!e.isAllDay);
-      if (calendarRangeLabel)
-        calendarRangeLabel.textContent =
-          `Vue du ${today.toLocaleDateString('fr-FR',{weekday:'long',day:'2-digit',month:'long'})}`;
-      const header = `<div class="calendar-agenda-header day"><div class="calendar-agenda-head-cell"></div>
-        <div class="calendar-agenda-head-cell">
-          <div class="calendar-day-label">${today.toLocaleDateString('fr-FR',{weekday:'long'})}</div>
-          <div class="calendar-day-date">${today.toLocaleDateString('fr-FR',{day:'2-digit',month:'2-digit',year:'numeric'})}</div>
-        </div></div>`;
-      const allDayRow = allDay.length
-        ? `<div class="calendar-all-day-row">${allDay.map(e=>`<div class="calendar-all-day-chip">${e.summary}</div>`).join('')}</div>` : '';
-      const body = `<div class="calendar-agenda-body day">${buildTimeCol()}
-        <div class="calendar-day-column">
-          <div class="calendar-grid-lines">${buildGridLines()}</div>
-          <div class="calendar-events-layer">${timed.map(evBlock).join('')}</div>
-        </div></div>`;
-      googleEventsList.innerHTML = `<div class="calendar-agenda-day">${header}${allDayRow}${body}</div>`;
-    }
-
-    function renderGoogleEvents(events) {
-      if (!googleEventsList) return;
-      cachedGoogleEvents = events || [];
-      updateViewBtns();
-      if (!cachedGoogleEvents.length) {
-        googleEventsList.innerHTML = '<div class="calendar-empty">Aucun événement sur les 7 prochains jours.</div>';
-        if (calendarRangeLabel) calendarRangeLabel.textContent = 'Aucun événement à venir';
-        return;
-      }
-      calendarViewMode==='day' ? renderDay(cachedGoogleEvents) : renderWeek(cachedGoogleEvents);
-    }
-
-    async function loadGoogleCalendarData() {
-      if (!googleStatusText || !googleEventsList) return;
-      try {
-        const status = await fetch('/api/google/status').then(r=>r.json());
-        if (!status.connected) {
-          googleStatusText.textContent = 'Google Calendar non connecté';
-          googleStatusText.classList.remove('connected');
-          googleEventsList.innerHTML = '<div class="calendar-empty">Connecte Google Calendar pour afficher les rendez-vous des 7 prochains jours.</div>';
-          return;
-        }
-        googleStatusText.textContent = `Connecté · ${status.profile?.email||'Compte Google connecté'}`;
-        googleStatusText.classList.add('connected');
-        const { events } = await fetch('/api/google/events').then(r=>r.json());
-        renderGoogleEvents(events||[]);
-      } catch {
-        googleStatusText.textContent = 'Erreur de synchronisation Google';
-        googleStatusText.classList.remove('connected');
-        googleEventsList.innerHTML = '<div class="calendar-empty">Impossible de charger les événements Google.</div>';
-      }
-    }
-
-    async function bootAuth() {
-      if (!isConnexionRoute && !isAppRoute) return;
-      try { await initSupabase(); }
-      catch (err) { if (loginError) loginError.textContent = err.message; return; }
-
-      const { data: { session } } = await supabase.auth.getSession();
-
-      if (isConnexionRoute) {
-        if (session) { window.location.href = '/app'; return; }
-        loginRoute?.classList.add('active');
-      }
-
-      if (isAppRoute) {
-        if (!session) { window.location.href = '/connexion'; return; }
-        appRoute?.classList.add('active');
-        if (appUserEmail) appUserEmail.textContent = session.user?.email || '';
-        await loadGoogleCalendarData();
-      }
-
-      loginForm?.addEventListener('submit', async e => {
-        e.preventDefault();
-        if (!supabase) return;
-        if (loginError)  loginError.textContent = '';
-        if (loginSubmit) loginSubmit.disabled = true;
-        const { error } = await supabase.auth.signInWithPassword({
-          email: loginEmail.value.trim(), password: loginPassword.value,
-        });
-        if (loginSubmit) loginSubmit.disabled = false;
-        if (error) { if (loginError) loginError.textContent = 'Identifiants incorrects.'; return; }
-        window.location.href = '/app';
-      });
-
-      calendarWeekBtn?.addEventListener('click', () => { calendarViewMode='week'; renderGoogleEvents(cachedGoogleEvents); });
-      calendarDayBtn?.addEventListener('click',  () => { calendarViewMode='day';  renderGoogleEvents(cachedGoogleEvents); });
-      connectGoogleBtn?.addEventListener('click',    () => { window.location.href='/auth/google/start'; });
-      disconnectGoogleBtn?.addEventListener('click', async () => { await fetch('/auth/google/logout',{method:'POST'}); await loadGoogleCalendarData(); });
-      logoutBtn?.addEventListener('click', async () => { await supabase.auth.signOut(); window.location.href='/connexion'; });
-    }
-
-    bootAuth();
-  </script>
-
 </body>
 </html>
