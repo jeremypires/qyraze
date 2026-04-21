@@ -7,16 +7,27 @@ const { google } = require('googleapis')
 require('dotenv').config()
 
 const app = express()
-app.use(cors())
+const isProduction = process.env.NODE_ENV === 'production'
+const corsOrigin = process.env.CORS_ORIGIN || true
+
+if (isProduction) {
+  app.set('trust proxy', 1)
+}
+
+app.use(cors({
+  origin: corsOrigin,
+  credentials: true,
+}))
 app.use(express.json())
 app.use(session({
   secret: process.env.SESSION_SECRET || 'qyraze-google-session-secret',
   resave: false,
   saveUninitialized: false,
   cookie: {
-    secure: false,
+    secure: isProduction,
     httpOnly: true,
     sameSite: 'lax',
+    maxAge: 1000 * 60 * 60 * 24 * 7,
   },
 }))
 app.use(express.static('public'))
@@ -50,7 +61,7 @@ app.get('/api/config', (req, res) => {
   })
 })
 
-app.get('/auth/google/start', (req, res) => {
+const startGoogleAuth = (req, res) => {
   const authUrl = googleOauth2Client.generateAuthUrl({
     access_type: 'offline',
     prompt: 'consent',
@@ -63,7 +74,10 @@ app.get('/auth/google/start', (req, res) => {
   })
 
   res.redirect(authUrl)
-})
+}
+
+app.get('/auth/google/start', startGoogleAuth)
+app.get('/api/google/connect', startGoogleAuth)
 
 app.get('/auth/google/callback', async (req, res) => {
   const code = req.query.code
@@ -135,17 +149,22 @@ app.get('/api/google/events', async (req, res) => {
   }
 })
 
-app.post('/auth/google/logout', (req, res) => {
+const logoutGoogle = (req, res) => {
   req.session.googleTokens = null
   req.session.googleProfile = null
-  res.json({ ok: true })
-})
+  req.session.save(() => {
+    res.json({ ok: true })
+  })
+}
+
+app.post('/auth/google/logout', logoutGoogle)
+app.post('/api/google/disconnect', logoutGoogle)
 
 const readData = (file) =>
-  JSON.parse(fs.readFileSync(`./data/${file}`, 'utf8'))
+  JSON.parse(fs.readFileSync(path.join(__dirname, 'data', file), 'utf8'))
 
 const writeData = (file, data) =>
-  fs.writeFileSync(`./data/${file}`, JSON.stringify(data, null, 2))
+  fs.writeFileSync(path.join(__dirname, 'data', file), JSON.stringify(data, null, 2))
 
 app.get('/api/pipeline', (req, res) =>
   res.json(readData('pipeline.json')))
