@@ -14,6 +14,9 @@ const transporter = nodemailer.createTransport({
     user: process.env.SMTP_USER,
     pass: process.env.SMTP_PASS,
   },
+  connectionTimeout: 10000,
+  greetingTimeout: 10000,
+  socketTimeout: 15000,
 })
 
 const isValidEmail = (email) =>
@@ -43,6 +46,9 @@ export default async function handler(req, res) {
       throw error
     }
 
+    // Temporairement désactivé pour isoler le problème SMTP Amen sur Vercel.
+    // Décommente ce bloc quand la configuration SMTP sera validée.
+    /*
     await transporter.sendMail({
       from: process.env.SMTP_FROM,
       to: email,
@@ -56,8 +62,9 @@ export default async function handler(req, res) {
         </div>
       `,
     })
+    */
 
-    return res.status(200).json({ ok: true })
+    return res.status(200).json({ ok: true, emailSent: false })
   } catch (error) {
     console.error('Waitlist signup error:', error)
     return res.status(500).json({
