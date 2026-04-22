@@ -111,10 +111,10 @@ a {
   margin: 0 auto;
   padding: 0 32px;
   height: 62px;
-  display: grid;
-  grid-template-columns: auto 1fr;
+  display: flex;
   align-items: center;
-  gap: 16px;
+  justify-content: space-between;
+  width: 100%;
 }
 
 .brand {
@@ -150,17 +150,16 @@ a {
   flex-wrap: nowrap;
 }
 @media (max-width: 860px) {
+  .nav-links {
+    display: none;
+  }
+
   .nav-inner {
-    grid-template-columns: 1fr;
-    justify-items: center;
+    justify-content: center;
   }
 
   .brand-logo-only {
     justify-self: center;
-  }
-
-  .nav-links {
-    display: none;
   }
 }
 
