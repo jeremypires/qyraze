@@ -57,6 +57,7 @@ body {
   min-height: 100vh;
   -webkit-font-smoothing: antialiased;
   overflow-x: hidden;
+  width: 100%;
 }
 
 body::before {
@@ -69,6 +70,11 @@ body::before {
   background-size: 56px 56px;
   pointer-events: none;
   z-index: 0;
+}
+
+html, body {
+  max-width: 100%;
+  overflow-x: hidden;
 }
 
 main,
@@ -88,6 +94,7 @@ a {
   max-width: 1080px;
   margin: 0 auto;
   padding: 0 32px;
+  width: 100%;
 }
 
 .nav {
@@ -320,6 +327,8 @@ a {
 .solution-dashboard,
 .login-card,
 .app-card {
+  width: 100%;
+  max-width: 100%;
   background: var(--surface-card);
   border: 1px solid var(--border);
   border-radius: var(--r-lg);
@@ -356,12 +365,14 @@ a {
 .card-body {
   display: grid;
   grid-template-columns: 1fr 1fr;
+  min-width: 0;
 }
 
 .card-col {
   display: grid;
   gap: 10px;
   padding: 16px;
+  min-width: 0;
 }
 
 .card-col + .card-col {
@@ -555,6 +566,7 @@ a {
   gap: 18px;
   padding: 17px 20px;
   border-radius: var(--r-sm);
+  min-width: 0;
 }
 
 .solution-step.active {
@@ -571,11 +583,15 @@ a {
   justify-content: space-between;
   padding: 13px 18px;
   border-bottom: 1px solid var(--border-2);
+  gap: 12px;
+  min-width: 0;
 }
 
 .sol-nav {
   display: flex;
   gap: 14px;
+  min-width: 0;
+  flex-wrap: wrap;
 }
 
 .sol-nav-item.active {
@@ -584,6 +600,7 @@ a {
 
 .sol-body {
   padding: 16px;
+  min-width: 0;
 }
 
 .sol-kpis {
@@ -598,6 +615,7 @@ a {
   border: 1px solid var(--border-2);
   border-radius: var(--r-sm);
   background: var(--surface-2);
+  min-width: 0;
 }
 
 .positioning-grid,
@@ -876,7 +894,66 @@ a {
   }
 
   .hero-card {
-    overflow-x: auto;
+    overflow: hidden;
+    width: 100%;
+    max-width: 100%;
+  }
+
+  .card-body {
+    grid-template-columns: 1fr;
+    min-width: 0;
+  }
+
+  .card-col {
+    min-width: 0;
+    padding: 14px;
+  }
+
+  .card-titlebar {
+    overflow: hidden;
+  }
+
+  .card-titlebar-label {
+    min-width: 0;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  .solution-step {
+    min-width: 0;
+    padding: 16px 16px;
+  }
+
+  .solution-step > div:last-child {
+    min-width: 0;
+  }
+
+  .step-title,
+  .step-desc {
+    overflow-wrap: anywhere;
+    word-break: break-word;
+  }
+
+  .solution-dashboard {
+    width: 100%;
+    max-width: 100%;
+    overflow: hidden;
+  }
+
+  .sol-header {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .sol-nav {
+    width: 100%;
+    gap: 8px;
+  }
+
+  .sol-nav-item {
+    max-width: 100%;
+    overflow-wrap: anywhere;
   }
 
   .problem-row {
@@ -915,5 +992,9 @@ a {
 
   .cta-prelude {
     margin-top: 22px;
+  }
+
+  * {
+    max-width: 100%;
   }
 }
