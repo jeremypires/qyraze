@@ -185,6 +185,26 @@ a {
   margin-bottom: 36px;
 }
 
+.hero-proof {
+  display: flex;
+  justify-content: center;
+  margin: -6px 0 24px;
+}
+
+.hero-proof-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 16px;
+  border: 1px solid rgba(61, 214, 140, 0.18);
+  border-radius: 999px;
+  background: rgba(61, 214, 140, 0.08);
+  color: #9ee7bf;
+  font-size: 13px;
+  font-weight: 600;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.18);
+}
+
 .btn-primary,
 .btn-secondary,
 .login-submit,
@@ -353,6 +373,47 @@ a {
   border: 1px solid var(--border-2);
   border-radius: var(--r-lg);
   background: var(--surface-2);
+}
+
+.card-tile-primary {
+  background: linear-gradient(180deg, rgba(91, 200, 255, 0.12), rgba(255, 255, 255, 0.03));
+  border-color: rgba(91, 200, 255, 0.2);
+}
+
+.card-tile-highlight {
+  border-color: rgba(91, 200, 255, 0.18);
+  box-shadow: inset 0 0 0 1px rgba(91, 200, 255, 0.04);
+}
+
+.card-progress {
+  width: 100%;
+  height: 8px;
+  margin-top: 14px;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.06);
+  overflow: hidden;
+}
+
+.card-progress-fill {
+  height: 100%;
+  border-radius: inherit;
+  background: linear-gradient(90deg, #5bc8ff 0%, #8edcff 100%);
+}
+
+.card-kpi-row {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+  margin-top: 14px;
+}
+
+.card-kpi-chip {
+  padding: 6px 10px;
+  border: 1px solid rgba(91, 200, 255, 0.16);
+  border-radius: 999px;
+  background: rgba(91, 200, 255, 0.08);
+  font-size: 11px;
+  color: var(--white);
 }
 
 .card-tile-value,
@@ -570,6 +631,20 @@ a {
   text-align: center;
 }
 
+.founder-card {
+  max-width: 860px;
+  margin: 0 auto;
+  padding: 34px 28px;
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.03), rgba(255, 255, 255, 0.015));
+}
+
+.founder-signoff {
+  margin-top: 18px;
+  color: var(--white);
+  font-weight: 600;
+  line-height: 1.8;
+}
+
 .cta-section {
   padding: 112px 0;
   text-align: center;
@@ -753,6 +828,18 @@ a {
 
   .hero-copy {
     font-size: 15px;
+  }
+
+  .hero-proof {
+    margin: 2px 0 22px;
+  }
+
+  .hero-proof-pill {
+    width: 100%;
+    justify-content: center;
+    text-align: center;
+    font-size: 12px;
+    line-height: 1.4;
   }
 
   .hero-stats {
