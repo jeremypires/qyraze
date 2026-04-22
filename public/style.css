@@ -107,9 +107,9 @@ a {
 
 .nav-inner {
   width: 100%;
-  max-width: none;
-  margin: 0;
-  padding: 0 20px;
+  max-width: 1080px;
+  margin: 0 auto;
+  padding: 0 32px;
   height: 58px;
   display: flex;
   align-items: center;
@@ -143,7 +143,7 @@ a {
   display: flex;
   justify-content: flex-end;
   align-items: center;
-  gap: 18px;
+  gap: 16px;
   color: var(--muted);
   font-size: 13px;
   min-width: 0;
@@ -157,8 +157,10 @@ a {
   }
 
   .nav-inner {
+    max-width: 1080px;
+    margin: 0 auto;
+    padding: 0 20px;
     justify-content: center;
-    padding: 0 18px;
   }
 
   .brand-logo-only {
@@ -860,7 +862,9 @@ a {
   }
 
   .nav-inner {
-    padding: 0 14px;
+    max-width: 1080px;
+    margin: 0 auto;
+    padding: 0 16px;
     height: 54px;
     justify-content: center;
   }
