@@ -149,6 +149,7 @@ a {
   min-width: 0;
   flex-wrap: nowrap;
 }
+
 @media (max-width: 860px) {
   .nav-links {
     display: none;
@@ -159,7 +160,7 @@ a {
   }
 
   .brand-logo-only {
-    justify-self: center;
+    margin: 0 auto;
   }
 }
 
@@ -858,12 +859,11 @@ a {
   }
 
   .nav-inner {
-    grid-template-columns: 1fr;
-    justify-items: center;
+    justify-content: center;
   }
 
   .brand-logo-only {
-    justify-self: center;
+    margin: 0 auto;
   }
 
   .nav-links {
