@@ -98,15 +98,22 @@ a {
 }
 
 .nav {
-  position: static !important;
+  position: relative !important;
   top: auto !important;
   left: auto !important;
   right: auto !important;
+  bottom: auto !important;
   width: 100%;
   z-index: 200;
   background: transparent;
   backdrop-filter: none;
   border-bottom: none;
+  transform: none !important;
+}
+
+nav.nav {
+  position: relative !important;
+  inset: auto !important;
 }
 
 .nav-inner {
