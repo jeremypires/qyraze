@@ -111,9 +111,10 @@ a {
   margin: 0 auto;
   padding: 0 32px;
   height: 62px;
-  display: flex;
+  display: grid;
+  grid-template-columns: auto 1fr;
   align-items: center;
-  justify-content: space-between;
+  gap: 16px;
 }
 
 .brand {
@@ -128,6 +129,7 @@ a {
 
 .brand-logo-only {
   gap: 0;
+  justify-self: start;
 }
 
 .brand-mark {
@@ -140,9 +142,26 @@ a {
 
 .nav-links {
   display: flex;
+  justify-content: flex-end;
   gap: 26px;
   color: var(--muted);
   font-size: 13px;
+  min-width: 0;
+  flex-wrap: nowrap;
+}
+@media (max-width: 860px) {
+  .nav-inner {
+    grid-template-columns: 1fr;
+    justify-items: center;
+  }
+
+  .brand-logo-only {
+    justify-self: center;
+  }
+
+  .nav-links {
+    display: none;
+  }
 }
 
 .hero {
@@ -837,6 +856,15 @@ a {
   .container,
   .nav-inner {
     padding: 0 20px;
+  }
+
+  .nav-inner {
+    grid-template-columns: 1fr;
+    justify-items: center;
+  }
+
+  .brand-logo-only {
+    justify-self: center;
   }
 
   .nav-links {
