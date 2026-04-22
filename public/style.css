@@ -121,7 +121,20 @@ a {
   transition: background 0.2s ease, border-color 0.2s ease;
 }
 
-@media (prefers-color-scheme: light) {
+  @media (prefers-color-scheme: light) {
+  :root {
+    --bg: #ffffff;
+    --surface: rgba(10, 20, 40, 0.03);
+    --surface-2: rgba(10, 20, 40, 0.02);
+    --surface-card: rgba(255, 255, 255, 0.96);
+    --border: rgba(10, 20, 40, 0.08);
+    --border-2: rgba(10, 20, 40, 0.04);
+    --white: #0f172a;
+    --muted: #475569;
+    --muted-2: #64748b;
+    --shadow-lg: 0 20px 50px rgba(15, 23, 42, 0.08);
+  }
+
   .nav {
     background: rgba(255, 255, 255, 0.88);
     border-bottom: 1px solid var(--border);
@@ -166,9 +179,9 @@ a {
   display: flex;
   justify-content: flex-end;
   align-items: center;
-  gap: 22px;
+  gap: 18px;
   color: var(--muted);
-  font-size: 13px;
+  font-size: 12px;
   min-width: 0;
   flex-wrap: nowrap;
   margin-left: auto;
@@ -202,7 +215,7 @@ a {
 ───────────────────────────────────────── */
 .hero {
   text-align: center;
-  padding: 84px 0 72px;
+  padding: 92px 0 76px;
 }
 
 .hero-kicker,
@@ -216,12 +229,12 @@ a {
 
 .hero-title {
   font-family: var(--font-head);
-  font-size: clamp(36px, 4.2vw, 56px);
+  font-size: clamp(38px, 4.6vw, 62px);
   font-weight: 800;
-  letter-spacing: -0.04em;
-  line-height: 1.02;
-  max-width: 760px;
-  margin: 12px auto 16px;
+  letter-spacing: -0.045em;
+  line-height: 1.03;
+  max-width: 900px;
+  margin: 14px auto 18px;
   text-wrap: balance;
 }
 
@@ -230,10 +243,10 @@ a {
 }
 
 .hero-copy {
-  max-width: 700px;
-  margin: 0 auto 24px;
+  max-width: 760px;
+  margin: 0 auto 28px;
   font-size: 17px;
-  line-height: 1.75;
+  line-height: 1.8;
   color: var(--muted);
   text-wrap: pretty;
 }
@@ -270,6 +283,7 @@ a {
   font-size: 13px;
   font-weight: 600;
   text-align: center;
+  line-height: 1.45;
   box-shadow: 0 10px 30px rgba(0, 0, 0, 0.18);
 }
 
@@ -367,7 +381,7 @@ a {
 .hero-stats {
   display: flex;
   justify-content: center;
-  max-width: 620px;
+  max-width: 720px;
   margin: 0 auto 64px;
   border-top: 1px solid var(--border-2);
   border-bottom: 1px solid var(--border-2);
@@ -471,6 +485,7 @@ a {
   border: 1px solid var(--border-2);
   border-radius: var(--r-lg);
   background: var(--surface-2);
+  min-width: 0;
 }
 
 .card-tile-primary {
@@ -591,17 +606,17 @@ a {
   font-size: clamp(34px, 4vw, 52px);
   font-weight: 800;
   letter-spacing: -0.035em;
-  line-height: 1.08;
+  line-height: 1.1;
   text-wrap: balance;
   margin: 8px 0 0;
 }
 
 .section-sub {
-  max-width: 620px;
+  max-width: 700px;
   margin: 12px auto 0;
   color: var(--muted);
   font-size: 15px;
-  line-height: 1.7;
+  line-height: 1.75;
 }
 
 .section-divider {
@@ -797,13 +812,13 @@ a {
 
 .sol-nav {
   display: flex;
-  gap: 14px;
+  gap: 10px;
   min-width: 0;
   flex-wrap: wrap;
 }
 
 .sol-nav-item {
-  font-size: 12px;
+  font-size: 11px;
   color: var(--muted-2);
   cursor: pointer;
   transition: color 0.15s ease;
@@ -1047,11 +1062,11 @@ a {
 }
 
 .cta-sub {
-  max-width: 520px;
+  max-width: 640px;
   margin: 12px auto 0;
   color: var(--muted);
   font-size: 15px;
-  line-height: 1.7;
+  line-height: 1.75;
 }
 
 .cta-prelude {
@@ -1068,9 +1083,9 @@ a {
   align-items: center;
   gap: 10px;
   justify-content: center;
-  max-width: 760px;
+  max-width: 680px;
   width: 100%;
-  margin: 18px auto 10px;
+  margin: 20px auto 10px;
   padding: 10px;
   border: 1px solid var(--border);
   border-radius: 18px;
@@ -1118,7 +1133,7 @@ a {
 
 .cta-btn {
   flex: 0 0 auto;
-  min-width: 148px;
+  min-width: 210px;
   padding: 18px 26px;
   border-radius: 14px;
   white-space: nowrap;
@@ -1479,12 +1494,25 @@ a {
     font-size: clamp(30px, 10vw, 42px);
     line-height: 1.08;
     max-width: 100%;
+    letter-spacing: -0.04em;
   }
 
   .hero-copy {
     font-size: 15px;
-    line-height: 1.7;
+    line-height: 1.75;
     max-width: 100%;
+  }
+
+  .hero-actions {
+    width: 100%;
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .btn-primary,
+  .btn-secondary {
+    width: 100%;
+    text-align: center;
   }
 
   .hero-proof {
@@ -1572,10 +1600,12 @@ a {
   .cta-input {
     width: 100%;
     padding: 16px 18px;
+    font-size: 16px;
   }
 
   .cta-btn {
     width: 100%;
+    min-width: 0;
     padding: 16px 20px;
   }
 
