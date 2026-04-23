@@ -1949,3 +1949,18 @@ a {
     font-size: 13px;
   }
 }
+
+.footer-left a {
+  color: var(--muted);
+  font-size: 12px;
+  transition: color 0.2s ease;
+}
+
+.footer-left a:hover {
+  color: var(--white);
+}
+
+.footer-left span {
+  color: var(--muted-2);
+  margin: 0 6px;
+}
