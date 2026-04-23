@@ -202,41 +202,77 @@ export default async function handler(req, res) {
       });
     }
 
-    const token = crypto.randomBytes(32).toString('hex');
-    const unsubscribeToken = crypto.randomBytes(32).toString('hex');
-    const now = new Date().toISOString();
-    const verifyUrl = `https://qyraze.com/api/verify?token=${token}`;
-
     if (existing) {
-      const { error: updateError } = await supabase
+      // Récupérer le token actuel
+      const { data: existingData, error: fetchError } = await supabase
         .from('leads')
-        .update({
-          name: name || null,
-          instagram: instagram || null,
-          linkedin: linkedin || null,
-          business: business || null,
-          goal: goal || null,
-          verification_token: token,
-          verification_sent_at: now,
-          verified: false,
-          verified_at: null,
-          is_subscribed: true,
-          unsubscribe_token: unsubscribeToken,
-        })
-        .eq('id', existing.id);
+        .select('verification_token, verification_sent_at, unsubscribe_token')
+        .eq('id', existing.id)
+        .single();
 
-      if (updateError) {
-        console.error('Update error:', updateError);
-        return res.status(500).json({ error: 'Erreur mise à jour lead' });
+      if (fetchError) {
+        console.error('Fetch existing error:', fetchError);
+        return res.status(500).json({ error: 'Erreur récupération lead' });
       }
 
-      await sendConfirmationEmail(normalizedEmail, verifyUrl, unsubscribeToken, true);
+      const nowDate = new Date();
+      const sentAt = existingData.verification_sent_at
+        ? new Date(existingData.verification_sent_at)
+        : null;
+
+      const isTokenStillValid =
+        sentAt && nowDate - sentAt < 24 * 60 * 60 * 1000;
+
+      let tokenToUse = existingData.verification_token;
+      let unsubscribeToUse = existingData.unsubscribe_token;
+
+      // Si token expiré → on en génère un nouveau
+      if (!isTokenStillValid) {
+        tokenToUse = crypto.randomBytes(32).toString('hex');
+        unsubscribeToUse = crypto.randomBytes(32).toString('hex');
+
+        const { error: updateError } = await supabase
+          .from('leads')
+          .update({
+            name: name || null,
+            instagram: instagram || null,
+            linkedin: linkedin || null,
+            business: business || null,
+            goal: goal || null,
+            verification_token: tokenToUse,
+            verification_sent_at: now,
+            unsubscribe_token: unsubscribeToUse,
+            verified: false,
+            verified_at: null,
+            is_subscribed: true,
+          })
+          .eq('id', existing.id);
+
+        if (updateError) {
+          console.error('Update error:', updateError);
+          return res.status(500).json({ error: 'Erreur mise à jour lead' });
+        }
+      }
+
+      const verifyUrl = `https://qyraze.com/api/verify?token=${tokenToUse}`;
+
+      await sendConfirmationEmail(
+        normalizedEmail,
+        verifyUrl,
+        unsubscribeToUse,
+        true
+      );
 
       return res.status(409).json({
         error: 'Email déjà enregistré mais non confirmé',
         status: 'pending',
       });
     }
+
+    const token = crypto.randomBytes(32).toString('hex');
+    const unsubscribeToken = crypto.randomBytes(32).toString('hex');
+    const now = new Date().toISOString();
+    const verifyUrl = `https://qyraze.com/api/verify?token=${token}`;
 
     const { error: insertError } = await supabase
       .from('leads')
