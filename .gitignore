@@ -2,3 +2,5 @@
 *.tmp
 *.swp
 *~
+.vercel
+.env*.local
