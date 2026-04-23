@@ -117,7 +117,7 @@ function bootCta() {
         throw new Error(data?.error || 'Impossible d’enregistrer la demande pour le moment.');
       }
 
-      showCtaSuccess('C’est noté. Tu recevras bientôt une première analyse personnalisée par email.');
+      showCtaSuccess('C’est noté. Vérifie ta boîte mail pour confirmer ton inscription.');
 
       if (ctaForm) ctaForm.reset?.();
     } catch (error) {
@@ -134,3 +134,28 @@ function bootCta() {
 
 bootRoutes();
 bootCta();
+function showVerificationMessage() {
+  const params = new URLSearchParams(window.location.search);
+  const verified = params.get('verified');
+
+  if (!verified) return;
+
+  if (verified === 'true') {
+    showCtaSuccess('Ton email a bien été confirmé. Tu es maintenant inscrit sur Qyraze.');
+  }
+
+  if (verified === 'already') {
+    showCtaSuccess('Cet email a déjà été validé. Ton inscription Qyraze est bien confirmée.');
+  }
+
+  // clean URL (remove ?verified=...)
+  const cleanUrl = `${window.location.origin}${window.location.pathname}${window.location.hash || ''}`;
+  window.history.replaceState({}, document.title, cleanUrl);
+
+  // scroll to CTA
+  const ctaSection = $('cta');
+  if (ctaSection) {
+    ctaSection.scrollIntoView({ behavior: 'smooth', block: 'center' });
+  }
+}
+showVerificationMessage();
