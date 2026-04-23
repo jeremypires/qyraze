@@ -21,7 +21,7 @@ const transporter = nodemailer.createTransport({
   },
 });
 
-async function sendWelcomeEmail(email) {
+async function sendWelcomeEmail(email, unsubscribeToken) {
   await transporter.sendMail({
     from: smtpFrom,
     to: email,
@@ -123,6 +123,14 @@ async function sendWelcomeEmail(email) {
                 </tbody>
               </table>
             </div>
+
+            <p style="margin-top:24px;font-size:12px;color:#9ca3af;text-align:left;">
+              Si tu ne souhaites plus recevoir d'emails, tu peux te désinscrire ici :
+              <br />
+              <a href="https://qyraze.com/api/unsubscribe?token=${unsubscribeToken}" style="color:#2563eb;">
+                Se désinscrire
+              </a>
+            </p>
           </div>
         </div>
       </div>
@@ -140,7 +148,7 @@ export default async function handler(req, res) {
 
     const { data: lead, error } = await supabase
       .from('leads')
-      .select('id, email, verified, verification_token, verification_sent_at')
+      .select('id, email, verified, verification_token, verification_sent_at, unsubscribe_token')
       .eq('verification_token', token)
       .maybeSingle();
 
@@ -153,13 +161,19 @@ export default async function handler(req, res) {
       return res.status(400).send('Lien invalide ou expiré');
     }
 
-    // Vérifier expiration (24h)
-    const sentAt = new Date(lead.verification_sent_at);
+    if (lead.verified) {
+      return res.redirect('https://qyraze.com?verified=already');
+    }
+
+    const sentAt = lead.verification_sent_at ? new Date(lead.verification_sent_at) : null;
+    if (!sentAt || Number.isNaN(sentAt.getTime())) {
+      return res.status(400).send('Lien invalide ou expiré');
+    }
+
     const now = new Date();
     const diffHours = (now - sentAt) / (1000 * 60 * 60);
 
     if (diffHours > 24) {
-      // supprimer le token expiré
       await supabase
         .from('leads')
         .update({ verification_token: null })
@@ -168,15 +182,12 @@ export default async function handler(req, res) {
       return res.redirect('https://qyraze.com?verified=expired');
     }
 
-    if (lead.verified) {
-      return res.redirect('https://qyraze.com?verified=already');
-    }
-
     const { error: updateError } = await supabase
       .from('leads')
       .update({
         verified: true,
-        verified_at: new Date().toISOString(),
+        verified_at: now.toISOString(),
+        verification_token: null,
       })
       .eq('id', lead.id);
 
@@ -186,7 +197,7 @@ export default async function handler(req, res) {
     }
 
     try {
-      await sendWelcomeEmail(lead.email);
+      await sendWelcomeEmail(lead.email, lead.unsubscribe_token);
     } catch (mailError) {
       console.error('Post-confirmation email error:', mailError);
     }
