@@ -192,7 +192,7 @@ a {
   opacity: 1;
 }
 
-@media (max-width: 600px) {
+@media (max-width: 800px) {
   .nav-links {
     display: none;
   }
@@ -1503,7 +1503,7 @@ a {
 /* ─────────────────────────────────────────
    RESPONSIVE — MOBILE
 ───────────────────────────────────────── */
-@media (max-width: 600px) {
+@media (max-width: 800px) {
   .container {
     padding: 0 20px;
   }
