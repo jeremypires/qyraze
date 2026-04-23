@@ -168,8 +168,6 @@ function bootCta() {
   });
 }
 
-bootRoutes();
-bootCta();
 function showVerificationMessage() {
   const params = new URLSearchParams(window.location.search);
   const verified = params.get('verified');
@@ -217,4 +215,6 @@ function showVerificationMessage() {
   }
 }
 
+bootRoutes();
+bootCta();
 showVerificationMessage();

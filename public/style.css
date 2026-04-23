@@ -211,7 +211,7 @@ a {
 ───────────────────────────────────────── */
 .hero {
   text-align: center;
-  padding: 92px 0 76px;
+  padding: 112px 0 84px;
 }
 
 .hero-kicker,
@@ -241,6 +241,7 @@ a {
 .hero-copy {
   max-width: 760px;
   margin: 0 auto 28px;
+  padding: 0 12px;
   font-size: 17px;
   line-height: 1.8;
   color: var(--muted);
@@ -1066,7 +1067,7 @@ a {
 }
 
 .cta-prelude {
-  margin: 28px auto 26px;
+  margin: 28px auto 36px;
 }
 
 .beta-reason {
@@ -1175,6 +1176,7 @@ a {
   align-items: center;
   flex-wrap: wrap;
   gap: 12px;
+  width: 100%;
 }
 
 .footer-copy {
@@ -1473,18 +1475,18 @@ a {
 ───────────────────────────────────────── */
 @media (max-width: 700px) {
   .container {
-    padding: 0 20px;
+    padding: 0 24px;
   }
 
   .nav-inner {
     width: 100%;
-    padding: 0 16px;
-    height: 54px;
-    justify-content: center;
+    padding: 0 20px;
+    height: 58px;
+    justify-content: flex-start;
   }
 
   .brand-logo-only {
-    margin: 0 auto;
+    margin: 0;
   }
 
   .nav-links {
@@ -1492,7 +1494,7 @@ a {
   }
 
   .hero {
-    padding: 56px 0 52px;
+    padding: 72px 0 60px;
   }
 
   .hero-title {
@@ -1506,6 +1508,7 @@ a {
     font-size: 15px;
     line-height: 1.75;
     max-width: 100%;
+    padding: 0 8px;
   }
 
   .hero-actions {
@@ -1538,6 +1541,11 @@ a {
   .cta-title {
     max-width: 100%;
     font-size: clamp(28px, 8vw, 40px);
+  }
+
+  .section-sub,
+  .cta-sub {
+    padding: 0 8px;
   }
 
   .hero-stats {
@@ -1602,6 +1610,10 @@ a {
     padding: 12px;
   }
 
+  .cta-prelude {
+    margin: 28px auto 42px;
+  }
+
   .cta-input {
     width: 100%;
     padding: 16px 18px;
@@ -1624,5 +1636,15 @@ a {
 
   .integration-actions button {
     flex: 1;
+  }
+
+  .footer-inner {
+    flex-direction: column;
+    align-items: flex-start;
+    text-align: left;
+  }
+
+  .footer .brand-logo-only {
+    margin: 0;
   }
 }
