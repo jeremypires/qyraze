@@ -173,25 +173,40 @@ bootCta();
 function showVerificationMessage() {
   const params = new URLSearchParams(window.location.search);
   const verified = params.get('verified');
+  const confirmationSection = $('confirmationSection');
 
   if (!verified) return;
 
   if (verified === 'true') {
     showCtaSuccess('Ton email a bien été confirmé. Tu es maintenant inscrit sur Qyraze.');
+    if (confirmationSection) {
+      confirmationSection.classList.remove('route-hidden');
+      confirmationSection.classList.add('active');
+    }
   }
 
   if (verified === 'already') {
     showCtaSuccess('Cet email a déjà été validé. Ton inscription Qyraze est bien confirmée.');
+    if (confirmationSection) {
+      confirmationSection.classList.remove('route-hidden');
+      confirmationSection.classList.add('active');
+    }
   }
 
-  // clean URL (remove ?verified=...)
+  if (verified === 'expired') {
+    showCtaSuccess('Ce lien a expiré. Inscris-toi à nouveau pour recevoir un nouveau lien de confirmation.');
+    if (confirmationSection) {
+      confirmationSection.classList.remove('route-hidden');
+      confirmationSection.classList.add('active');
+    }
+  }
+
   const cleanUrl = `${window.location.origin}${window.location.pathname}${window.location.hash || ''}`;
   window.history.replaceState({}, document.title, cleanUrl);
 
-  // scroll to CTA
-  const ctaSection = $('cta');
-  if (ctaSection) {
-    ctaSection.scrollIntoView({ behavior: 'smooth', block: 'center' });
+  const targetSection = confirmationSection || $('cta');
+  if (targetSection) {
+    targetSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
   }
 }
 showVerificationMessage();
