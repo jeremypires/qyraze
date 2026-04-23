@@ -121,6 +121,7 @@ a {
   left: 0;
   right: 0;
   width: 100%;
+  margin: 0;
   z-index: 200;
   background: rgba(6, 8, 15, 0.82);
   backdrop-filter: blur(18px);
@@ -1179,6 +1180,12 @@ a {
   width: 100%;
 }
 
+.footer-left {
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+}
+
 .footer-copy {
   font-size: 12px;
   color: var(--muted-2);
@@ -1644,7 +1651,7 @@ a {
     text-align: left;
   }
 
-  .footer .brand-logo-only {
-    margin: 0;
+  .footer-left {
+    justify-content: flex-start;
   }
 }
