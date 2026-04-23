@@ -94,6 +94,14 @@ a {
   text-decoration: none;
 }
 
+.route-hidden {
+  display: none !important;
+}
+
+.active {
+  display: block;
+}
+
 /* ─────────────────────────────────────────
    LAYOUT
 ───────────────────────────────────────── */
@@ -143,9 +151,9 @@ a {
 
 .nav-inner {
   width: 100%;
-  max-width: 1180px;
-  margin: 0 auto;
-  padding: 0 28px;
+  max-width: none;
+  margin: 0;
+  padding: 0 32px;
   height: 62px;
   display: flex;
   align-items: center;
@@ -201,6 +209,7 @@ a {
   }
 
   .nav-inner {
+    width: 100%;
     padding: 0 20px;
     justify-content: center;
   }
@@ -1149,6 +1158,14 @@ a {
   font-size: 14px;
 }
 
+.cta-success.visible {
+  display: flex;
+}
+
+#confirmationSection {
+  scroll-margin-top: 90px;
+}
+
 .cta-note {
   margin-top: 12px;
   font-size: 11px;
@@ -1473,6 +1490,7 @@ a {
   }
 
   .nav-inner {
+    width: 100%;
     padding: 0 16px;
     height: 54px;
     justify-content: center;
