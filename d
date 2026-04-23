@@ -6,6 +6,17 @@ set -e
 
 echo "🔍 Checking repository..."
 
+# Save all open VS Code files before committing, in case some edits were not saved manually.
+if [[ "$OSTYPE" == "darwin"* ]]; then
+  osascript <<'APPLESCRIPT' >/dev/null 2>&1 || true
+    tell application "Visual Studio Code" to activate
+    tell application "System Events"
+      keystroke "s" using {command down, option down}
+    end tell
+APPLESCRIPT
+  sleep 1
+fi
+
 git status --short
 
 # Add all tracked/untracked project changes, while .gitignore protects .env, node_modules, bin, etc.
@@ -42,11 +53,6 @@ if [ "$STATUS" = "200" ]; then
   echo "✅ Site is LIVE (HTTP 200)"
 else
   echo "⚠️ Site not ready yet (HTTP $STATUS)"
-fi
-
-# Optional: open site in browser (Mac only)
-if [[ "$OSTYPE" == "darwin"* ]]; then
-  open "$URL"
 fi
 
 echo "📈 Deploy + basic check complete."
