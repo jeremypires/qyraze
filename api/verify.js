@@ -15,7 +15,7 @@ export default async function handler(req, res) {
 
     const { data: lead, error } = await supabase
       .from('leads')
-      .select('id, email, verified, verification_token')
+      .select('id, email, verified, verification_token, verification_sent_at')
       .eq('verification_token', token)
       .maybeSingle();
 
@@ -28,6 +28,21 @@ export default async function handler(req, res) {
       return res.status(400).send('Lien invalide ou expiré');
     }
 
+    // Vérifier expiration (24h)
+    const sentAt = new Date(lead.verification_sent_at);
+    const now = new Date();
+    const diffHours = (now - sentAt) / (1000 * 60 * 60);
+
+    if (diffHours > 24) {
+      // supprimer le token expiré
+      await supabase
+        .from('leads')
+        .update({ verification_token: null })
+        .eq('id', lead.id);
+
+      return res.redirect('https://qyraze.com?verified=expired');
+    }
+
     if (lead.verified) {
       return res.redirect('https://qyraze.com?verified=already');
     }
@@ -37,7 +52,6 @@ export default async function handler(req, res) {
       .update({
         verified: true,
         verified_at: new Date().toISOString(),
-        verification_token: null,
       })
       .eq('id', lead.id);
 
