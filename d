@@ -23,4 +23,30 @@ echo "🚀 Pushing to GitHub main..."
 git push origin main
 
 echo "✅ Push done. Vercel should redeploy automatically."
+
 echo "➡️  Check Vercel Deployments and wait for Ready."
+
+# ─────────────────────────────────────────
+# AUTO ANALYSE POST-DEPLOY
+# ─────────────────────────────────────────
+echo "📊 Running quick deployment analysis..."
+
+# Wait a few seconds for Vercel to start deploy
+sleep 5
+
+# Check if site is reachable
+URL="https://qyraze.com"
+STATUS=$(curl -o /dev/null -s -w "%{http_code}" $URL)
+
+if [ "$STATUS" = "200" ]; then
+  echo "✅ Site is LIVE (HTTP 200)"
+else
+  echo "⚠️ Site not ready yet (HTTP $STATUS)"
+fi
+
+# Optional: open site in browser (Mac only)
+if [[ "$OSTYPE" == "darwin"* ]]; then
+  open "$URL"
+fi
+
+echo "📈 Deploy + basic check complete."
