@@ -1,5 +1,5 @@
 import crypto from 'crypto';
-import nodemailer from 'nodemailer';
+import { Resend } from 'resend';
 import { createClient } from '@supabase/supabase-js';
 
 const supabaseUrl = process.env.SUPABASE_URL;
@@ -7,15 +7,7 @@ const supabaseServiceKey = process.env.SUPABASE_SERVICE_ROLE_KEY;
 
 const supabase = createClient(supabaseUrl, supabaseServiceKey);
 
-const transporter = nodemailer.createTransport({
-  host: process.env.SMTP_HOST,
-  port: Number(process.env.SMTP_PORT),
-  secure: Number(process.env.SMTP_PORT) === 465,
-  auth: {
-    user: process.env.SMTP_USER,
-    pass: process.env.SMTP_PASS,
-  },
-});
+const resend = new Resend(process.env.RESEND_API_KEY);
 
 function getConfirmationEmailHtml(verifyUrl, unsubscribeToken, isResend = false) {
   return `
@@ -151,6 +143,23 @@ function getConfirmationEmailHtml(verifyUrl, unsubscribeToken, isResend = false)
   `;
 }
 
+async function sendConfirmationEmail(to, verifyUrl, unsubscribeToken, isResend = false) {
+  const { data, error } = await resend.emails.send({
+    from: process.env.EMAIL_FROM,
+    to,
+    subject: 'Confirme ton inscription à Qyraze',
+    html: getConfirmationEmailHtml(verifyUrl, unsubscribeToken, isResend),
+  });
+
+  if (error) {
+    console.error('Resend send error:', error);
+    throw new Error('Erreur envoi email');
+  }
+
+  console.log('Resend send success:', data);
+  return data;
+}
+
 export default async function handler(req, res) {
   if (req.method !== 'POST') {
     return res.status(405).json({ error: 'Method not allowed' });
@@ -161,6 +170,16 @@ export default async function handler(req, res) {
 
     if (!email) {
       return res.status(400).json({ error: 'Email requis' });
+    }
+
+    if (!process.env.RESEND_API_KEY) {
+      console.error('Missing RESEND_API_KEY');
+      return res.status(500).json({ error: 'Configuration email manquante' });
+    }
+
+    if (!process.env.EMAIL_FROM) {
+      console.error('Missing EMAIL_FROM');
+      return res.status(500).json({ error: 'Expéditeur email manquant' });
     }
 
     const normalizedEmail = String(email).toLowerCase().trim();
@@ -211,12 +230,7 @@ export default async function handler(req, res) {
         return res.status(500).json({ error: 'Erreur mise à jour lead' });
       }
 
-      await transporter.sendMail({
-        from: process.env.SMTP_FROM || process.env.MAIL_FROM || process.env.SMTP_USER,
-        to: normalizedEmail,
-        subject: 'Confirme ton inscription à Qyraze',
-        html: getConfirmationEmailHtml(verifyUrl, unsubscribeToken, true),
-      });
+      await sendConfirmationEmail(normalizedEmail, verifyUrl, unsubscribeToken, true);
 
       return res.status(409).json({
         error: 'Email déjà enregistré mais non confirmé',
@@ -249,12 +263,7 @@ export default async function handler(req, res) {
       return res.status(500).json({ error: 'Erreur insertion' });
     }
 
-    await transporter.sendMail({
-      from: process.env.SMTP_FROM || process.env.MAIL_FROM || process.env.SMTP_USER,
-      to: normalizedEmail,
-      subject: 'Confirme ton inscription à Qyraze',
-      html: getConfirmationEmailHtml(verifyUrl, unsubscribeToken, false),
-    });
+    await sendConfirmationEmail(normalizedEmail, verifyUrl, unsubscribeToken, false);
 
     return res.status(200).json({
       success: true,

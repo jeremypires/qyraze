@@ -1,29 +1,16 @@
-import nodemailer from 'nodemailer';
+import { Resend } from 'resend';
 import { createClient } from '@supabase/supabase-js';
 
 const supabaseUrl = process.env.SUPABASE_URL;
 const supabaseServiceKey = process.env.SUPABASE_SERVICE_ROLE_KEY;
-const smtpHost = process.env.SMTP_HOST;
-const smtpPort = Number(process.env.SMTP_PORT || 587);
-const smtpUser = process.env.SMTP_USER;
-const smtpPass = process.env.SMTP_PASS;
-const smtpFrom = process.env.SMTP_FROM;
 
 const supabase = createClient(supabaseUrl, supabaseServiceKey);
 
-const transporter = nodemailer.createTransport({
-  host: smtpHost,
-  port: smtpPort,
-  secure: smtpPort === 465,
-  auth: {
-    user: smtpUser,
-    pass: smtpPass,
-  },
-});
+const resend = new Resend(process.env.RESEND_API_KEY);
 
 async function sendWelcomeEmail(email, unsubscribeToken) {
-  await transporter.sendMail({
-    from: smtpFrom,
+  const { data, error } = await resend.emails.send({
+    from: process.env.EMAIL_FROM,
     to: email,
     subject: 'Bienvenue chez Qyraze — voilà comment ça va se passer',
     html: `
@@ -136,14 +123,35 @@ async function sendWelcomeEmail(email, unsubscribeToken) {
       </div>
     `,
   });
+
+  if (error) {
+    console.error('Resend welcome email error:', error);
+    throw new Error('Erreur envoi email bienvenue');
+  }
+
+  console.log('Resend welcome email success:', data);
 }
 
 export default async function handler(req, res) {
+  if (req.method !== 'GET') {
+    return res.status(405).send('Method not allowed');
+  }
+
   try {
     const { token } = req.query;
 
     if (!token) {
       return res.status(400).send('Token manquant');
+    }
+
+    if (!process.env.RESEND_API_KEY) {
+      console.error('Missing RESEND_API_KEY');
+      return res.status(500).send('Configuration email manquante');
+    }
+
+    if (!process.env.EMAIL_FROM) {
+      console.error('Missing EMAIL_FROM');
+      return res.status(500).send('Expéditeur email manquant');
     }
 
     const { data: lead, error } = await supabase
