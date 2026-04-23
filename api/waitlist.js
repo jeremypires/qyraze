@@ -43,7 +43,10 @@ export default async function handler(req, res) {
     }
 
     if (existing?.verified) {
-      return res.status(409).json({ error: 'Email déjà vérifié' });
+      return res.status(409).json({
+        error: 'Email déjà vérifié',
+        status: 'confirmed',
+      });
     }
 
     const token = crypto.randomBytes(32).toString('hex');
@@ -71,6 +74,81 @@ export default async function handler(req, res) {
         console.error('Update error:', updateError);
         return res.status(500).json({ error: 'Erreur mise à jour lead' });
       }
+
+      await transporter.sendMail({
+        from: process.env.SMTP_FROM || process.env.MAIL_FROM || process.env.SMTP_USER,
+        to: normalizedEmail,
+        subject: 'Confirme ton inscription à Qyraze',
+        html: `
+          <div style="margin:0;padding:0;background-color:#f5f7fb;">
+            <div style="max-width:640px;margin:0 auto;padding:40px 20px;font-family:Arial,Helvetica,sans-serif;color:#111827;line-height:1.6;">
+
+              <div style="background:#ffffff;border:1px solid #e5e7eb;border-radius:20px;padding:40px 40px 28px 40px;box-shadow:0 1px 2px rgba(16,24,40,0.04);">
+
+                <div style="text-align:center;margin-bottom:28px;">
+                  <img
+                    src="https://qyraze.com/logo.png"
+                    alt="Qyraze"
+                    width="56"
+                    height="56"
+                    style="display:inline-block;border-radius:14px;"
+                  />
+                </div>
+
+                <h1 style="margin:0 0 18px 0;font-size:30px;line-height:1.15;font-weight:800;color:#111827;letter-spacing:-0.03em;text-align:left;">
+                  Confirme ton inscription à Qyraze
+                </h1>
+
+                <p style="margin:0 0 16px 0;font-size:16px;color:#374151;">
+                  Bonjour,
+                </p>
+
+                <p style="margin:0 0 16px 0;font-size:16px;color:#374151;">
+                  Ton inscription existe déjà, mais ton adresse email n’a pas encore été confirmée.
+                </p>
+
+                <p style="margin:0 0 24px 0;font-size:16px;color:#374151;">
+                  Nous t’avons renvoyé un nouveau lien de confirmation pour finaliser ton inscription.
+                </p>
+
+                <div style="text-align:left;margin:0 0 28px 0;">
+                  <a
+                    href="${verifyUrl}"
+                    style="display:inline-block;padding:14px 22px;background:#111827;color:#ffffff;text-decoration:none;border-radius:12px;font-weight:700;font-size:15px;"
+                  >
+                    Valider mon email
+                  </a>
+                </div>
+
+                <div style="background:#eef2ff;border:1px solid #dbe4ff;border-radius:16px;padding:18px 20px;margin:0 0 28px 0;">
+                  <div style="margin:0 0 6px 0;font-size:15px;font-weight:700;color:#111827;">
+                    Lien de confirmation valable 24 heures.
+                  </div>
+                  <div style="margin:0;font-size:15px;color:#4b5563;">
+                    Passé ce délai, le lien expirera automatiquement et ne pourra plus être utilisé.
+                  </div>
+                </div>
+
+                <p style="margin:0 0 16px 0;font-size:14px;line-height:1.7;color:#6b7280;">
+                  Si le bouton ne fonctionne pas, copie et colle ce lien dans ton navigateur :<br />
+                  <a href="${verifyUrl}" style="color:#2563eb;word-break:break-all;">${verifyUrl}</a>
+                </p>
+
+                <p style="margin:0 0 24px 0;font-size:16px;color:#374151;">
+                  À bientôt,<br />
+                  <strong>Jérémy Pereira Pires</strong><br />
+                  Fondateur — Qyraze
+                </p>
+              </div>
+            </div>
+          </div>
+        `,
+      });
+
+      return res.status(409).json({
+        error: 'Email déjà enregistré mais non confirmé',
+        status: 'pending',
+      });
     } else {
       const { error: insertError } = await supabase
         .from('leads')
@@ -95,13 +173,12 @@ export default async function handler(req, res) {
         console.error('Insert error:', insertError);
         return res.status(500).json({ error: 'Erreur insertion' });
       }
-    }
 
-    await transporter.sendMail({
-      from: process.env.SMTP_FROM || process.env.MAIL_FROM || process.env.SMTP_USER,
-      to: normalizedEmail,
-      subject: 'Confirme ton inscription à Qyraze',
-      html: `
+      await transporter.sendMail({
+        from: process.env.SMTP_FROM || process.env.MAIL_FROM || process.env.SMTP_USER,
+        to: normalizedEmail,
+        subject: 'Confirme ton inscription à Qyraze',
+        html: `
         <div style="margin:0;padding:0;background-color:#f5f7fb;">
           <div style="max-width:640px;margin:0 auto;padding:40px 20px;font-family:Arial,Helvetica,sans-serif;color:#111827;line-height:1.6;">
 
@@ -211,12 +288,13 @@ export default async function handler(req, res) {
           </div>
         </div>
       `,
-    });
+      });
 
-    return res.status(200).json({
-      success: true,
-      message: 'Email de confirmation envoyé',
-    });
+      return res.status(200).json({
+        success: true,
+        message: 'Email de confirmation envoyé',
+      });
+    }
   } catch (err) {
     console.error('Server error:', err);
     return res.status(500).json({ error: 'Erreur serveur' });

@@ -80,15 +80,7 @@ function showCtaSuccess(message) {
   if (toastEl && toastText) {
     toastText.textContent = message;
     toastEl.style.display = 'flex';
-
-    // auto hide after 5s
-    setTimeout(() => {
-      toastEl.style.opacity = '0';
-      setTimeout(() => {
-        toastEl.style.display = 'none';
-        toastEl.style.opacity = '1';
-      }, 200);
-    }, 5000);
+    toastEl.style.opacity = '1';
   }
 }
 
@@ -128,7 +120,7 @@ function bootCta() {
 
       if (!response.ok) {
         if (response.status === 409) {
-          showCtaSuccess('Cet email est déjà enregistré. Tu recevras l’analyse sur cette adresse si elle est déjà en cours de traitement.');
+          showCtaSuccess("Cet email est déjà enregistré. Si tu n'as pas encore confirmé ton inscription, vérifie ta boîte mail. Sinon, tu es déjà inscrit et tu recevras les prochains emails Qyraze.");
           return;
         }
 
