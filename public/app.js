@@ -61,17 +61,53 @@ function showCtaSuccess(message) {
   const ctaForm = $('ctaForm');
   const ctaSuccess = $('ctaSuccess');
 
-  if (!ctaSuccess) return;
   if (ctaForm) ctaForm.style.display = 'none';
 
-  ctaSuccess.innerHTML = `
-    <svg width="16" height="16" viewBox="0 0 16 16" fill="none" style="flex-shrink:0">
-      <circle cx="8" cy="8" r="7.5" stroke="#3dd68c" stroke-opacity=".6"/>
+  if (ctaSuccess) {
+    ctaSuccess.innerHTML = `
+      <svg width="16" height="16" viewBox="0 0 16 16" fill="none" style="flex-shrink:0">
+        <circle cx="8" cy="8" r="7.5" stroke="#3dd68c" stroke-opacity=".6"/>
+        <path d="M4.5 8l2.5 2.5L11.5 5.5" stroke="#3dd68c" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+      </svg>
+      ${message}
+    `;
+    ctaSuccess.classList.add('visible');
+  }
+
+  let topBanner = document.getElementById('globalSuccessBanner');
+
+  if (!topBanner) {
+    topBanner = document.createElement('div');
+    topBanner.id = 'globalSuccessBanner';
+    topBanner.style.position = 'fixed';
+    topBanner.style.top = '20px';
+    topBanner.style.left = '50%';
+    topBanner.style.transform = 'translateX(-50%)';
+    topBanner.style.zIndex = '9999';
+    topBanner.style.display = 'flex';
+    topBanner.style.alignItems = 'center';
+    topBanner.style.gap = '10px';
+    topBanner.style.maxWidth = 'min(92vw, 760px)';
+    topBanner.style.width = 'max-content';
+    topBanner.style.padding = '14px 18px';
+    topBanner.style.border = '1px solid rgba(61, 214, 140, 0.28)';
+    topBanner.style.borderRadius = '14px';
+    topBanner.style.background = 'rgba(8, 12, 24, 0.96)';
+    topBanner.style.boxShadow = '0 16px 40px rgba(0,0,0,0.35)';
+    topBanner.style.color = '#e5f9ee';
+    topBanner.style.fontSize = '14px';
+    topBanner.style.lineHeight = '1.5';
+    topBanner.style.backdropFilter = 'blur(10px)';
+    document.body.appendChild(topBanner);
+  }
+
+  topBanner.innerHTML = `
+    <svg width="18" height="18" viewBox="0 0 16 16" fill="none" style="flex-shrink:0">
+      <circle cx="8" cy="8" r="7.5" stroke="#3dd68c" stroke-opacity=".75"/>
       <path d="M4.5 8l2.5 2.5L11.5 5.5" stroke="#3dd68c" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
     </svg>
-    ${message}
+    <span>${message}</span>
   `;
-  ctaSuccess.classList.add('visible');
 }
 
 function bootCta() {
