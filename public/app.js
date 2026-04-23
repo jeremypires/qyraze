@@ -177,6 +177,10 @@ function showVerificationMessage() {
 
   if (!verified) return;
 
+  setVisible(marketingPage, true);
+  setVisible(loginRoute, false);
+  setVisible(appRoute, false);
+
   if (verified === 'true') {
     showCtaSuccess('Ton email a bien été confirmé. Tu es maintenant inscrit sur Qyraze.');
     if (confirmationSection) {
@@ -204,9 +208,13 @@ function showVerificationMessage() {
   const cleanUrl = `${window.location.origin}${window.location.pathname}${window.location.hash || ''}`;
   window.history.replaceState({}, document.title, cleanUrl);
 
-  const targetSection = confirmationSection || $('cta');
+  const targetSection = confirmationSection && !confirmationSection.classList.contains('route-hidden')
+    ? confirmationSection
+    : $('cta');
+
   if (targetSection) {
     targetSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
   }
 }
+
 showVerificationMessage();
