@@ -1,29 +1,14 @@
 {
-  "name": "os-pro",
+  "name": "qyraze",
   "version": "1.0.0",
-  "description": "",
-  "main": "server.js",
-  "scripts": {
-    "start": "node server.js",
-    "dev": "nodemon server.js"
-  },
-  "keywords": [],
-  "author": "",
-  "license": "ISC",
+  "description": "Qyraze — Analyse personnalisée",
   "type": "module",
-  "dependencies": {
-    "@supabase/ssr": "^0.10.2",
-    "@supabase/supabase-js": "^2.104.0",
-    "@vercel/analytics": "^2.0.1",
-    "@vercel/speed-insights": "^2.0.0",
-    "cors": "^2.8.6",
-    "dotenv": "^17.4.2",
-    "express": "^5.2.1",
-    "express-session": "^1.19.0",
-    "googleapis": "^171.4.0",
-    "nodemailer": "^8.0.5"
+  "scripts": {
+    "dev": "vercel dev",
+    "build": "echo \"No build step\"",
+    "start": "vercel dev"
   },
-  "devDependencies": {
-    "nodemon": "^3.1.14"
+  "dependencies": {
+    "@supabase/supabase-js": "^2.104.0"
   }
 }
