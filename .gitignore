@@ -1,6 +1,26 @@
+# System
 .DS_Store
 *.tmp
 *.swp
 *~
+
+# Node
+node_modules/
+
+# Vercel
 .vercel
-.env*.local
+
+# Environment variables (NEVER COMMIT)
+.env
+.env.local
+.env.*.local
+
+# Logs
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Build / cache
+dist/
+.next/
+.cache/
