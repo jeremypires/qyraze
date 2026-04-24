@@ -25,6 +25,12 @@ function ensureLoginRoute() {
           <input id="loginPassword" type="password" placeholder="Mot de passe" autocomplete="current-password" required style="width:100%; padding:14px 16px; border-radius:10px; border:1px solid rgba(255,255,255,.08); background:rgba(255,255,255,.04); color:#eef2ff; outline:none;" />
           <button type="submit" class="login-submit" style="width:100%; padding:14px 16px; border:0; border-radius:10px; background:#5bc8ff; color:#03101e; font-weight:800; cursor:pointer;">Se connecter</button>
         </form>
+        <form id="codeForm" class="login-form" style="display:none; gap:10px; margin-top:14px;">
+          <p class="login-subtitle" style="margin:0 0 6px; color:#7c8baa; font-size:14px; line-height:1.6;">Code envoyé par email. Entre le code reçu au format 1234-5678.</p>
+          <input id="loginCode" type="text" placeholder="Code 1234-5678" inputmode="numeric" autocomplete="one-time-code" style="width:100%; padding:14px 16px; border-radius:10px; border:1px solid rgba(255,255,255,.08); background:rgba(255,255,255,.04); color:#eef2ff; outline:none;" />
+          <button id="codeSubmit" type="submit" class="login-submit" style="width:100%; padding:14px 16px; border:0; border-radius:10px; background:#5bc8ff; color:#03101e; font-weight:800; cursor:pointer;">Valider le code</button>
+          <button id="restartLogin" type="button" class="login-submit" style="width:100%; padding:14px 16px; border:1px solid rgba(255,255,255,.08); border-radius:10px; background:transparent; color:#7c8baa; font-weight:800; cursor:pointer;">Recommencer</button>
+        </form>
         <p id="loginError" class="login-error" style="min-height:20px; margin:12px 0 0; color:#ff5f5f; font-size:13px;"></p>
         <a href="/" class="login-back" style="display:inline-block; margin-top:12px; color:#7c8baa; font-size:13px;">← Retour à l’accueil</a>
       </div>
@@ -280,13 +286,35 @@ function showUnsubscribeMessage() {
 }
 
 function bootLogin() {
-  const loginForm = $('loginForm') || document.querySelector('.login-form');
+  const loginForm = $('loginForm') || document.querySelector('#loginForm');
+  const codeForm = $('codeForm') || document.querySelector('#codeForm');
   const loginEmail = $('loginEmail') || loginForm?.querySelector('input[type="email"]');
   const loginPassword = $('loginPassword') || loginForm?.querySelector('input[type="password"]');
+  const loginCode = $('loginCode') || codeForm?.querySelector('input[type="text"]');
   const loginError = $('loginError') || document.querySelector('.login-error');
-  const loginSubmit = loginForm?.querySelector('button[type="submit"], .login-submit');
+  const loginSubmit = $('loginSubmit') || loginForm?.querySelector('button[type="submit"], .login-submit');
+  const codeSubmit = $('codeSubmit') || codeForm?.querySelector('button[type="submit"], .login-submit');
+  const restartLogin = $('restartLogin') || codeForm?.querySelector('button[type="button"]');
 
   if (!loginForm || !loginEmail || !loginPassword) return;
+
+  let currentChallenge = null;
+
+  function showError(message) {
+    if (loginError) {
+      loginError.style.color = '#ff5f5f';
+      loginError.textContent = message || 'Connexion impossible';
+    } else {
+      alert(message || 'Connexion impossible');
+    }
+  }
+
+  function showSuccess(message) {
+    if (loginError) {
+      loginError.style.color = '#3dd68c';
+      loginError.textContent = message;
+    }
+  }
 
   loginForm.addEventListener('submit', async (event) => {
     event.preventDefault();
@@ -313,37 +341,21 @@ function bootLogin() {
         throw new Error(startData?.error || 'Connexion refusée');
       }
 
-      const code = window.prompt('Entre le code reçu par email (format 1234-5678)');
+      currentChallenge = startData.challenge;
+      loginForm.style.display = 'none';
 
-      if (!code) {
-        throw new Error('Code obligatoire');
+      if (codeForm) {
+        codeForm.style.display = 'grid';
       }
 
-      if (loginSubmit) loginSubmit.textContent = 'Vérification...';
-
-      const verifyResponse = await fetch('/api/login-verify', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          challenge: startData.challenge,
-          code,
-        }),
-      });
-
-      const verifyData = await verifyResponse.json().catch(() => ({}));
-
-      if (!verifyResponse.ok) {
-        throw new Error(verifyData?.error || 'Code incorrect');
+      if (loginCode) {
+        loginCode.value = '';
+        loginCode.focus();
       }
 
-      sessionStorage.setItem('qyraze_admin_session', 'true');
-      window.location.href = '/app';
+      showSuccess('Code envoyé. Vérifie ta boîte mail.');
     } catch (error) {
-      if (loginError) {
-        loginError.textContent = error.message || 'Connexion impossible';
-      } else {
-        alert(error.message || 'Connexion impossible');
-      }
+      showError(error.message || 'Connexion impossible');
     } finally {
       if (loginSubmit) {
         loginSubmit.disabled = false;
@@ -351,6 +363,69 @@ function bootLogin() {
       }
     }
   });
+
+  if (codeForm && loginCode) {
+    codeForm.addEventListener('submit', async (event) => {
+      event.preventDefault();
+
+      if (loginError) loginError.textContent = '';
+      if (codeSubmit) {
+        codeSubmit.disabled = true;
+        codeSubmit.textContent = 'Vérification...';
+      }
+
+      try {
+        const code = loginCode.value.trim();
+
+        if (!currentChallenge) {
+          throw new Error('Session expirée. Recommence la connexion.');
+        }
+
+        if (!/^\d{4}-\d{4}$/.test(code)) {
+          throw new Error('Format invalide. Exemple : 1234-5678');
+        }
+
+        const verifyResponse = await fetch('/api/login-verify', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          credentials: 'include',
+          body: JSON.stringify({
+            challenge: currentChallenge,
+            code,
+          }),
+        });
+
+        const verifyData = await verifyResponse.json().catch(() => ({}));
+
+        if (!verifyResponse.ok) {
+          throw new Error(verifyData?.error || 'Code incorrect');
+        }
+
+        window.location.href = '/app';
+      } catch (error) {
+        showError(error.message || 'Connexion impossible');
+      } finally {
+        if (codeSubmit) {
+          codeSubmit.disabled = false;
+          codeSubmit.textContent = 'Valider le code';
+        }
+      }
+    });
+  }
+
+  if (restartLogin) {
+    restartLogin.addEventListener('click', () => {
+      currentChallenge = null;
+
+      if (loginCode) loginCode.value = '';
+      if (loginPassword) loginPassword.value = '';
+      if (loginError) loginError.textContent = '';
+      if (codeForm) codeForm.style.display = 'none';
+
+      loginForm.style.display = 'grid';
+      loginPassword.focus();
+    });
+  }
 }
 
 const toastClose = document.getElementById('toastClose');
