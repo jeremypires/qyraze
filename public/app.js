@@ -40,13 +40,26 @@ function setVisible(el, visible) {
   el.classList.toggle('route-hidden', !visible);
 }
 
-function hasAdminSession() {
-  return sessionStorage.getItem('qyraze_admin_session') === 'true';
+async function hasAdminSession() {
+  try {
+    const response = await fetch('/api/admin/session', {
+      method: 'GET',
+      credentials: 'include',
+      cache: 'no-store',
+    });
+
+    if (!response.ok) return false;
+
+    const data = await response.json().catch(() => ({}));
+    return data?.authenticated === true;
+  } catch {
+    return false;
+  }
 }
 
-function bootRoutes() {
+async function bootRoutes() {
   if (isConnexionRoute) {
-    if (hasAdminSession()) {
+    if (await hasAdminSession()) {
       window.location.href = '/app';
       return;
     }
@@ -62,14 +75,18 @@ function bootRoutes() {
   }
 
   if (isAppRoute) {
-    if (!hasAdminSession()) {
+    setVisible(marketingPage, false);
+    setVisible(loginRoute, false);
+    setVisible(appRoute, false);
+
+    const authenticated = await hasAdminSession();
+
+    if (!authenticated) {
       window.location.href = '/connexion';
       return;
     }
 
     document.title = 'Admin — Qyraze';
-    setVisible(marketingPage, false);
-    setVisible(loginRoute, false);
     setVisible(appRoute, true);
     return;
   }

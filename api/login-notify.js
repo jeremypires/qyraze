@@ -9,12 +9,45 @@ const supabase = createClient(
   process.env.SUPABASE_SERVICE_ROLE_KEY
 );
 
+
 const CODE_TTL_MS = 5 * 60 * 1000;
+const LOGIN_RATE_LIMIT_WINDOW_MS = 15 * 60 * 1000;
+const LOGIN_RATE_LIMIT_MAX_REQUESTS = 8;
+const loginAttempts = new Map();
 
 function generateCode() {
-  const part1 = Math.floor(1000 + Math.random() * 9000);
-  const part2 = Math.floor(1000 + Math.random() * 9000);
+  const part1 = crypto.randomInt(1000, 10000);
+  const part2 = crypto.randomInt(1000, 10000);
   return `${part1}-${part2}`;
+}
+
+function getClientIp(req) {
+  const forwardedFor = req.headers['x-forwarded-for'];
+
+  if (typeof forwardedFor === 'string' && forwardedFor.length > 0) {
+    return forwardedFor.split(',')[0].trim();
+  }
+
+  return req.socket?.remoteAddress || 'unknown';
+}
+
+function isRateLimited(key) {
+  const now = Date.now();
+  const current = loginAttempts.get(key) || [];
+  const recent = current.filter((timestamp) => now - timestamp < LOGIN_RATE_LIMIT_WINDOW_MS);
+
+  if (recent.length >= LOGIN_RATE_LIMIT_MAX_REQUESTS) {
+    loginAttempts.set(key, recent);
+    return true;
+  }
+
+  recent.push(now);
+  loginAttempts.set(key, recent);
+  return false;
+}
+
+function isValidEmail(email) {
+  return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
 }
 
 function hash(value) {
@@ -74,14 +107,30 @@ export default async function handler(req, res) {
   try {
     const { email, password } = req.body || {};
 
-    if (!process.env.ADMIN_SECRET) {
-      return res.status(500).json({ error: 'Configuration admin manquante' });
+    if (
+      !process.env.ADMIN_SECRET ||
+      !process.env.RESEND_API_KEY ||
+      !process.env.EMAIL_FROM ||
+      !process.env.SUPABASE_URL ||
+      !process.env.SUPABASE_SERVICE_ROLE_KEY
+    ) {
+      return res.status(500).json({ error: 'Configuration serveur manquante' });
     }
 
     const normalizedEmail = String(email || '').toLowerCase().trim();
+    const clientIp = getClientIp(req);
+    const rateLimitKey = `${clientIp}:${normalizedEmail || 'unknown'}`;
+
+    if (isRateLimited(rateLimitKey)) {
+      return res.status(429).json({ error: 'Trop de tentatives. Réessaie dans quelques minutes.' });
+    }
 
     if (!normalizedEmail || !password) {
       return res.status(400).json({ error: 'Email et mot de passe requis' });
+    }
+
+    if (!isValidEmail(normalizedEmail) || normalizedEmail.length > 254) {
+      return res.status(400).json({ error: 'Email invalide' });
     }
 
     const { data: adminUser, error: adminError } = await supabase
