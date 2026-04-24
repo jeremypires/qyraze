@@ -3,6 +3,9 @@
     { "source": "/connexion", "destination": "/index.html" },
     { "source": "/connexion/(.*)", "destination": "/index.html" },
     { "source": "/app", "destination": "/index.html" },
-    { "source": "/app/(.*)", "destination": "/index.html" }
+    { "source": "/app/(.*)", "destination": "/index.html" },
+    { "source": "/mentions-legales", "destination": "/mentions-legales.html" },
+    { "source": "/confidentialite", "destination": "/confidentialite.html" },
+    { "source": "/cgu", "destination": "/cgu.html" }
   ]
 }

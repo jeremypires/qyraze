@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>CGU — Qyraze</title>
+  <meta name="description" content="Conditions générales d’utilisation du service Qyraze." />
+  <link rel="stylesheet" href="/style.css" />
+</head>
+<body>
+  <nav class="nav">
+    <div class="nav-inner">
+      <a class="brand brand-logo-only" href="/" aria-label="Retour à l’accueil Qyraze">
+        <img class="brand-mark" src="/logo.png" alt="Qyraze" />
+      </a>
+      <div class="nav-links">
+        <a href="/">Accueil</a>
+        <a href="/mentions-legales">Mentions légales</a>
+        <a href="/confidentialite">Confidentialité</a>
+      </div>
+    </div>
+  </nav>
+
+  <main class="marketing-page active">
+    <section class="section legal-page fade-in-section">
+      <div class="container">
+        <div class="section-head legal-head">
+          <div class="section-kicker">Document légal</div>
+          <h1 class="section-title">Conditions générales d’utilisation</h1>
+          <p class="section-sub">Les présentes conditions définissent les règles d’utilisation du service Qyraze.</p>
+        </div>
+
+        <article class="legal-card">
+          <section class="legal-section">
+            <h2>1. Objet</h2>
+            <p>Les présentes conditions définissent les règles d’utilisation du service Qyraze.</p>
+          </section>
+
+          <section class="legal-section">
+            <h2>2. Description du service</h2>
+            <p>Qyraze est un outil d’analyse permettant d’identifier quotidiennement des priorités d’action à partir des informations fournies par l’utilisateur.</p>
+          </section>
+
+          <section class="legal-section">
+            <h2>3. Accès au service</h2>
+            <p>L’accès au service se fait via une inscription avec une adresse email valide.</p>
+          </section>
+
+          <section class="legal-section">
+            <h2>4. Utilisation</h2>
+            <p>L’utilisateur s’engage à fournir des informations exactes et à utiliser le service de manière légale.</p>
+          </section>
+
+          <section class="legal-section">
+            <h2>5. Nature du service</h2>
+            <p>Qyraze est un outil d’aide à la décision. Les informations fournies ne constituent pas un conseil professionnel, financier ou commercial.</p>
+          </section>
+
+          <section class="legal-section">
+            <h2>6. Responsabilité</h2>
+            <p>L’utilisateur reste seul responsable des décisions prises sur la base des analyses fournies.</p>
+            <p>Qyraze ne peut être tenu responsable des pertes financières, pertes d’opportunités ou dommages résultant de l’utilisation du service.</p>
+          </section>
+
+          <section class="legal-section">
+            <h2>7. Disponibilité</h2>
+            <p>Le service est fourni “tel quel”. Qyraze ne garantit pas une disponibilité continue ou sans erreur.</p>
+          </section>
+
+          <section class="legal-section">
+            <h2>8. Données personnelles</h2>
+            <p>Les données sont traitées conformément à la <a href="/confidentialite">politique de confidentialité</a>.</p>
+          </section>
+
+          <section class="legal-section">
+            <h2>9. Résiliation</h2>
+            <p>L’utilisateur peut se désinscrire à tout moment via le lien présent dans les emails ou en contactant : <a href="mailto:contact@qyrazeos.fr">contact@qyrazeos.fr</a>.</p>
+          </section>
+
+          <section class="legal-section">
+            <h2>10. Modification</h2>
+            <p>Qyraze se réserve le droit de modifier le service et les présentes conditions à tout moment.</p>
+          </section>
+        </article>
+
+        <div class="legal-actions">
+          <a class="btn-primary" href="/">Retour à l’accueil</a>
+          <a class="btn-secondary" href="/mentions-legales">Mentions légales</a>
+          <a class="btn-secondary" href="/confidentialite">Confidentialité</a>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="footer">
+    <div class="container">
+      <div class="footer-inner">
+        <div class="footer-left">
+          <a href="/mentions-legales">Mentions légales</a>
+          <span>·</span>
+          <a href="/confidentialite">Confidentialité</a>
+          <span>·</span>
+          <a href="/cgu">CGU</a>
+          <span>·</span>
+          <a href="mailto:contact@qyrazeos.fr">Email</a>
+          <span>·</span>
+          <a href="https://wa.me/33775747011" target="_blank" rel="noopener">WhatsApp</a>
+        </div>
+        <div class="footer-copy">© 2026 Qyraze · Conçu pour les freelances qui veulent aller à l’essentiel.</div>
+      </div>
+    </div>
+  </footer>
+</body>
+</html>
+/* ─────────────────────────────────────────
+   LEGAL PAGES
+───────────────────────────────────────── */
+.legal-page {
+  padding-top: 86px;
+}
+
+.legal-head {
+  margin-bottom: 34px;
+}
+
+.legal-card {
+  max-width: 860px;
+  margin: 0 auto;
+  padding: 34px;
+  border: 1px solid var(--border);
+  border-radius: var(--r-lg);
+  background: var(--surface-card);
+  box-shadow: var(--shadow-lg);
+}
+
+.legal-section + .legal-section {
+  margin-top: 28px;
+  padding-top: 24px;
+  border-top: 1px solid var(--border-2);
+}
+
+.legal-section h2 {
+  margin: 0 0 10px;
+  font-family: var(--font-head);
+  font-size: 20px;
+  line-height: 1.25;
+  letter-spacing: -0.025em;
+  color: var(--white);
+}
+
+.legal-section p {
+  margin: 0 0 12px;
+  color: var(--muted);
+  line-height: 1.8;
+}
+
+.legal-section p:last-child {
+  margin-bottom: 0;
+}
+
+.legal-section a {
+  color: var(--cyan);
+  text-decoration: none;
+}
+
+.legal-section a:hover {
+  text-decoration: underline;
+}
+
+.legal-actions {
+  display: flex;
+  justify-content: center;
+  gap: 12px;
+  flex-wrap: wrap;
+  max-width: 860px;
+  margin: 28px auto 0;
+}
+
+.footer-left {
+  flex-wrap: wrap;
+  gap: 6px;
+  color: var(--muted);
+  font-size: 12px;
+}
+
+.footer-left a {
+  color: var(--muted);
+  transition: color 0.18s ease;
+}
+
+.footer-left a:hover {
+  color: var(--white);
+}
+
+.footer-left span {
+  color: var(--muted-2);
+}
+
+@media (max-width: 800px) {
+  .legal-page {
+    padding-top: 58px;
+  }
+
+  .legal-card {
+    padding: 24px 20px;
+  }
+
+  .legal-actions {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .legal-actions .btn-primary,
+  .legal-actions .btn-secondary {
+    width: 100%;
+    text-align: center;
+  }
+}
