@@ -1,3 +1,4 @@
+import crypto from 'crypto';
 import { createClient } from '@supabase/supabase-js';
 
 const SITE_URL = process.env.SITE_URL || 'https://qyraze.com';
@@ -22,10 +23,12 @@ export default async function handler(req, res) {
     return redirectToHome(res, 'invalid');
   }
 
+  const tokenHash = crypto.createHash('sha256').update(token).digest('hex');
+
   const { data: existing, error: fetchError } = await supabase
     .from('leads')
     .select('id, subscribed, consent, deleted')
-    .eq('unsubscribe_token', token)
+    .eq('unsubscribe_token_hash', tokenHash)
     .maybeSingle();
 
   if (fetchError || !existing) {

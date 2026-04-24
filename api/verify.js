@@ -1,3 +1,4 @@
+import crypto from 'crypto';
 import { Resend } from 'resend';
 import { createClient } from '@supabase/supabase-js';
 
@@ -154,10 +155,11 @@ export default async function handler(req, res) {
       return res.status(500).send('Expéditeur email manquant');
     }
 
+    const tokenHash = crypto.createHash('sha256').update(token).digest('hex');
     const { data: lead, error } = await supabase
       .from('leads')
-      .select('id, email, verified, verification_token, verification_sent_at, unsubscribe_token')
-      .eq('verification_token', token)
+      .select('id, email, verified_at, verification_expires_at')
+      .eq('verification_token_hash', tokenHash)
       .maybeSingle();
 
     if (error) {
@@ -169,33 +171,36 @@ export default async function handler(req, res) {
       return res.status(400).send('Lien invalide ou expiré');
     }
 
-    if (lead.verified) {
+    if (lead.verified_at) {
       return res.redirect('https://qyraze.com?verified=already');
     }
 
-    const sentAt = lead.verification_sent_at ? new Date(lead.verification_sent_at) : null;
-    if (!sentAt || Number.isNaN(sentAt.getTime())) {
-      return res.status(400).send('Lien invalide ou expiré');
-    }
-
     const now = new Date();
-    const diffHours = (now - sentAt) / (1000 * 60 * 60);
 
-    if (diffHours > 24) {
+    if (!lead.verification_expires_at || new Date(lead.verification_expires_at) < now) {
       await supabase
         .from('leads')
-        .update({ verification_token: null })
+        .update({
+          verification_token_hash: null,
+          verification_expires_at: null,
+        })
         .eq('id', lead.id);
 
       return res.redirect('https://qyraze.com?verified=expired');
     }
 
+    const unsubscribeToken = crypto.randomBytes(32).toString('hex');
+    const unsubscribeTokenHash = crypto.createHash('sha256').update(unsubscribeToken).digest('hex');
+
     const { error: updateError } = await supabase
       .from('leads')
       .update({
-        verified: true,
         verified_at: now.toISOString(),
-        verification_token: null,
+        consent: true,
+        subscribed: true,
+        verification_token_hash: null,
+        verification_expires_at: null,
+        unsubscribe_token_hash: unsubscribeTokenHash,
       })
       .eq('id', lead.id);
 
@@ -205,7 +210,7 @@ export default async function handler(req, res) {
     }
 
     try {
-      await sendWelcomeEmail(lead.email, lead.unsubscribe_token);
+      await sendWelcomeEmail(lead.email, unsubscribeToken);
     } catch (mailError) {
       console.error('Post-confirmation email error:', mailError);
     }

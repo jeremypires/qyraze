@@ -186,7 +186,7 @@ export default async function handler(req, res) {
 
     const { data: existing, error: checkError } = await supabase
       .from('leads')
-      .select('id, verified')
+      .select('id, verified_at')
       .eq('email', normalizedEmail)
       .maybeSingle();
 
@@ -195,7 +195,7 @@ export default async function handler(req, res) {
       return res.status(500).json({ error: 'Erreur vérification email' });
     }
 
-    if (existing?.verified) {
+    if (existing?.verified_at) {
       return res.status(409).json({
         error: 'Email déjà vérifié',
         status: 'confirmed',
@@ -206,7 +206,7 @@ export default async function handler(req, res) {
       // Récupérer le token actuel
       const { data: existingData, error: fetchError } = await supabase
         .from('leads')
-        .select('verification_token, verification_sent_at, unsubscribe_token')
+        .select('verification_token_hash, verification_expires_at, unsubscribe_token_hash')
         .eq('id', existing.id)
         .single();
 
@@ -216,20 +216,22 @@ export default async function handler(req, res) {
       }
 
       const nowDate = new Date();
-      const sentAt = existingData.verification_sent_at
-        ? new Date(existingData.verification_sent_at)
+      const expiresAt = existingData.verification_expires_at
+        ? new Date(existingData.verification_expires_at)
         : null;
 
       const isTokenStillValid =
-        sentAt && nowDate - sentAt < 24 * 60 * 60 * 1000;
+        expiresAt && nowDate < expiresAt;
 
-      let tokenToUse = existingData.verification_token;
-      let unsubscribeToUse = existingData.unsubscribe_token;
+      let tokenToUse;
+      let unsubscribeToUse;
 
       // Si token expiré → on en génère un nouveau
       if (!isTokenStillValid) {
-        tokenToUse = crypto.randomBytes(32).toString('hex');
-        unsubscribeToUse = crypto.randomBytes(32).toString('hex');
+        const token = crypto.randomBytes(32).toString('hex');
+        const tokenHash = crypto.createHash('sha256').update(token).digest('hex');
+        const unsubscribeToken = crypto.randomBytes(32).toString('hex');
+        const unsubscribeTokenHash = crypto.createHash('sha256').update(unsubscribeToken).digest('hex');
 
         const { error: updateError } = await supabase
           .from('leads')
@@ -239,12 +241,12 @@ export default async function handler(req, res) {
             linkedin: linkedin || null,
             business: business || null,
             goal: goal || null,
-            verification_token: tokenToUse,
-            verification_sent_at: now,
-            unsubscribe_token: unsubscribeToUse,
-            verified: false,
+            verification_token_hash: tokenHash,
+            verification_expires_at: new Date(Date.now() + 24 * 60 * 60 * 1000).toISOString(),
+            unsubscribe_token_hash: unsubscribeTokenHash,
             verified_at: null,
-            is_subscribed: true,
+            consent: false,
+            subscribed: false,
           })
           .eq('id', existing.id);
 
@@ -252,6 +254,44 @@ export default async function handler(req, res) {
           console.error('Update error:', updateError);
           return res.status(500).json({ error: 'Erreur mise à jour lead' });
         }
+
+        tokenToUse = token;
+        unsubscribeToUse = unsubscribeToken;
+      } else {
+        // Use existing tokens, but we only have hashes, so we can't get raw token
+        // In this scenario, to resend email, we must generate new tokens
+        // But instructions do not specify this, so fallback to error or generate new tokens
+        // For safety, generate new tokens here
+
+        const token = crypto.randomBytes(32).toString('hex');
+        const tokenHash = crypto.createHash('sha256').update(token).digest('hex');
+        const unsubscribeToken = crypto.randomBytes(32).toString('hex');
+        const unsubscribeTokenHash = crypto.createHash('sha256').update(unsubscribeToken).digest('hex');
+
+        const { error: updateError } = await supabase
+          .from('leads')
+          .update({
+            name: name || null,
+            instagram: instagram || null,
+            linkedin: linkedin || null,
+            business: business || null,
+            goal: goal || null,
+            verification_token_hash: tokenHash,
+            verification_expires_at: new Date(Date.now() + 24 * 60 * 60 * 1000).toISOString(),
+            unsubscribe_token_hash: unsubscribeTokenHash,
+            verified_at: null,
+            consent: false,
+            subscribed: false,
+          })
+          .eq('id', existing.id);
+
+        if (updateError) {
+          console.error('Update error:', updateError);
+          return res.status(500).json({ error: 'Erreur mise à jour lead' });
+        }
+
+        tokenToUse = token;
+        unsubscribeToUse = unsubscribeToken;
       }
 
       const verifyUrl = `https://qyraze.com/api/verify?token=${tokenToUse}`;
@@ -270,7 +310,9 @@ export default async function handler(req, res) {
     }
 
     const token = crypto.randomBytes(32).toString('hex');
+    const tokenHash = crypto.createHash('sha256').update(token).digest('hex');
     const unsubscribeToken = crypto.randomBytes(32).toString('hex');
+    const unsubscribeTokenHash = crypto.createHash('sha256').update(unsubscribeToken).digest('hex');
     const now = new Date().toISOString();
     const verifyUrl = `https://qyraze.com/api/verify?token=${token}`;
 
@@ -284,11 +326,11 @@ export default async function handler(req, res) {
           linkedin: linkedin || null,
           business: business || null,
           goal: goal || null,
-          is_subscribed: true,
-          unsubscribe_token: unsubscribeToken,
-          verified: false,
-          verification_token: token,
-          verification_sent_at: now,
+          verification_token_hash: tokenHash,
+          verification_expires_at: new Date(Date.now() + 24 * 60 * 60 * 1000).toISOString(),
+          unsubscribe_token_hash: unsubscribeTokenHash,
+          consent: false,
+          subscribed: false,
           verified_at: null,
           created_at: now,
         },
