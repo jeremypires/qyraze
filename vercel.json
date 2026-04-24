@@ -10,7 +10,7 @@
   ],
   "crons": [
     {
-      "path": "/api/cleanup?secret=TON_SECRET",
+      "path": "/api/cleanup?secret=REMOVED_CRON_SECRET",
       "schedule": "0 3 * * *"
     }
   ]
