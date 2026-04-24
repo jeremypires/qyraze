@@ -1,9 +1,15 @@
 import { createClient } from '@supabase/supabase-js';
 
+const SITE_URL = process.env.SITE_URL || 'https://qyraze.com';
+
 const supabase = createClient(
   process.env.SUPABASE_URL,
   process.env.SUPABASE_SERVICE_ROLE_KEY
 );
+
+function redirectToHome(res, status) {
+  return res.redirect(302, `${SITE_URL}/?unsubscribed=${status}`);
+}
 
 export default async function handler(req, res) {
   if (req.method !== 'GET') {
@@ -12,47 +18,39 @@ export default async function handler(req, res) {
 
   const { token } = req.query;
 
-  if (!token) {
-    return res.status(400).send('Token manquant');
+  if (!token || typeof token !== 'string') {
+    return redirectToHome(res, 'invalid');
   }
 
   const { data: existing, error: fetchError } = await supabase
     .from('leads')
-    .select('is_subscribed')
+    .select('id, subscribed, consent, deleted')
     .eq('unsubscribe_token', token)
-    .single();
+    .maybeSingle();
 
   if (fetchError || !existing) {
-    return res.status(400).send('Lien invalide ou expiré');
+    return redirectToHome(res, 'invalid');
   }
 
-  if (existing.is_subscribed === false) {
-    return res.send(`
-      <html>
-        <body style="font-family: Arial; text-align:center; padding:40px;">
-          <h1>Déjà désinscrit</h1>
-          <p>Tu ne reçois déjà plus d'emails de Qyraze.</p>
-        </body>
-      </html>
-    `);
+  if (existing.deleted === true) {
+    return redirectToHome(res, 'deleted');
   }
 
-  const { data, error } = await supabase
+  if (existing.subscribed === false && existing.consent === false) {
+    return redirectToHome(res, 'already');
+  }
+
+  const { error: updateError } = await supabase
     .from('leads')
-    .update({ is_subscribed: false })
-    .eq('unsubscribe_token', token)
-    .select();
+    .update({
+      subscribed: false,
+      consent: false,
+    })
+    .eq('id', existing.id);
 
-  if (error || !data) {
-    return res.status(400).send('Lien invalide ou expiré');
+  if (updateError) {
+    return redirectToHome(res, 'error');
   }
 
-  return res.send(`
-    <html>
-      <body style="font-family: Arial; text-align:center; padding:40px;">
-        <h1>Tu es bien désinscrit</h1>
-        <p>Tu ne recevras plus d'emails de Qyraze.</p>
-      </body>
-    </html>
-  `);
+  return redirectToHome(res, 'true');
 }

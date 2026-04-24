@@ -31,7 +31,7 @@ function bootRoutes() {
     return;
   }
 
-  document.title = 'Qyraze — Analyse personnalisée pour ton business';
+  document.title = 'Qyraze — Une priorité claire chaque matin';
   setVisible(marketingPage, true);
   setVisible(loginRoute, false);
   setVisible(appRoute, false);
@@ -137,7 +137,7 @@ function bootCta() {
       ctaEmail.reportValidity();
     } finally {
       ctaBtn.disabled = false;
-      ctaBtn.textContent = 'Recevoir mon analyse →';
+      ctaBtn.textContent = 'Recevoir ma première priorité →';
     }
   });
 }
@@ -189,6 +189,36 @@ function showVerificationMessage() {
   }
 }
 
+function showUnsubscribeMessage() {
+  const params = new URLSearchParams(window.location.search);
+  const unsubscribed = params.get('unsubscribed');
+
+  if (!unsubscribed) return;
+
+  setVisible(marketingPage, true);
+  setVisible(loginRoute, false);
+  setVisible(appRoute, false);
+
+  const messages = {
+    true: 'Tu es bien désinscrit. Tu ne recevras plus d’emails Qyraze.',
+    already: 'Tu étais déjà désinscrit. Tu ne recevras plus d’emails Qyraze.',
+    invalid: 'Lien de désinscription invalide ou expiré.',
+    deleted: 'Tes données ont déjà été supprimées. Tu ne recevras plus d’emails Qyraze.',
+    error: 'Une erreur est survenue pendant la désinscription. Contacte contact@qyrazeos.fr si le problème continue.',
+  };
+
+  showCtaSuccess(messages[unsubscribed] || messages.error);
+
+  const cleanUrl = `${window.location.origin}${window.location.pathname}${window.location.hash || ''}`;
+  window.history.replaceState({}, document.title, cleanUrl);
+
+  const targetSection = $('cta') || marketingPage;
+
+  if (targetSection) {
+    targetSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  }
+}
+
 const toastClose = document.getElementById('toastClose');
 const toastEl = document.getElementById('toast');
 
@@ -205,3 +235,4 @@ if (toastClose && toastEl) {
 bootRoutes();
 bootCta();
 showVerificationMessage();
+showUnsubscribeMessage();
