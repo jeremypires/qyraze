@@ -1,5 +1,7 @@
 import crypto from 'crypto';
 
+const COOKIE_NAME = 'qyraze_admin_session';
+
 function sign(value) {
   return crypto
     .createHmac('sha256', process.env.ADMIN_SECRET)
@@ -29,7 +31,7 @@ function getCookie(req, name) {
 function clearAdminCookie(res) {
   res.setHeader(
     'Set-Cookie',
-    'qyraze_admin_session=; HttpOnly; Secure; SameSite=Strict; Path=/; Max-Age=0'
+    `${COOKIE_NAME}=; HttpOnly; Secure; SameSite=Strict; Path=/; Max-Age=0`
   );
 }
 
@@ -37,19 +39,29 @@ export default async function handler(req, res) {
   if (req.method !== 'GET') {
     return res.status(405).json({ error: 'Method not allowed' });
   }
+  res.setHeader('Cache-Control', 'no-store, no-cache, must-revalidate, proxy-revalidate');
+  res.setHeader('Pragma', 'no-cache');
+  res.setHeader('Expires', '0');
 
   try {
     if (!process.env.ADMIN_SECRET) {
       return res.status(500).json({ error: 'Configuration serveur manquante' });
     }
 
-    const session = getCookie(req, 'qyraze_admin_session');
+    const session = getCookie(req, COOKIE_NAME);
 
     if (!session || typeof session !== 'string') {
       return res.status(401).json({ authenticated: false });
     }
 
-    const [encodedPayload, signature] = session.split('.');
+    const parts = session.split('.');
+
+    if (parts.length !== 2) {
+      clearAdminCookie(res);
+      return res.status(401).json({ authenticated: false });
+    }
+
+    const [encodedPayload, signature] = parts;
 
     if (!encodedPayload || !signature) {
       clearAdminCookie(res);
@@ -72,7 +84,14 @@ export default async function handler(req, res) {
       return res.status(401).json({ authenticated: false });
     }
 
-    if (!payload.exp || Date.now() > payload.exp || payload.role !== 'admin') {
+    if (
+      !payload ||
+      typeof payload !== 'object' ||
+      !payload.exp ||
+      typeof payload.exp !== 'number' ||
+      Date.now() > payload.exp ||
+      payload.role !== 'admin'
+    ) {
       clearAdminCookie(res);
       return res.status(401).json({ authenticated: false });
     }
