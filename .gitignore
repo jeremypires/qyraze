@@ -26,3 +26,6 @@ dist/
 .cache/
 bin/
 bin/
+
+# Added by ggshield
+.cache_ggshield
