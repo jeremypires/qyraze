@@ -1,7 +1,7 @@
 {
   "rewrites": [
-    { "source": "/connexion", "destination": "/index.html" },
-    { "source": "/connexion/(.*)", "destination": "/index.html" },
+    { "source": "/connexion", "destination": "/connexion.html" },
+    { "source": "/connexion/(.*)", "destination": "/connexion.html" },
     { "source": "/app", "destination": "/index.html" },
     { "source": "/app/(.*)", "destination": "/index.html" },
     { "source": "/mentions-legales", "destination": "/mentions-legales.html" },
