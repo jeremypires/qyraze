@@ -1,0 +1,237 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Admin — Qyraze</title>
+  <link rel="stylesheet" href="/style.css" />
+</head>
+<body>
+  <nav class="nav">
+    <div class="nav-inner">
+      <a class="brand brand-logo-only" href="/" aria-label="Retour à l’accueil">
+        <img class="brand-mark" src="/logo.png" alt="Qyraze" />
+      </a>
+      <div class="nav-links">
+        <a href="/">Accueil</a>
+        <button id="logoutBtn" class="app-btn-secondary" type="button">Déconnexion</button>
+      </div>
+    </div>
+  </nav>
+
+  <main class="admin-page">
+    <section class="admin-shell">
+      <header class="admin-hero">
+        <div>
+          <div class="login-badge">Admin sécurisé</div>
+          <h1 class="login-title">Dashboard Qyraze</h1>
+          <p class="login-subtitle">Gère tes emails, tes leads et tes actions depuis une interface propre et sécurisée.</p>
+          <p id="adminSessionText" class="admin-session-text">Vérification de la session...</p>
+        </div>
+      </header>
+
+      <section class="admin-kpi-grid">
+        <article class="admin-kpi-card">
+          <span>Session</span>
+          <strong id="adminSessionStatus">Vérification</strong>
+        </article>
+        <article class="admin-kpi-card">
+          <span>Sécurité</span>
+          <strong>2FA actif</strong>
+        </article>
+        <article class="admin-kpi-card">
+          <span>Email</span>
+          <strong>Resend</strong>
+        </article>
+        <article class="admin-kpi-card">
+          <span>Base</span>
+          <strong>Supabase</strong>
+        </article>
+      </section>
+
+      <section class="admin-panel">
+        <div class="admin-panel-head">
+          <div>
+            <h2 class="app-section-title">Envoyer un email</h2>
+            <p class="admin-panel-subtitle">Choisis le type d’envoi, écris ton message, puis envoie depuis Qyraze.</p>
+          </div>
+          <span class="admin-status-pill">Session protégée</span>
+        </div>
+
+        <form id="adminEmailForm" class="admin-mail-form">
+          <div class="admin-form-row">
+            <label class="admin-field">
+              <span>Type d’envoi</span>
+              <select id="adminSendType" class="admin-input">
+                <option value="single">Un seul email</option>
+                <option value="group">Groupe</option>
+                <option value="all">Tous les inscrits actifs</option>
+              </select>
+            </label>
+
+            <label id="adminSingleEmailWrap" class="admin-field">
+              <span>Email destinataire</span>
+              <input id="adminSingleEmail" class="admin-input" type="email" placeholder="client@email.com" autocomplete="email" />
+            </label>
+          </div>
+
+          <label class="admin-field">
+            <span>Sujet</span>
+            <input id="adminSubject" class="admin-input" type="text" maxlength="120" placeholder="Ex : Ta priorité Qyraze du jour" />
+          </label>
+
+          <label class="admin-field">
+            <span>Message HTML</span>
+            <textarea id="adminHtml" class="admin-textarea" rows="10" placeholder="<h1>Bonjour</h1><p>Voici ton message...</p>"></textarea>
+          </label>
+
+          <div class="admin-actions">
+            <button id="adminSendBtn" class="login-submit" type="submit">Envoyer l’email</button>
+            <button id="adminPreviewBtn" class="app-btn-secondary" type="button">Aperçu</button>
+          </div>
+        </form>
+
+        <div id="adminEmailResult" class="admin-result"></div>
+        <div id="adminEmailPreview" class="admin-preview"></div>
+      </section>
+
+      <section class="admin-panel">
+        <div class="admin-panel-head">
+          <div>
+            <h2 class="app-section-title">Actions rapides</h2>
+            <p class="admin-panel-subtitle">Les prochains modules viendront ici : stats, campagnes, calendrier et automatisations.</p>
+          </div>
+        </div>
+
+        <div class="admin-quick-grid">
+          <a class="admin-quick-card" href="/connexion">Tester la connexion</a>
+          <a class="admin-quick-card" href="/">Voir le site</a>
+          <button class="admin-quick-card" id="refreshSessionBtn" type="button">Vérifier la session</button>
+        </div>
+      </section>
+    </section>
+  </main>
+
+  <script>
+    async function checkAdminSession() {
+      const sessionText = document.getElementById('adminSessionText');
+      const sessionStatus = document.getElementById('adminSessionStatus');
+
+      try {
+        const response = await fetch('/api/admin/session', {
+          method: 'GET',
+          credentials: 'include',
+          cache: 'no-store',
+        });
+
+        const data = await response.json().catch(() => ({}));
+
+        if (!response.ok || data.authenticated !== true) {
+          window.location.href = '/connexion';
+          return false;
+        }
+
+        if (sessionText) sessionText.textContent = data.email ? `Connecté : ${data.email}` : 'Session admin active';
+        if (sessionStatus) sessionStatus.textContent = 'Connecté';
+        return true;
+      } catch {
+        window.location.href = '/connexion';
+        return false;
+      }
+    }
+
+    function bootAdminEmail() {
+      const form = document.getElementById('adminEmailForm');
+      const typeInput = document.getElementById('adminSendType');
+      const singleEmailWrap = document.getElementById('adminSingleEmailWrap');
+      const singleEmail = document.getElementById('adminSingleEmail');
+      const subjectInput = document.getElementById('adminSubject');
+      const htmlInput = document.getElementById('adminHtml');
+      const resultEl = document.getElementById('adminEmailResult');
+      const previewEl = document.getElementById('adminEmailPreview');
+      const previewBtn = document.getElementById('adminPreviewBtn');
+      const sendBtn = document.getElementById('adminSendBtn');
+
+      if (!form || !typeInput || !subjectInput || !htmlInput) return;
+
+      function updateSingleVisibility() {
+        if (!singleEmailWrap) return;
+        singleEmailWrap.style.display = typeInput.value === 'single' ? 'grid' : 'none';
+      }
+
+      function setResult(message, success = false) {
+        if (!resultEl) return;
+        resultEl.className = success ? 'admin-result success' : 'admin-result error';
+        resultEl.textContent = message;
+      }
+
+      typeInput.addEventListener('change', updateSingleVisibility);
+      updateSingleVisibility();
+
+      if (previewBtn && previewEl) {
+        previewBtn.addEventListener('click', () => {
+          previewEl.style.display = 'block';
+          previewEl.innerHTML = htmlInput.value || '<p>Aucun contenu à prévisualiser.</p>';
+        });
+      }
+
+      form.addEventListener('submit', async (event) => {
+        event.preventDefault();
+
+        if (resultEl) {
+          resultEl.className = 'admin-result';
+          resultEl.style.display = 'block';
+          resultEl.textContent = 'Envoi en cours...';
+        }
+
+        if (sendBtn) {
+          sendBtn.disabled = true;
+          sendBtn.textContent = 'Envoi...';
+        }
+
+        try {
+          const payload = {
+            type: typeInput.value,
+            email: singleEmail?.value?.trim() || '',
+            subject: subjectInput.value.trim(),
+            html: htmlInput.value.trim(),
+          };
+
+          const response = await fetch('/api/admin/send-email', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            credentials: 'include',
+            body: JSON.stringify(payload),
+          });
+
+          const data = await response.json().catch(() => ({}));
+
+          if (!response.ok) {
+            throw new Error(data.error || 'Envoi impossible');
+          }
+
+          setResult(`Email envoyé : ${data.sent || 0}/${data.total || 0} succès.`, true);
+        } catch (error) {
+          setResult(error.message || 'Erreur pendant l’envoi');
+        } finally {
+          if (sendBtn) {
+            sendBtn.disabled = false;
+            sendBtn.textContent = 'Envoyer l’email';
+          }
+        }
+      });
+    }
+
+    document.getElementById('logoutBtn')?.addEventListener('click', async () => {
+      document.cookie = 'qyraze_admin_session=; Max-Age=0; Path=/; SameSite=Lax; Secure';
+      window.location.href = '/connexion';
+    });
+
+    document.getElementById('refreshSessionBtn')?.addEventListener('click', checkAdminSession);
+
+    checkAdminSession().then((ok) => {
+      if (ok) bootAdminEmail();
+    });
+  </script>
+</body>
+</html>
