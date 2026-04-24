@@ -7,5 +7,11 @@
     { "source": "/mentions-legales", "destination": "/mentions-legales.html" },
     { "source": "/confidentialite", "destination": "/confidentialite.html" },
     { "source": "/cgu", "destination": "/cgu.html" }
+  ],
+  "crons": [
+    {
+      "path": "/api/cleanup",
+      "schedule": "0 3 * * *"
+    }
   ]
 }
