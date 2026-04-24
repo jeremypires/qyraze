@@ -14,8 +14,17 @@ function setVisible(el, visible) {
   el.classList.toggle('route-hidden', !visible);
 }
 
+function hasAdminSession() {
+  return sessionStorage.getItem('qyraze_admin_session') === 'true';
+}
+
 function bootRoutes() {
   if (isConnexionRoute) {
+    if (hasAdminSession()) {
+      window.location.href = '/app';
+      return;
+    }
+
     document.title = 'Connexion — Qyraze';
     setVisible(marketingPage, false);
     setVisible(appRoute, false);
@@ -24,6 +33,11 @@ function bootRoutes() {
   }
 
   if (isAppRoute) {
+    if (!hasAdminSession()) {
+      window.location.href = '/connexion';
+      return;
+    }
+
     document.title = 'Admin — Qyraze';
     setVisible(marketingPage, false);
     setVisible(loginRoute, false);
@@ -219,6 +233,80 @@ function showUnsubscribeMessage() {
   }
 }
 
+function bootLogin() {
+  const loginForm = $('loginForm') || document.querySelector('.login-form');
+  const loginEmail = $('loginEmail') || loginForm?.querySelector('input[type="email"]');
+  const loginPassword = $('loginPassword') || loginForm?.querySelector('input[type="password"]');
+  const loginError = $('loginError') || document.querySelector('.login-error');
+  const loginSubmit = loginForm?.querySelector('button[type="submit"], .login-submit');
+
+  if (!loginForm || !loginEmail || !loginPassword) return;
+
+  loginForm.addEventListener('submit', async (event) => {
+    event.preventDefault();
+
+    if (loginError) loginError.textContent = '';
+    if (loginSubmit) {
+      loginSubmit.disabled = true;
+      loginSubmit.textContent = 'Envoi du code...';
+    }
+
+    try {
+      const startResponse = await fetch('/api/login-notify', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          email: loginEmail.value.trim(),
+          password: loginPassword.value,
+        }),
+      });
+
+      const startData = await startResponse.json().catch(() => ({}));
+
+      if (!startResponse.ok) {
+        throw new Error(startData?.error || 'Connexion refusée');
+      }
+
+      const code = window.prompt('Entre le code reçu par email (format 1234-5678)');
+
+      if (!code) {
+        throw new Error('Code obligatoire');
+      }
+
+      if (loginSubmit) loginSubmit.textContent = 'Vérification...';
+
+      const verifyResponse = await fetch('/api/login-verify', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          challenge: startData.challenge,
+          code,
+        }),
+      });
+
+      const verifyData = await verifyResponse.json().catch(() => ({}));
+
+      if (!verifyResponse.ok) {
+        throw new Error(verifyData?.error || 'Code incorrect');
+      }
+
+      sessionStorage.setItem('qyraze_admin_session', 'true');
+      window.location.href = '/app';
+    } catch (error) {
+      if (loginError) {
+        loginError.textContent = error.message || 'Connexion impossible';
+      } else {
+        alert(error.message || 'Connexion impossible');
+      }
+    } finally {
+      if (loginSubmit) {
+        loginSubmit.disabled = false;
+        loginSubmit.textContent = 'Se connecter';
+      }
+    }
+  });
+}
+
 const toastClose = document.getElementById('toastClose');
 const toastEl = document.getElementById('toast');
 
@@ -234,5 +322,6 @@ if (toastClose && toastEl) {
 
 bootRoutes();
 bootCta();
+bootLogin();
 showVerificationMessage();
 showUnsubscribeMessage();
