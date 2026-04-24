@@ -30,3 +30,4 @@ bin/
 # Added by ggshield
 .cache_ggshield
 node_modules/
+node_modules/
