@@ -8,6 +8,32 @@ const marketingPage = $('marketingPage');
 const loginRoute = $('loginRoute');
 const appRoute = $('appRoute');
 
+function ensureLoginRoute() {
+  if (!isConnexionRoute || $('loginRoute')) return;
+
+  const route = document.createElement('main');
+  route.id = 'loginRoute';
+  route.className = 'login-route active';
+  route.innerHTML = `
+    <section class="section login-section" style="min-height: calc(100vh - 64px); display: flex; align-items: center; justify-content: center; padding: 80px 20px;">
+      <div class="login-card" style="width: 100%; max-width: 460px; margin: 0 auto; padding: 34px 28px; border: 1px solid rgba(255,255,255,.08); border-radius: 20px; background: rgba(9,13,26,.92); box-shadow: 0 20px 60px rgba(0,0,0,.6);">
+        <div class="login-badge" style="display:inline-block; margin-bottom:16px; padding:5px 12px; border:1px solid rgba(255,255,255,.08); border-radius:999px; font-size:10px; letter-spacing:.12em; color:#7c8baa; text-transform:uppercase;">Accès sécurisé</div>
+        <h1 class="login-title" style="margin:0 0 8px; font-family: var(--font-head, Syne, sans-serif); font-size:28px; line-height:1.1; color:#eef2ff;">Connexion Qyraze</h1>
+        <p class="login-subtitle" style="margin:0 0 24px; color:#7c8baa; font-size:14px; line-height:1.6;">Entre tes identifiants, puis valide le code reçu par email.</p>
+        <form id="loginForm" class="login-form" style="display:grid; gap:10px;">
+          <input id="loginEmail" type="email" placeholder="Email admin" autocomplete="email" required style="width:100%; padding:14px 16px; border-radius:10px; border:1px solid rgba(255,255,255,.08); background:rgba(255,255,255,.04); color:#eef2ff; outline:none;" />
+          <input id="loginPassword" type="password" placeholder="Mot de passe" autocomplete="current-password" required style="width:100%; padding:14px 16px; border-radius:10px; border:1px solid rgba(255,255,255,.08); background:rgba(255,255,255,.04); color:#eef2ff; outline:none;" />
+          <button type="submit" class="login-submit" style="width:100%; padding:14px 16px; border:0; border-radius:10px; background:#5bc8ff; color:#03101e; font-weight:800; cursor:pointer;">Se connecter</button>
+        </form>
+        <p id="loginError" class="login-error" style="min-height:20px; margin:12px 0 0; color:#ff5f5f; font-size:13px;"></p>
+        <a href="/" class="login-back" style="display:inline-block; margin-top:12px; color:#7c8baa; font-size:13px;">← Retour à l’accueil</a>
+      </div>
+    </section>
+  `;
+
+  document.body.appendChild(route);
+}
+
 function setVisible(el, visible) {
   if (!el) return;
   el.classList.toggle('active', visible);
@@ -25,10 +51,13 @@ function bootRoutes() {
       return;
     }
 
+    ensureLoginRoute();
+    const currentLoginRoute = $('loginRoute') || loginRoute;
+
     document.title = 'Connexion — Qyraze';
     setVisible(marketingPage, false);
     setVisible(appRoute, false);
-    setVisible(loginRoute, true);
+    setVisible(currentLoginRoute, true);
     return;
   }
 
