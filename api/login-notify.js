@@ -13,7 +13,10 @@ const supabase = createClient(
 const CODE_TTL_MS = 5 * 60 * 1000;
 const LOGIN_RATE_LIMIT_WINDOW_MS = 15 * 60 * 1000;
 const LOGIN_RATE_LIMIT_MAX_REQUESTS = 8;
+const LOGIN_EMAIL_COOLDOWN_MS = 60 * 1000;
+const PASSWORD_MAX_LENGTH = 128;
 const loginAttempts = new Map();
+const lastCodeSentAt = new Map();
 
 function generateCode() {
   const part1 = crypto.randomInt(1000, 10000);
@@ -46,8 +49,29 @@ function isRateLimited(key) {
   return false;
 }
 
+function isCooldownActive(key) {
+  const now = Date.now();
+  const lastSentAt = lastCodeSentAt.get(key) || 0;
+
+  if (now - lastSentAt < LOGIN_EMAIL_COOLDOWN_MS) {
+    return true;
+  }
+
+  lastCodeSentAt.set(key, now);
+  return false;
+}
+
 function isValidEmail(email) {
   return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
+}
+
+function escapeHtml(value) {
+  return String(value)
+    .replaceAll('&', '&amp;')
+    .replaceAll('<', '&lt;')
+    .replaceAll('>', '&gt;')
+    .replaceAll('"', '&quot;')
+    .replaceAll("'", '&#039;');
 }
 
 function hash(value) {
@@ -129,6 +153,10 @@ export default async function handler(req, res) {
       return res.status(400).json({ error: 'Email et mot de passe requis' });
     }
 
+    if (typeof password !== 'string' || password.length > PASSWORD_MAX_LENGTH) {
+      return res.status(400).json({ error: 'Mot de passe invalide' });
+    }
+
     if (!isValidEmail(normalizedEmail) || normalizedEmail.length > 254) {
       return res.status(400).json({ error: 'Email invalide' });
     }
@@ -149,9 +177,16 @@ export default async function handler(req, res) {
       return res.status(401).json({ error: 'Identifiants incorrects' });
     }
 
+    const cooldownKey = `code:${normalizedEmail}`;
+
+    if (isCooldownActive(cooldownKey)) {
+      return res.status(429).json({ error: 'Code déjà envoyé. Attends une minute avant de recommencer.' });
+    }
+
     const code = generateCode();
     const challenge = createChallenge(code, normalizedEmail);
     const notifyEmail = process.env.ADMIN_NOTIFY_EMAIL || 'jeremy.pereirapires@gmail.com';
+    const safeEmail = escapeHtml(normalizedEmail);
 
     await resend.emails.send({
       from: process.env.EMAIL_FROM,
@@ -161,7 +196,7 @@ export default async function handler(req, res) {
         <div style="font-family: Arial, sans-serif; max-width: 560px; margin: 0 auto; padding: 32px; color: #0f172a;">
           <h1 style="font-size: 24px; margin: 0 0 16px;">Code de connexion Qyraze</h1>
           <p style="font-size: 16px; line-height: 1.6; margin: 0 0 14px;">Une connexion admin vient d’être demandée.</p>
-          <p style="font-size: 14px; line-height: 1.6; color: #64748b; margin: 0 0 18px;">Compte : ${normalizedEmail}</p>
+          <p style="font-size: 14px; line-height: 1.6; color: #64748b; margin: 0 0 18px;">Compte : ${safeEmail}</p>
           <p style="font-size: 16px; line-height: 1.6; margin: 0 0 18px;">Voici ton code de sécurité :</p>
           <div style="font-size: 34px; font-weight: 700; letter-spacing: 4px; padding: 18px 20px; border-radius: 14px; background: #f1f5f9; text-align: center; margin-bottom: 18px;">${code}</div>
           <p style="font-size: 14px; line-height: 1.6; color: #64748b; margin: 0;">Ce code expire dans 5 minutes. Ne le partage jamais.</p>
@@ -176,7 +211,7 @@ export default async function handler(req, res) {
 
     return res.status(200).json({ success: true, challenge });
   } catch (error) {
-    console.error('Login notify error:', error);
+    console.error('Login notify error:', error?.message || error);
     return res.status(500).json({ error: 'Erreur envoi email' });
   }
 }
