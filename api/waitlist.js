@@ -9,6 +9,43 @@ const supabase = createClient(supabaseUrl, supabaseServiceKey);
 
 const resend = new Resend(process.env.RESEND_API_KEY);
 
+const RATE_LIMIT_WINDOW_MS = 15 * 60 * 1000;
+const RATE_LIMIT_MAX_REQUESTS = 5;
+const EMAIL_LIMIT_WINDOW_MS = 60 * 60 * 1000;
+const EMAIL_LIMIT_MAX_REQUESTS = 3;
+
+const ipAttempts = new Map();
+const emailAttempts = new Map();
+
+function getClientIp(req) {
+  const forwardedFor = req.headers['x-forwarded-for'];
+
+  if (typeof forwardedFor === 'string' && forwardedFor.length > 0) {
+    return forwardedFor.split(',')[0].trim();
+  }
+
+  return req.socket?.remoteAddress || 'unknown';
+}
+
+function isRateLimited(store, key, maxRequests, windowMs) {
+  const now = Date.now();
+  const current = store.get(key) || [];
+  const recent = current.filter((timestamp) => now - timestamp < windowMs);
+
+  if (recent.length >= maxRequests) {
+    store.set(key, recent);
+    return true;
+  }
+
+  recent.push(now);
+  store.set(key, recent);
+  return false;
+}
+
+function isValidEmail(email) {
+  return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
+}
+
 function getConfirmationEmailHtml(verifyUrl, unsubscribeToken, isResend = false) {
   return `
     <div style="margin:0;padding:0;background-color:#f5f7fb;">
@@ -166,10 +203,31 @@ export default async function handler(req, res) {
   }
 
   try {
-    const { email, name, instagram, linkedin, business, goal } = req.body || {};
+    const { email, name, instagram, linkedin, business, goal, website } = req.body || {};
+
+    // Honeypot anti-bot: real users should never fill this hidden field.
+    if (website) {
+      return res.status(200).json({ success: true, message: 'Email de confirmation envoyé' });
+    }
+
+    const clientIp = getClientIp(req);
+
+    if (isRateLimited(ipAttempts, clientIp, RATE_LIMIT_MAX_REQUESTS, RATE_LIMIT_WINDOW_MS)) {
+      return res.status(429).json({ error: 'Trop de tentatives. Réessaie dans quelques minutes.' });
+    }
 
     if (!email) {
       return res.status(400).json({ error: 'Email requis' });
+    }
+
+    const normalizedEmail = String(email).toLowerCase().trim();
+
+    if (!isValidEmail(normalizedEmail) || normalizedEmail.length > 254) {
+      return res.status(400).json({ error: 'Email invalide' });
+    }
+
+    if (isRateLimited(emailAttempts, normalizedEmail, EMAIL_LIMIT_MAX_REQUESTS, EMAIL_LIMIT_WINDOW_MS)) {
+      return res.status(429).json({ error: 'Trop de demandes pour cet email. Réessaie plus tard.' });
     }
 
     if (!process.env.RESEND_API_KEY) {
@@ -181,8 +239,6 @@ export default async function handler(req, res) {
       console.error('Missing EMAIL_FROM');
       return res.status(500).json({ error: 'Expéditeur email manquant' });
     }
-
-    const normalizedEmail = String(email).toLowerCase().trim();
 
     const { data: existing, error: checkError } = await supabase
       .from('leads')
