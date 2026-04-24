@@ -48,6 +48,7 @@ export default async function handler(req, res) {
     .update({
       subscribed: false,
       consent: false,
+      unsubscribed_at: new Date().toISOString(),
     })
     .eq('id', existing.id);
 
