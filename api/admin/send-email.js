@@ -1,7 +1,9 @@
-
-
 import { Resend } from 'resend';
 import { createClient } from '@supabase/supabase-js';
+
+const MAX_RECIPIENTS = 50;
+const SUBJECT_MAX_LENGTH = 120;
+const HTML_MAX_LENGTH = 20000;
 
 const resend = new Resend(process.env.RESEND_API_KEY);
 
@@ -32,18 +34,20 @@ export default async function handler(req, res) {
     return res.status(405).json({ error: 'Method not allowed' });
   }
 
-  if (req.headers.authorization !== `Bearer ${process.env.ADMIN_SECRET}`) {
+  const authHeader = req.headers.authorization || '';
+
+  if (!authHeader.startsWith('Bearer ') || authHeader !== `Bearer ${process.env.ADMIN_SECRET}`) {
     return res.status(401).json({ error: 'Unauthorized' });
   }
 
   const { type, email, subject, html } = req.body || {};
 
-  if (!subject || typeof subject !== 'string') {
-    return res.status(400).json({ error: 'Sujet requis' });
+  if (!subject || typeof subject !== 'string' || subject.length > SUBJECT_MAX_LENGTH) {
+    return res.status(400).json({ error: 'Sujet invalide' });
   }
 
-  if (!html || typeof html !== 'string') {
-    return res.status(400).json({ error: 'Contenu HTML requis' });
+  if (!html || typeof html !== 'string' || html.length > HTML_MAX_LENGTH) {
+    return res.status(400).json({ error: 'Contenu HTML invalide' });
   }
 
   if (!['single', 'all', 'group'].includes(type)) {
@@ -96,15 +100,21 @@ export default async function handler(req, res) {
       return res.status(400).json({ error: 'Aucun destinataire' });
     }
 
-    if (uniqueRecipients.length > 50) {
-      return res.status(400).json({ error: 'Limite temporaire : 50 destinataires maximum par envoi' });
+    if (uniqueRecipients.length > MAX_RECIPIENTS) {
+      return res.status(400).json({ error: `Limite temporaire : ${MAX_RECIPIENTS} destinataires maximum par envoi` });
+    }
+
+    const filteredRecipients = uniqueRecipients.filter(isValidEmail);
+
+    if (!filteredRecipients.length) {
+      return res.status(400).json({ error: 'Aucun email valide' });
     }
 
     const emailHtml = buildEmailHtml(html);
 
     const results = [];
 
-    for (const recipient of uniqueRecipients) {
+    for (const recipient of filteredRecipients) {
       const { error } = await resend.emails.send({
         from: process.env.EMAIL_FROM,
         to: recipient,
@@ -126,11 +136,11 @@ export default async function handler(req, res) {
       success: failed === 0,
       sent,
       failed,
-      total: uniqueRecipients.length,
+      total: filteredRecipients.length,
       results,
     });
   } catch (err) {
-    console.error('Admin send email error:', err);
+    console.error('Admin send email error:', err?.message || err);
     return res.status(500).json({ error: 'Erreur envoi email' });
   }
 }
