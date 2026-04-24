@@ -2,8 +2,8 @@
   "rewrites": [
     { "source": "/connexion", "destination": "/connexion.html" },
     { "source": "/connexion/(.*)", "destination": "/connexion.html" },
-    { "source": "/app", "destination": "/index.html" },
-    { "source": "/app/(.*)", "destination": "/index.html" },
+    { "source": "/app", "destination": "/app.html" },
+    { "source": "/app/(.*)", "destination": "/app.html" },
     { "source": "/mentions-legales", "destination": "/mentions-legales.html" },
     { "source": "/confidentialite", "destination": "/confidentialite.html" },
     { "source": "/cgu", "destination": "/cgu.html" }
