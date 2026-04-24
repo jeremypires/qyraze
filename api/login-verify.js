@@ -123,7 +123,7 @@ export default async function handler(req, res) {
 
     res.setHeader(
       'Set-Cookie',
-      `qyraze_admin_session=${sessionToken}; HttpOnly; Secure; SameSite=Strict; Path=/; Max-Age=${ADMIN_SESSION_TTL_MS / 1000}`
+      `qyraze_admin_session=${encodeURIComponent(sessionToken)}; HttpOnly; Secure; SameSite=Lax; Path=/; Max-Age=${ADMIN_SESSION_TTL_MS / 1000}`
     );
 
     return res.status(200).json({ success: true });
