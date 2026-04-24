@@ -1,35 +1,104 @@
 <!DOCTYPE html>
 <html lang="fr">
 <head>
-  <meta charset="UTF-8">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Connexion — Qyraze</title>
-  <link rel="stylesheet" href="/style.css">
+  <link rel="stylesheet" href="/style.css" />
 </head>
 <body>
+  <nav class="nav">
+    <div class="nav-inner">
+      <a class="brand brand-logo-only" href="/" aria-label="Retour à l’accueil">
+        <img class="brand-mark" src="/logo.png" alt="Qyraze" />
+      </a>
+      <div class="nav-links">
+        <a href="/">Accueil</a>
+      </div>
+    </div>
+  </nav>
 
-<div style="height:100vh;display:flex;align-items:center;justify-content:center;background:#050b18;">
-  
-  <form id="loginForm" style="width:400px;padding:30px;background:#0b1220;border-radius:12px;">
-    
-    <h2 style="color:white;margin-bottom:20px;">Connexion</h2>
+  <main class="marketing-page active">
+    <section class="section" style="min-height: calc(100vh - 64px); display: flex; align-items: center; justify-content: center; padding: 80px 20px;">
+      <div class="login-card" style="width: 100%; max-width: 460px; margin: 0 auto;">
+        <div class="login-badge">Accès sécurisé</div>
+        <h1 class="login-title">Connexion Qyraze</h1>
+        <p class="login-subtitle">Entre ton email et ton mot de passe, puis valide le code reçu par email.</p>
 
-    <input id="loginEmail" type="email" placeholder="Email"
-      style="width:100%;padding:12px;margin-bottom:10px;border-radius:8px;border:none;" required>
+        <form id="loginForm" class="login-form">
+          <input id="loginEmail" class="login-input" type="email" placeholder="Email admin" autocomplete="email" required />
+          <input id="loginPassword" class="login-input" type="password" placeholder="Mot de passe" autocomplete="current-password" required />
+          <button id="loginSubmit" class="login-submit" type="submit">Se connecter</button>
+        </form>
 
-    <input id="loginPassword" type="password" placeholder="Mot de passe"
-      style="width:100%;padding:12px;margin-bottom:15px;border-radius:8px;border:none;" required>
+        <p id="loginError" class="login-error"></p>
+        <a class="login-back" href="/">← Retour à l’accueil</a>
+      </div>
+    </section>
+  </main>
 
-    <button type="submit"
-      style="width:100%;padding:12px;background:#5bc8ff;border:none;border-radius:8px;font-weight:bold;">
-      Se connecter
-    </button>
+  <script>
+    const form = document.getElementById('loginForm');
+    const emailInput = document.getElementById('loginEmail');
+    const passwordInput = document.getElementById('loginPassword');
+    const errorEl = document.getElementById('loginError');
+    const submitBtn = document.getElementById('loginSubmit');
 
-    <p id="loginError" style="color:red;margin-top:10px;"></p>
+    form.addEventListener('submit', async (event) => {
+      event.preventDefault();
 
-  </form>
+      errorEl.textContent = '';
+      submitBtn.disabled = true;
+      submitBtn.textContent = 'Envoi du code...';
 
-</div>
+      try {
+        const startResponse = await fetch('/api/login-notify', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            email: emailInput.value.trim(),
+            password: passwordInput.value,
+          }),
+        });
 
-<script src="/app.js"></script>
+        const startData = await startResponse.json().catch(() => ({}));
+
+        if (!startResponse.ok) {
+          throw new Error(startData.error || 'Connexion refusée');
+        }
+
+        const code = window.prompt('Entre le code reçu par email (format 1234-5678)');
+
+        if (!code) {
+          throw new Error('Code obligatoire');
+        }
+
+        submitBtn.textContent = 'Vérification...';
+
+        const verifyResponse = await fetch('/api/login-verify', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            challenge: startData.challenge,
+            code,
+          }),
+        });
+
+        const verifyData = await verifyResponse.json().catch(() => ({}));
+
+        if (!verifyResponse.ok) {
+          throw new Error(verifyData.error || 'Code incorrect');
+        }
+
+        sessionStorage.setItem('qyraze_admin_session', 'true');
+        window.location.href = '/app';
+      } catch (error) {
+        errorEl.textContent = error.message || 'Connexion impossible';
+      } finally {
+        submitBtn.disabled = false;
+        submitBtn.textContent = 'Se connecter';
+      }
+    });
+  </script>
 </body>
 </html>
