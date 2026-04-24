@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <title>Connexion — Qyraze</title>
+  <link rel="stylesheet" href="/style.css">
+</head>
+<body>
+
+<div style="height:100vh;display:flex;align-items:center;justify-content:center;background:#050b18;">
+  
+  <form id="loginForm" style="width:400px;padding:30px;background:#0b1220;border-radius:12px;">
+    
+    <h2 style="color:white;margin-bottom:20px;">Connexion</h2>
+
+    <input id="loginEmail" type="email" placeholder="Email"
+      style="width:100%;padding:12px;margin-bottom:10px;border-radius:8px;border:none;" required>
+
+    <input id="loginPassword" type="password" placeholder="Mot de passe"
+      style="width:100%;padding:12px;margin-bottom:15px;border-radius:8px;border:none;" required>
+
+    <button type="submit"
+      style="width:100%;padding:12px;background:#5bc8ff;border:none;border-radius:8px;font-weight:bold;">
+      Se connecter
+    </button>
+
+    <p id="loginError" style="color:red;margin-top:10px;"></p>
+
+  </form>
+
+</div>
+
+<script src="/app.js"></script>
+</body>
+</html>
