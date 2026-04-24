@@ -84,7 +84,7 @@
         codeForm.style.display = 'grid';
         codeInput.focus();
         errorEl.style.color = '#3dd68c';
-        errorEl.textContent = 'Code envoyé. Vérifie ta boîte mail.';
+        errorEl.textContent = startData.message || 'Code envoyé. Vérifie ta boîte mail.';
       } catch (error) {
         errorEl.style.color = '#ff5f5f';
         errorEl.textContent = error.message || 'Connexion impossible';
@@ -115,6 +115,7 @@
         const verifyResponse = await fetch('/api/login-verify', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
+          credentials: 'include',
           body: JSON.stringify({
             challenge: currentChallenge,
             code,
@@ -127,7 +128,6 @@
           throw new Error(verifyData.error || 'Code incorrect');
         }
 
-        sessionStorage.setItem('qyraze_admin_session', 'true');
         window.location.href = '/app';
       } catch (error) {
         errorEl.style.color = '#ff5f5f';
