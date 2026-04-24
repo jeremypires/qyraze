@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <title>Admin Qyraze</title>
+  <style>
+    body {
+      font-family: Arial;
+      background: #0f172a;
+      color: white;
+      padding: 40px;
+    }
+    input, textarea, select {
+      width: 100%;
+      padding: 10px;
+      margin: 10px 0;
+      border-radius: 8px;
+      border: none;
+    }
+    button {
+      padding: 12px;
+      background: #3b82f6;
+      color: white;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      width: 100%;
+      font-weight: bold;
+    }
+    .box {
+      max-width: 600px;
+      margin: auto;
+    }
+  </style>
+</head>
+<body>
+
+<div class="box">
+  <h2>📩 Admin Qyraze</h2>
+
+  <input id="secret" placeholder="ADMIN_SECRET" />
+
+  <select id="type">
+    <option value="single">Single</option>
+    <option value="all">All</option>
+    <option value="group">Group</option>
+  </select>
+
+  <input id="email" placeholder="Email (si single)" />
+
+  <input id="subject" placeholder="Sujet" />
+
+  <textarea id="html" rows="6" placeholder="Contenu HTML"></textarea>
+
+  <button onclick="send()">Envoyer</button>
+
+  <p id="result"></p>
+</div>
+
+<script>
+async function send() {
+  const secret = document.getElementById('secret').value;
+  const type = document.getElementById('type').value;
+  const email = document.getElementById('email').value;
+  const subject = document.getElementById('subject').value;
+  const html = document.getElementById('html').value;
+
+  const res = await fetch('/api/admin/send-email', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+      'Authorization': 'Bearer ' + secret
+    },
+    body: JSON.stringify({ type, email, subject, html })
+  });
+
+  const data = await res.json();
+
+  document.getElementById('result').innerText = JSON.stringify(data, null, 2);
+}
+</script>
+
+</body>
+</html>
