@@ -2444,3 +2444,12 @@ a {
     font-size: 16px;
   }
 }
+
+.admin-lead-suggestion {
+  transition: background 0.15s ease;
+}
+
+.admin-lead-suggestion.active {
+  background: rgba(91, 200, 255, 0.18);
+  outline: 1px solid rgba(91, 200, 255, 0.25);
+}

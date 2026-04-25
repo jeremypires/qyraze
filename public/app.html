@@ -176,6 +176,8 @@
 
       let recipients = [];
       let availableLeads = [];
+      let activeSuggestionIndex = -1;
+
       if (suggestionsBox) suggestionsBox.style.display = 'none';
 
       function addRecipient(email) {
@@ -201,6 +203,17 @@
         chipsContainer.appendChild(chip);
         if (emailInput) emailInput.value = '';
         if (suggestionsBox) suggestionsBox.style.display = 'none';
+        activeSuggestionIndex = -1;
+      }
+
+      function updateActiveSuggestion() {
+        if (!suggestionsBox) return;
+
+        const buttons = Array.from(suggestionsBox.querySelectorAll('.admin-lead-suggestion'));
+
+        buttons.forEach((button, index) => {
+          button.classList.toggle('active', index === activeSuggestionIndex);
+        });
       }
 
       function renderSuggestions(query = '') {
@@ -210,6 +223,7 @@
 
         if (!normalizedQuery) {
           suggestionsBox.style.display = 'none';
+          activeSuggestionIndex = -1;
           return;
         }
 
@@ -222,6 +236,7 @@
 
         if (!matches.length) {
           suggestionsBox.style.display = 'none';
+          activeSuggestionIndex = -1;
           return;
         }
 
@@ -235,6 +250,8 @@
         });
 
         suggestionsBox.style.display = 'grid';
+        activeSuggestionIndex = 0;
+        updateActiveSuggestion();
       }
 
       if (sendAll) sendAll.addEventListener('change', updateRecipientVisibility);
@@ -272,20 +289,50 @@
         });
 
         emailInput.addEventListener('keydown', (e) => {
+          const suggestionButtons = Array.from(suggestionsBox?.querySelectorAll('.admin-lead-suggestion') || []);
+          const hasSuggestions = suggestionsBox?.style.display === 'grid' && suggestionButtons.length > 0;
+
+          if (e.key === 'ArrowDown' && hasSuggestions) {
+            e.preventDefault();
+            activeSuggestionIndex = (activeSuggestionIndex + 1) % suggestionButtons.length;
+            updateActiveSuggestion();
+            return;
+          }
+
+          if (e.key === 'ArrowUp' && hasSuggestions) {
+            e.preventDefault();
+            activeSuggestionIndex = (activeSuggestionIndex - 1 + suggestionButtons.length) % suggestionButtons.length;
+            updateActiveSuggestion();
+            return;
+          }
+
           if (e.key === 'Enter') {
             e.preventDefault();
-            const firstSuggestion = suggestionsBox?.querySelector('.admin-lead-suggestion');
 
-            if (firstSuggestion && emailInput.value.trim() && !/^\S+@\S+\.\S+$/.test(emailInput.value.trim())) {
-              firstSuggestion.click();
+            if (hasSuggestions && !/^\S+@\S+\.\S+$/.test(emailInput.value.trim())) {
+              suggestionButtons[Math.max(activeSuggestionIndex, 0)]?.click();
               return;
             }
 
             addRecipient(emailInput.value);
+            return;
+          }
+
+          if (e.key === ',' || e.key === ';') {
+            e.preventDefault();
+            addRecipient(emailInput.value);
+            return;
+          }
+
+          if (e.key === 'Backspace' && !emailInput.value && recipients.length > 0) {
+            recipients.pop();
+            renderChips();
+            return;
           }
 
           if (e.key === 'Escape' && suggestionsBox) {
             suggestionsBox.style.display = 'none';
+            activeSuggestionIndex = -1;
           }
         });
 
@@ -376,3 +423,9 @@
   </script>
 </body>
 </html>
+/* Keyboard UX for admin lead suggestions */
+.admin-lead-suggestion.active,
+.admin-lead-suggestion:focus-visible {
+  background: rgba(91, 200, 255, 0.16);
+  outline: 1px solid rgba(91, 200, 255, 0.22);
+}
