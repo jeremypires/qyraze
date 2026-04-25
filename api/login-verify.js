@@ -3,7 +3,7 @@ import crypto from 'crypto';
 const VERIFY_RATE_LIMIT_WINDOW_MS = 10 * 60 * 1000;
 const VERIFY_RATE_LIMIT_MAX = 10;
 const verifyAttempts = new Map();
-const ADMIN_SESSION_TTL_MS = 12 * 60 * 60 * 1000;
+const ADMIN_SESSION_TTL_MS = 60 * 60 * 1000;
 
 function hash(value) {
   return crypto.createHash('sha256').update(value).digest('hex');
