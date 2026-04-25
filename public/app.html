@@ -83,8 +83,8 @@
           </label>
 
           <label class="admin-field">
-            <span>Message HTML</span>
-            <textarea id="adminHtml" class="admin-textarea" rows="10" placeholder="<h1>Bonjour</h1><p>Voici ton message...</p>"></textarea>
+            <span>Message</span>
+            <textarea id="adminHtml" class="admin-textarea" rows="8" placeholder="Ex :&#10;&#10;Bonjour,&#10;&#10;Voici une mise à jour importante concernant Qyraze.&#10;&#10;Merci"></textarea>
           </label>
 
           <div class="admin-actions">
@@ -154,6 +154,27 @@
     }
 
     function bootAdminEmail() {
+      function buildEmailHTML(message) {
+        return `
+          <div style="font-family: Arial, sans-serif; background:#0a0e19; padding:40px;">
+            <div style="max-width:600px; margin:auto; background:#111827; border-radius:14px; overflow:hidden; border:1px solid rgba(255,255,255,0.08);">
+              
+              <div style="padding:22px; text-align:center; border-bottom:1px solid rgba(255,255,255,0.08);">
+                <img src="/logo.png" style="height:42px;" />
+              </div>
+
+              <div style="padding:32px; color:#ffffff; line-height:1.7; font-size:15px;">
+                ${message.replace(/\n/g, '<br>')}
+              </div>
+
+              <div style="padding:20px; text-align:center; font-size:12px; color:#9ca3af; border-top:1px solid rgba(255,255,255,0.08);">
+                © Qyraze — Plateforme intelligente
+              </div>
+
+            </div>
+          </div>
+        `;
+      }
       const form = document.getElementById('adminEmailForm');
       const sendAll = document.getElementById('adminSendAll');
       const recipientsWrap = document.getElementById('adminRecipientsWrap');
@@ -281,7 +302,9 @@
       if (previewBtn && previewEl) {
         previewBtn.addEventListener('click', () => {
           previewEl.style.display = 'block';
-          previewEl.innerHTML = htmlInput.value || '<p>Aucun contenu à prévisualiser.</p>';
+          previewEl.innerHTML = htmlInput.value
+            ? buildEmailHTML(htmlInput.value)
+            : '<p>Aucun contenu à prévisualiser.</p>';
         });
       }
 
@@ -374,14 +397,14 @@
                 email: '',
                 recipients: [],
                 subject: subjectInput.value.trim(),
-                html: htmlInput.value.trim(),
+                html: buildEmailHTML(htmlInput.value.trim()),
               }
             : {
                 type: selectedEmails.length > 1 ? 'group' : 'single',
                 email: selectedEmails.length === 1 ? selectedEmails[0] : '',
                 recipients: selectedEmails,
                 subject: subjectInput.value.trim(),
-                html: htmlInput.value.trim(),
+                html: buildEmailHTML(htmlInput.value.trim()),
               };
 
           if (!sendAll?.checked && selectedEmails.length === 0) {
