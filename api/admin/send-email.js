@@ -44,7 +44,7 @@ function getCookie(req, name) {
 function clearAdminCookie(res) {
   res.setHeader(
     'Set-Cookie',
-    `${COOKIE_NAME}=; HttpOnly; Secure; SameSite=Strict; Path=/; Max-Age=0`
+    `${COOKIE_NAME}=; HttpOnly; Secure; SameSite=Lax; Path=/; Max-Age=0`
   );
 }
 
@@ -104,19 +104,6 @@ function isValidEmail(email) {
   return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
 }
 
-function buildEmailHtml(content) {
-  return `
-    <div style="font-family: Arial, sans-serif; max-width: 620px; margin: 0 auto; padding: 32px; color: #0f172a;">
-      ${content}
-      <hr style="border: none; border-top: 1px solid #e2e8f0; margin: 28px 0;" />
-      <p style="font-size: 13px; line-height: 1.6; color: #64748b; margin: 0;">
-        Vous recevez cet email via Qyraze.<br />
-        Qyraze · focus@qyrazeos.fr · qyraze.com
-      </p>
-    </div>
-  `;
-}
-
 export default async function handler(req, res) {
   if (req.method !== 'POST') {
     return res.status(405).json({ error: 'Method not allowed' });
@@ -136,7 +123,7 @@ export default async function handler(req, res) {
     return res.status(401).json({ error: 'Unauthorized' });
   }
 
-  const { type, email, subject, html } = req.body || {};
+  const { type, email, recipients: requestedRecipients, subject, html } = req.body || {};
 
   if (!subject || typeof subject !== 'string' || subject.length > SUBJECT_MAX_LENGTH) {
     return res.status(400).json({ error: 'Sujet invalide' });
@@ -168,7 +155,8 @@ export default async function handler(req, res) {
         .eq('subscribed', true)
         .eq('consent', true)
         .eq('deleted', false)
-        .not('verified_at', 'is', null);
+        .not('verified_at', 'is', null)
+        .is('unsubscribed_at', null);
 
       if (error) throw error;
 
@@ -176,18 +164,13 @@ export default async function handler(req, res) {
     }
 
     if (type === 'group') {
-      const { data, error } = await supabase
-        .from('leads')
-        .select('email')
-        .eq('subscribed', true)
-        .eq('consent', true)
-        .eq('deleted', false)
-        .not('verified_at', 'is', null)
-        .or('business.ilike.%freelance%,goal.ilike.%freelance%');
+      if (!Array.isArray(requestedRecipients)) {
+        return res.status(400).json({ error: 'Liste de destinataires invalide' });
+      }
 
-      if (error) throw error;
-
-      recipients = (data || []).map((lead) => lead.email).filter(Boolean);
+      recipients = requestedRecipients
+        .map((recipient) => String(recipient || '').toLowerCase().trim())
+        .filter(Boolean);
     }
 
     const uniqueRecipients = [...new Set(recipients)];
@@ -206,7 +189,7 @@ export default async function handler(req, res) {
       return res.status(400).json({ error: 'Aucun email valide' });
     }
 
-    const emailHtml = buildEmailHtml(html);
+    const emailHtml = html;
 
     const results = [];
 
