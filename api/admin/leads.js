@@ -1,5 +1,3 @@
-
-
 import crypto from 'crypto';
 import { createClient } from '@supabase/supabase-js';
 
@@ -120,7 +118,12 @@ export default async function handler(req, res) {
 
     const { data, error } = await supabase
       .from('leads')
-      .select('id,email,created_at')
+      .select('id,email,created_at,verified_at,consent,subscribed,deleted,unsubscribed_at')
+      .not('verified_at', 'is', null)
+      .eq('consent', true)
+      .eq('subscribed', true)
+      .eq('deleted', false)
+      .is('unsubscribed_at', null)
       .order('created_at', { ascending: false })
       .limit(MAX_LEADS);
 
