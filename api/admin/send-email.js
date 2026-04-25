@@ -51,12 +51,9 @@ function clearAdminCookie(res) {
 function verifyAdminSession(req, res) {
   const session = getCookie(req, COOKIE_NAME);
 
-  if (!session || typeof session !== 'string') {
-    return null;
-  }
+  if (!session || typeof session !== 'string') return null;
 
   const parts = session.split('.');
-
   if (parts.length !== 2) {
     clearAdminCookie(res);
     return null;
@@ -64,14 +61,7 @@ function verifyAdminSession(req, res) {
 
   const [encodedPayload, signature] = parts;
 
-  if (!encodedPayload || !signature) {
-    clearAdminCookie(res);
-    return null;
-  }
-
-  const expectedSignature = sign(encodedPayload);
-
-  if (!safeEqual(signature, expectedSignature)) {
+  if (!safeEqual(signature, sign(encodedPayload))) {
     clearAdminCookie(res);
     return null;
   }
@@ -85,14 +75,7 @@ function verifyAdminSession(req, res) {
     return null;
   }
 
-  if (
-    !payload ||
-    typeof payload !== 'object' ||
-    !payload.exp ||
-    typeof payload.exp !== 'number' ||
-    Date.now() > payload.exp ||
-    payload.role !== 'admin'
-  ) {
+  if (!payload || Date.now() > payload.exp || payload.role !== 'admin') {
     clearAdminCookie(res);
     return null;
   }
@@ -127,170 +110,138 @@ async function logEmailSend({ recipient, subject, type, success, errorMessage, a
   }
 }
 
+/* 🔥 TEMPLATE EMAIL PREMIUM */
+function buildEmailHTML(message, name, unsubscribeUrl) {
+  const safeMessage = message
+    .split('\n')
+    .map(line => line.trim() || '&nbsp;')
+    .join('<br>');
+
+  return `
+  <div style="margin:0; padding:0; background:#f1f5f9; font-family:Arial, Helvetica, sans-serif;">
+    <table width="100%" cellpadding="0" cellspacing="0" style="max-width:640px; margin:auto;">
+      <tr>
+        <td style="background:#ffffff; border-radius:18px; padding:30px; border:1px solid #e2e8f0;">
+
+          <div style="text-align:center; margin-bottom:20px;">
+            <img src="https://qyraze.com/logo.png" style="height:42px;" />
+          </div>
+
+          <h2 style="font-size:22px; color:#0f172a;">
+            Hey ${name || 'toi'},
+          </h2>
+
+          <p style="font-size:15px; color:#334155; line-height:1.7;">
+            ${safeMessage}
+          </p>
+
+          <div style="background:#f8fafc; border:1px solid #e2e8f0; padding:18px; border-radius:12px; margin-top:20px;">
+            Cet email a été envoyé depuis Qyraze.
+          </div>
+
+          <div style="text-align:center; margin-top:20px;">
+            <a href="https://qyraze.com"
+              style="background:#0f172a; color:#fff; padding:12px 20px; border-radius:10px; text-decoration:none;">
+              Accéder à Qyraze
+            </a>
+          </div>
+
+          <hr style="margin:20px 0; border-top:1px solid #e2e8f0;">
+
+          <div style="font-size:12px; color:#64748b;">
+            <a href="${unsubscribeUrl}" style="color:#2563eb;">Se désinscrire</a>
+          </div>
+
+        </td>
+      </tr>
+    </table>
+  </div>`;
+}
+
 export default async function handler(req, res) {
   if (req.method !== 'POST') {
     return res.status(405).json({ error: 'Method not allowed' });
   }
 
-  res.setHeader('Cache-Control', 'no-store, no-cache, must-revalidate, proxy-revalidate');
-  res.setHeader('Pragma', 'no-cache');
-  res.setHeader('Expires', '0');
-
-  if (!process.env.ADMIN_SECRET) {
-    return res.status(500).json({ error: 'Configuration serveur manquante' });
-  }
-
   const adminSession = verifyAdminSession(req, res);
+  if (!adminSession) return res.status(401).json({ error: 'Unauthorized' });
 
-  if (!adminSession) {
-    return res.status(401).json({ error: 'Unauthorized' });
-  }
+  const { type, email, recipients: requestedRecipients, subject, html, message } = req.body || {};
+  const rawMessage = typeof message === 'string' ? message : html;
 
-  const { type, email, recipients: requestedRecipients, subject, html } = req.body || {};
-
-  if (!subject || typeof subject !== 'string' || subject.length > SUBJECT_MAX_LENGTH) {
+  if (!subject || subject.length > SUBJECT_MAX_LENGTH) {
     return res.status(400).json({ error: 'Sujet invalide' });
   }
 
-  if (!html || typeof html !== 'string' || html.length > HTML_MAX_LENGTH) {
-    return res.status(400).json({ error: 'Contenu HTML invalide' });
+  if (!rawMessage || rawMessage.trim().length === 0 || rawMessage.length > HTML_MAX_LENGTH) {
+    return res.status(400).json({ error: 'Message invalide' });
   }
 
-  if (!['single', 'all', 'group'].includes(type)) {
-    return res.status(400).json({ error: 'Type invalide' });
+  let recipients = [];
+
+  if (type === 'single') {
+    recipients = [email];
   }
 
-  try {
-    let recipients = [];
+  if (type === 'group') {
+    recipients = requestedRecipients;
+  }
 
-    if (type === 'single') {
-      if (!email || !isValidEmail(email)) {
-        return res.status(400).json({ error: 'Email invalide' });
-      }
+  if (type === 'all') {
+    const { data } = await supabase
+      .from('leads')
+      .select('email,name')
+      .eq('subscribed', true)
+      .eq('consent', true)
+      .eq('deleted', false)
+      .not('verified_at', 'is', null)
+      .is('unsubscribed_at', null);
 
-      recipients = [email.toLowerCase().trim()];
-    }
+    recipients = data.map(l => l.email);
+  }
 
-    if (type === 'all') {
-      const { data, error } = await supabase
-        .from('leads')
-        .select('email')
-        .eq('subscribed', true)
-        .eq('consent', true)
-        .eq('deleted', false)
-        .not('verified_at', 'is', null)
-        .is('unsubscribed_at', null);
+  const results = [];
 
-      if (error) throw error;
+  for (const recipient of recipients) {
+    const token = createRawUnsubscribeToken();
+    const hash = hashToken(token);
+    const unsubscribeUrl = `https://qyraze.com/api/unsubscribe?token=${token}`;
 
-      recipients = (data || []).map((lead) => lead.email).filter(Boolean);
-    }
+    await supabase
+      .from('leads')
+      .update({ unsubscribe_token_hash: hash })
+      .eq('email', recipient);
 
-    if (type === 'group') {
-      if (!Array.isArray(requestedRecipients)) {
-        return res.status(400).json({ error: 'Liste de destinataires invalide' });
-      }
+    const { data: lead } = await supabase
+      .from('leads')
+      .select('name')
+      .eq('email', recipient)
+      .single();
 
-      recipients = requestedRecipients
-        .map((recipient) => String(recipient || '').toLowerCase().trim())
-        .filter(Boolean);
-    }
+    const finalHtml = buildEmailHTML(rawMessage.trim(), lead?.name, unsubscribeUrl);
 
-    const uniqueRecipients = [...new Set(recipients)];
-
-    if (!uniqueRecipients.length) {
-      return res.status(400).json({ error: 'Aucun destinataire' });
-    }
-
-    if (uniqueRecipients.length > MAX_RECIPIENTS) {
-      return res.status(400).json({ error: `Limite temporaire : ${MAX_RECIPIENTS} destinataires maximum par envoi` });
-    }
-
-    const filteredRecipients = uniqueRecipients.filter(isValidEmail);
-
-    if (!filteredRecipients.length) {
-      return res.status(400).json({ error: 'Aucun email valide' });
-    }
-
-    const emailHtml = html;
-
-    const results = [];
-
-    for (const recipient of filteredRecipients) {
-      const unsubscribeToken = createRawUnsubscribeToken();
-      const unsubscribeTokenHash = hashToken(unsubscribeToken);
-      const unsubscribeUrl = `https://qyraze.com/api/unsubscribe?token=${encodeURIComponent(unsubscribeToken)}`;
-
-      const { error: tokenUpdateError } = await supabase
-        .from('leads')
-        .update({ unsubscribe_token_hash: unsubscribeTokenHash })
-        .eq('email', recipient);
-
-      if (tokenUpdateError) {
-        await logEmailSend({
-          recipient,
-          subject,
-          type,
-          success: false,
-          errorMessage: 'Erreur génération lien désinscription',
-          adminEmail: adminSession.email || null,
-        });
-
-        results.push({ email: recipient, success: false, error: 'Erreur génération lien désinscription' });
-        continue;
-      }
-
-      const finalHtml = `${emailHtml}
-        <div style="margin-top:30px; font-size:12px; color:#64748b; text-align:center;">
-          <a href="${unsubscribeUrl}" style="color:#2563eb; text-decoration:underline;">Se désinscrire</a>
-        </div>
-      `;
-
-      const { error } = await resend.emails.send({
-        from: process.env.EMAIL_FROM,
-        to: recipient,
-        subject,
-        html: finalHtml,
-      });
-
-      if (error) {
-        await logEmailSend({
-          recipient,
-          subject,
-          type,
-          success: false,
-          errorMessage: error.message || 'Erreur Resend',
-          adminEmail: adminSession.email || null,
-        });
-
-        results.push({ email: recipient, success: false, error: error.message || 'Erreur Resend' });
-      } else {
-        await logEmailSend({
-          recipient,
-          subject,
-          type,
-          success: true,
-          errorMessage: null,
-          adminEmail: adminSession.email || null,
-        });
-
-        results.push({ email: recipient, success: true });
-      }
-    }
-
-    const sent = results.filter((result) => result.success).length;
-    const failed = results.length - sent;
-
-    return res.status(200).json({
-      success: failed === 0,
-      sent,
-      failed,
-      total: filteredRecipients.length,
-      admin: adminSession.email || null,
-      results,
+    const { error } = await resend.emails.send({
+      from: process.env.EMAIL_FROM,
+      to: recipient,
+      subject,
+      html: finalHtml,
     });
-  } catch (err) {
-    console.error('Admin send email error:', err?.message || err);
-    return res.status(500).json({ error: 'Erreur envoi email' });
+
+    await logEmailSend({
+      recipient,
+      subject,
+      type,
+      success: !error,
+      errorMessage: error?.message || null,
+      adminEmail: adminSession.email || null,
+    });
+
+    results.push({ email: recipient, success: !error });
   }
+
+  return res.status(200).json({
+    success: true,
+    total: results.length,
+    sent: results.filter(r => r.success).length,
+  });
 }
