@@ -95,6 +95,15 @@ function hashToken(token) {
   return crypto.createHash('sha256').update(token).digest('hex');
 }
 
+function escapeHtml(value) {
+  return String(value || '')
+    .replaceAll('&', '&amp;')
+    .replaceAll('<', '&lt;')
+    .replaceAll('>', '&gt;')
+    .replaceAll('"', '&quot;')
+    .replaceAll("'", '&#039;');
+}
+
 async function logEmailSend({ recipient, subject, type, success, errorMessage, adminEmail }) {
   try {
     await supabase.from('email_logs').insert({
@@ -112,7 +121,8 @@ async function logEmailSend({ recipient, subject, type, success, errorMessage, a
 
 /* 🔥 TEMPLATE EMAIL PREMIUM */
 function buildEmailHTML(message, name, unsubscribeUrl) {
-  const safeMessage = message
+  const safeName = escapeHtml(name || 'toi');
+  const safeMessage = escapeHtml(message)
     .split('\n')
     .map(line => line.trim() || '&nbsp;')
     .join('<br>');
@@ -128,7 +138,7 @@ function buildEmailHTML(message, name, unsubscribeUrl) {
           </div>
 
           <h2 style="font-size:22px; color:#0f172a;">
-            Hey ${name || 'toi'},
+            Hey ${safeName},
           </h2>
 
           <p style="font-size:15px; color:#334155; line-height:1.7;">
@@ -177,18 +187,34 @@ export default async function handler(req, res) {
     return res.status(400).json({ error: 'Message invalide' });
   }
 
+  if (!['single', 'group', 'all'].includes(type)) {
+    return res.status(400).json({ error: 'Type invalide' });
+  }
+
   let recipients = [];
 
   if (type === 'single') {
-    recipients = [email];
+    const cleanEmail = String(email || '').toLowerCase().trim();
+
+    if (!isValidEmail(cleanEmail)) {
+      return res.status(400).json({ error: 'Email invalide' });
+    }
+
+    recipients = [cleanEmail];
   }
 
   if (type === 'group') {
-    recipients = requestedRecipients;
+    if (!Array.isArray(requestedRecipients)) {
+      return res.status(400).json({ error: 'Liste de destinataires invalide' });
+    }
+
+    recipients = requestedRecipients
+      .map((recipient) => String(recipient || '').toLowerCase().trim())
+      .filter(Boolean);
   }
 
   if (type === 'all') {
-    const { data } = await supabase
+    const { data, error } = await supabase
       .from('leads')
       .select('email,name')
       .eq('subscribed', true)
@@ -197,7 +223,19 @@ export default async function handler(req, res) {
       .not('verified_at', 'is', null)
       .is('unsubscribed_at', null);
 
-    recipients = data.map(l => l.email);
+    if (error) throw error;
+
+    recipients = (data || []).map((lead) => String(lead.email || '').toLowerCase().trim()).filter(Boolean);
+  }
+
+  recipients = [...new Set(recipients)].filter(isValidEmail);
+
+  if (!recipients.length) {
+    return res.status(400).json({ error: 'Aucun destinataire valide' });
+  }
+
+  if (recipients.length > MAX_RECIPIENTS) {
+    return res.status(400).json({ error: `Limite temporaire : ${MAX_RECIPIENTS} destinataires maximum par envoi` });
   }
 
   const results = [];
@@ -207,16 +245,30 @@ export default async function handler(req, res) {
     const hash = hashToken(token);
     const unsubscribeUrl = `https://qyraze.com/api/unsubscribe?token=${token}`;
 
-    await supabase
+    const { error: tokenUpdateError } = await supabase
       .from('leads')
       .update({ unsubscribe_token_hash: hash })
       .eq('email', recipient);
+
+    if (tokenUpdateError) {
+      await logEmailSend({
+        recipient,
+        subject,
+        type,
+        success: false,
+        errorMessage: 'Erreur génération lien désinscription',
+        adminEmail: adminSession.email || null,
+      });
+
+      results.push({ email: recipient, success: false, error: 'Erreur génération lien désinscription' });
+      continue;
+    }
 
     const { data: lead } = await supabase
       .from('leads')
       .select('name')
       .eq('email', recipient)
-      .single();
+      .maybeSingle();
 
     const finalHtml = buildEmailHTML(rawMessage.trim(), lead?.name, unsubscribeUrl);
 
