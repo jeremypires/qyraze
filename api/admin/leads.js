@@ -118,7 +118,7 @@ export default async function handler(req, res) {
 
     const { data, error } = await supabase
       .from('leads')
-      .select('id,email,created_at,verified_at,consent,subscribed,deleted,unsubscribed_at')
+      .select('id,name,email,created_at,verified_at,consent,subscribed,deleted,unsubscribed_at')
       .not('verified_at', 'is', null)
       .eq('consent', true)
       .eq('subscribed', true)
@@ -136,6 +136,7 @@ export default async function handler(req, res) {
       .filter((lead) => lead?.email)
       .map((lead) => ({
         id: lead.id,
+        name: lead.name ? String(lead.name).trim() : null,
         email: String(lead.email).toLowerCase().trim(),
         created_at: lead.created_at || null,
       }));
