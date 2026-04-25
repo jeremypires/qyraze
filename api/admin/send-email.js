@@ -104,6 +104,29 @@ function isValidEmail(email) {
   return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
 }
 
+function createRawUnsubscribeToken() {
+  return crypto.randomBytes(32).toString('hex');
+}
+
+function hashToken(token) {
+  return crypto.createHash('sha256').update(token).digest('hex');
+}
+
+async function logEmailSend({ recipient, subject, type, success, errorMessage, adminEmail }) {
+  try {
+    await supabase.from('email_logs').insert({
+      recipient_email: recipient,
+      subject,
+      send_type: type,
+      success,
+      error_message: errorMessage || null,
+      admin_email: adminEmail || null,
+    });
+  } catch (logError) {
+    console.error('Email log error:', logError?.message || logError);
+  }
+}
+
 export default async function handler(req, res) {
   if (req.method !== 'POST') {
     return res.status(405).json({ error: 'Method not allowed' });
@@ -194,16 +217,63 @@ export default async function handler(req, res) {
     const results = [];
 
     for (const recipient of filteredRecipients) {
+      const unsubscribeToken = createRawUnsubscribeToken();
+      const unsubscribeTokenHash = hashToken(unsubscribeToken);
+      const unsubscribeUrl = `https://qyraze.com/api/unsubscribe?token=${encodeURIComponent(unsubscribeToken)}`;
+
+      const { error: tokenUpdateError } = await supabase
+        .from('leads')
+        .update({ unsubscribe_token_hash: unsubscribeTokenHash })
+        .eq('email', recipient);
+
+      if (tokenUpdateError) {
+        await logEmailSend({
+          recipient,
+          subject,
+          type,
+          success: false,
+          errorMessage: 'Erreur génération lien désinscription',
+          adminEmail: adminSession.email || null,
+        });
+
+        results.push({ email: recipient, success: false, error: 'Erreur génération lien désinscription' });
+        continue;
+      }
+
+      const finalHtml = `${emailHtml}
+        <div style="margin-top:30px; font-size:12px; color:#64748b; text-align:center;">
+          <a href="${unsubscribeUrl}" style="color:#2563eb; text-decoration:underline;">Se désinscrire</a>
+        </div>
+      `;
+
       const { error } = await resend.emails.send({
         from: process.env.EMAIL_FROM,
         to: recipient,
         subject,
-        html: emailHtml,
+        html: finalHtml,
       });
 
       if (error) {
+        await logEmailSend({
+          recipient,
+          subject,
+          type,
+          success: false,
+          errorMessage: error.message || 'Erreur Resend',
+          adminEmail: adminSession.email || null,
+        });
+
         results.push({ email: recipient, success: false, error: error.message || 'Erreur Resend' });
       } else {
+        await logEmailSend({
+          recipient,
+          subject,
+          type,
+          success: true,
+          errorMessage: null,
+          adminEmail: adminSession.email || null,
+        });
+
         results.push({ email: recipient, success: true });
       }
     }
