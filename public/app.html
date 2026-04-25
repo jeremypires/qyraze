@@ -57,22 +57,25 @@
         </div>
 
         <form id="adminEmailForm" class="admin-mail-form">
-          <div class="admin-form-row">
+          <div class="admin-send-options">
+            <label class="admin-check-row">
+              <input id="adminSendAll" type="checkbox" />
+              <span>Envoyer à tous les leads actifs</span>
+            </label>
+            <p class="admin-help-text">Sinon, sélectionne un ou plusieurs leads ci-dessous, ou ajoute des emails manuellement.</p>
+          </div>
+
+          <div class="admin-form-row" id="adminRecipientsWrap">
             <label class="admin-field">
-              <span>Type d’envoi</span>
-              <select id="adminSendType" class="admin-input">
-                <option value="single">Un seul email</option>
-                <option value="group">Groupe</option>
-                <option value="all">Tous les inscrits actifs</option>
-              </select>
+              <span>Leads</span>
+              <select id="adminLeadSelect" class="admin-input" multiple size="6"></select>
+              <small class="admin-help-text">Maintiens Cmd/Ctrl pour sélectionner plusieurs leads.</small>
             </label>
 
-            <label id="adminSingleEmailWrap" class="admin-field">
-              <span>Email destinataire</span>
-              <select id="adminLeadSelect" class="admin-input">
-                <option value="">Choisir un lead</option>
-              </select>
-              <input id="adminSingleEmail" class="admin-input" type="email" placeholder="ou entrer un email" autocomplete="email" />
+            <label class="admin-field">
+              <span>Emails manuels</span>
+              <textarea id="adminManualEmails" class="admin-textarea small" rows="6" placeholder="email1@exemple.com&#10;email2@exemple.com"></textarea>
+              <small class="admin-help-text">Un email par ligne, ou séparés par des virgules.</small>
             </label>
           </div>
 
@@ -154,9 +157,9 @@
 
     function bootAdminEmail() {
       const form = document.getElementById('adminEmailForm');
-      const typeInput = document.getElementById('adminSendType');
-      const singleEmailWrap = document.getElementById('adminSingleEmailWrap');
-      const singleEmail = document.getElementById('adminSingleEmail');
+      const sendAll = document.getElementById('adminSendAll');
+      const recipientsWrap = document.getElementById('adminRecipientsWrap');
+      const manualEmails = document.getElementById('adminManualEmails');
       const subjectInput = document.getElementById('adminSubject');
       const htmlInput = document.getElementById('adminHtml');
       const resultEl = document.getElementById('adminEmailResult');
@@ -165,21 +168,29 @@
       const sendBtn = document.getElementById('adminSendBtn');
       const leadSelect = document.getElementById('adminLeadSelect');
 
-      if (!form || !typeInput || !subjectInput || !htmlInput) return;
+      if (!form || !subjectInput || !htmlInput) return;
 
-      function updateSingleVisibility() {
-        if (!singleEmailWrap) return;
-        singleEmailWrap.style.display = typeInput.value === 'single' ? 'grid' : 'none';
+      function updateRecipientVisibility() {
+        if (!recipientsWrap || !sendAll) return;
+        recipientsWrap.style.display = sendAll.checked ? 'none' : 'grid';
       }
 
-      function setResult(message, success = false) {
-        if (!resultEl) return;
-        resultEl.className = success ? 'admin-result success' : 'admin-result error';
-        resultEl.textContent = message;
+      function parseManualEmails(value) {
+        return String(value || '')
+          .split(/[\n,;]/)
+          .map((email) => email.trim().toLowerCase())
+          .filter(Boolean);
       }
 
-      typeInput.addEventListener('change', updateSingleVisibility);
-      updateSingleVisibility();
+      function getSelectedLeadEmails() {
+        if (!leadSelect) return [];
+        return Array.from(leadSelect.selectedOptions)
+          .map((option) => option.value.trim().toLowerCase())
+          .filter(Boolean);
+      }
+
+      if (sendAll) sendAll.addEventListener('change', updateRecipientVisibility);
+      updateRecipientVisibility();
 
       // Load leads from API
       if (leadSelect) {
@@ -191,6 +202,8 @@
           .then(data => {
             if (!data?.leads) return;
 
+            leadSelect.innerHTML = '';
+
             data.leads.forEach(lead => {
               const option = document.createElement('option');
               option.value = lead.email;
@@ -199,13 +212,6 @@
             });
           })
           .catch(() => {});
-
-        // Auto fill input when selecting lead
-        leadSelect.addEventListener('change', () => {
-          if (singleEmail && leadSelect.value) {
-            singleEmail.value = leadSelect.value;
-          }
-        });
       }
 
       if (previewBtn && previewEl) {
@@ -230,12 +236,30 @@
         }
 
         try {
-          const payload = {
-            type: typeInput.value,
-            email: singleEmail?.value?.trim() || '',
-            subject: subjectInput.value.trim(),
-            html: htmlInput.value.trim(),
-          };
+          const selectedEmails = Array.from(new Set([
+            ...getSelectedLeadEmails(),
+            ...parseManualEmails(manualEmails?.value),
+          ]));
+
+          const payload = sendAll?.checked
+            ? {
+                type: 'all',
+                email: '',
+                recipients: [],
+                subject: subjectInput.value.trim(),
+                html: htmlInput.value.trim(),
+              }
+            : {
+                type: selectedEmails.length > 1 ? 'group' : 'single',
+                email: selectedEmails.length === 1 ? selectedEmails[0] : '',
+                recipients: selectedEmails,
+                subject: subjectInput.value.trim(),
+                html: htmlInput.value.trim(),
+              };
+
+          if (!sendAll?.checked && selectedEmails.length === 0) {
+            throw new Error('Choisis au moins un lead ou ajoute un email manuel.');
+          }
 
           const response = await fetch('/api/admin/send-email', {
             method: 'POST',
@@ -260,6 +284,12 @@
           }
         }
       });
+
+      function setResult(message, success = false) {
+        if (!resultEl) return;
+        resultEl.className = success ? 'admin-result success' : 'admin-result error';
+        resultEl.textContent = message;
+      }
     }
 
     document.getElementById('logoutBtn')?.addEventListener('click', async () => {
