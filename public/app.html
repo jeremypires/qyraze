@@ -176,6 +176,7 @@
 
       let recipients = [];
       let availableLeads = [];
+      if (suggestionsBox) suggestionsBox.style.display = 'none';
 
       function addRecipient(email) {
         email = email.trim().toLowerCase();
@@ -329,7 +330,7 @@
               };
 
           if (!sendAll?.checked && selectedEmails.length === 0) {
-            throw new Error('Choisis au moins un lead ou ajoute un email manuel.');
+            throw new Error('Ajoute au moins un destinataire.');
           }
 
           const response = await fetch('/api/admin/send-email', {
@@ -356,11 +357,6 @@
         }
       });
 
-      function setResult(message, success = false) {
-        if (!resultEl) return;
-        resultEl.className = success ? 'admin-result success' : 'admin-result error';
-        resultEl.textContent = message;
-      }
     }
 
     document.getElementById('logoutBtn')?.addEventListener('click', async () => {

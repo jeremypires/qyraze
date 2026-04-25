@@ -2305,3 +2305,142 @@ a {
 .admin-locked {
   display: none !important;
 }
+
+/* ─────────────────────────────────────────
+   ADMIN RECIPIENTS — GMAIL-LIKE SEARCH
+───────────────────────────────────────── */
+.admin-recipient-zone {
+  display: grid;
+  grid-template-columns: 1fr;
+  width: 100%;
+}
+
+.admin-recipient-field {
+  grid-column: 1 / -1;
+  width: 100%;
+}
+
+.admin-send-options {
+  display: grid;
+  gap: 8px;
+  margin-bottom: 4px;
+}
+
+.admin-check-row {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  color: var(--white);
+  font-size: 14px;
+  cursor: pointer;
+}
+
+.admin-check-row input {
+  accent-color: var(--cyan);
+}
+
+.admin-help-text {
+  color: var(--muted-2);
+  font-size: 12px;
+  line-height: 1.5;
+}
+
+.admin-combobox {
+  position: relative;
+  display: grid;
+  gap: 10px;
+  width: 100%;
+}
+
+.admin-recipient-input {
+  width: 100%;
+  min-height: 58px;
+  padding: 16px 18px;
+  font-size: 15px;
+  border-color: rgba(91, 200, 255, 0.18);
+  background: rgba(255, 255, 255, 0.045);
+}
+
+.admin-recipient-input:focus {
+  border-color: rgba(91, 200, 255, 0.55);
+  box-shadow: 0 0 0 4px rgba(91, 200, 255, 0.08);
+  outline: none;
+}
+
+.admin-chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.admin-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  max-width: 100%;
+  padding: 8px 10px;
+  border: 1px solid rgba(91, 200, 255, 0.24);
+  border-radius: 999px;
+  background: rgba(91, 200, 255, 0.09);
+  color: var(--white);
+  cursor: pointer;
+  font: inherit;
+  font-size: 13px;
+}
+
+.admin-chip span {
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.admin-chip strong,
+.admin-chip-remove {
+  display: inline-grid;
+  place-items: center;
+  width: 18px;
+  height: 18px;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.08);
+  cursor: pointer;
+  font-weight: 800;
+}
+
+.admin-lead-suggestions {
+  display: none;
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: calc(100% + 6px);
+  z-index: 80;
+  gap: 4px;
+  padding: 8px;
+  border-radius: var(--r-sm);
+  border: 1px solid var(--border);
+  background: rgba(10, 14, 25, 0.98);
+  box-shadow: var(--shadow-lg);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+}
+
+.admin-lead-suggestion {
+  width: 100%;
+  border: 0;
+  border-radius: 10px;
+  background: transparent;
+  color: var(--white);
+  text-align: left;
+  padding: 11px 12px;
+  cursor: pointer;
+  font: inherit;
+}
+
+.admin-lead-suggestion:hover {
+  background: rgba(91, 200, 255, 0.1);
+}
+
+@media (max-width: 800px) {
+  .admin-recipient-input {
+    min-height: 54px;
+    font-size: 16px;
+  }
+}
