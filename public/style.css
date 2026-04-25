@@ -2300,3 +2300,8 @@ a {
     grid-template-columns: repeat(2, 1fr);
   }
 }
+
+/* Security visibility gate for protected admin UI */
+.admin-locked {
+  display: none !important;
+}
