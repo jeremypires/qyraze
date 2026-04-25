@@ -5,6 +5,11 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Admin — Qyraze</title>
   <link rel="stylesheet" href="/style.css" />
+  <style>
+    .admin-locked {
+      display: none !important;
+    }
+  </style>
 </head>
 <body>
   <div id="adminLoader" class="admin-loader">
@@ -124,6 +129,11 @@
   </main>
 
   <script>
+    // Quick client-side guard (prevents access before API call)
+    if (!document.cookie.includes('qyraze_admin_session')) {
+      window.location.replace('/connexion');
+    }
+
     async function checkAdminSession() {
       const sessionText = document.getElementById('adminSessionText');
       const sessionStatus = document.getElementById('adminSessionStatus');
