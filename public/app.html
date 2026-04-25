@@ -154,24 +154,73 @@
     }
 
     function bootAdminEmail() {
+      function escapeHtml(value) {
+        return String(value || '')
+          .replaceAll('&', '&amp;')
+          .replaceAll('<', '&lt;')
+          .replaceAll('>', '&gt;')
+          .replaceAll('"', '&quot;')
+          .replaceAll("'", '&#039;');
+      }
+
       function buildEmailHTML(message) {
+        const safeMessage = escapeHtml(message)
+          .split('\n')
+          .map((line) => line.trim() ? line : '&nbsp;')
+          .join('<br>');
+
         return `
-          <div style="font-family: Arial, sans-serif; background:#0a0e19; padding:40px;">
-            <div style="max-width:600px; margin:auto; background:#111827; border-radius:14px; overflow:hidden; border:1px solid rgba(255,255,255,0.08);">
-              
-              <div style="padding:22px; text-align:center; border-bottom:1px solid rgba(255,255,255,0.08);">
-                <img src="/logo.png" style="height:42px;" />
-              </div>
+          <div style="margin:0; padding:0; background:#070b14; font-family: Arial, Helvetica, sans-serif; color:#0f172a;">
+            <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="border-collapse:collapse; background:#070b14; padding:0; margin:0;">
+              <tr>
+                <td align="center" style="padding:42px 18px;">
+                  <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="max-width:640px; border-collapse:collapse;">
+                    <tr>
+                      <td align="center" style="padding:0 0 22px;">
+                        <img src="https://qyraze.com/logo.png" alt="Qyraze" style="height:46px; display:block; margin:0 auto;" />
+                      </td>
+                    </tr>
 
-              <div style="padding:32px; color:#ffffff; line-height:1.7; font-size:15px;">
-                ${message.replace(/\n/g, '<br>')}
-              </div>
+                    <tr>
+                      <td style="background:#ffffff; border-radius:22px; overflow:hidden; border:1px solid rgba(255,255,255,0.08); box-shadow:0 24px 80px rgba(0,0,0,0.28);">
+                        <div style="height:5px; background:linear-gradient(90deg,#5bc8ff,#8ee7ff,#5bc8ff);"></div>
 
-              <div style="padding:20px; text-align:center; font-size:12px; color:#9ca3af; border-top:1px solid rgba(255,255,255,0.08);">
-                © Qyraze — Plateforme intelligente
-              </div>
+                        <div style="padding:34px 34px 10px;">
+                          <div style="display:inline-block; padding:7px 11px; border-radius:999px; background:#eef8ff; color:#0369a1; font-size:12px; font-weight:700; letter-spacing:.02em; margin-bottom:18px;">
+                            Message Qyraze
+                          </div>
 
-            </div>
+                          <h1 style="margin:0 0 18px; color:#0f172a; font-size:26px; line-height:1.25; font-weight:800;">
+                            Information importante
+                          </h1>
+
+                          <div style="color:#334155; font-size:16px; line-height:1.75; margin:0 0 26px;">
+                            ${safeMessage}
+                          </div>
+
+                          <div style="margin:26px 0 0; padding:18px 20px; border-radius:16px; background:#f8fafc; border:1px solid #e2e8f0; color:#64748b; font-size:14px; line-height:1.6;">
+                            Cet email a été envoyé depuis l’espace sécurisé Qyraze.
+                          </div>
+                        </div>
+
+                        <div style="padding:22px 34px 32px;">
+                          <a href="https://qyraze.com" style="display:inline-block; text-decoration:none; background:#0f172a; color:#ffffff; padding:13px 18px; border-radius:12px; font-weight:700; font-size:14px;">
+                            Accéder à Qyraze
+                          </a>
+                        </div>
+                      </td>
+                    </tr>
+
+                    <tr>
+                      <td align="center" style="padding:22px 12px 0; color:#94a3b8; font-size:12px; line-height:1.6;">
+                        Qyraze — Plateforme intelligente<br />
+                        qyraze.com
+                      </td>
+                    </tr>
+                  </table>
+                </td>
+              </tr>
+            </table>
           </div>
         `;
       }
@@ -189,6 +238,12 @@
       const sendBtn = document.getElementById('adminSendBtn');
 
       if (!form || !subjectInput || !htmlInput) return;
+
+      function setResult(message, success = false) {
+        if (!resultEl) return;
+        resultEl.className = success ? 'admin-result success' : 'admin-result error';
+        resultEl.textContent = message;
+      }
 
       function updateRecipientVisibility() {
         if (!recipientsWrap || !sendAll) return;
@@ -304,7 +359,7 @@
           previewEl.style.display = 'block';
           previewEl.innerHTML = htmlInput.value
             ? buildEmailHTML(htmlInput.value)
-            : '<p>Aucun contenu à prévisualiser.</p>';
+            : '<p style="color:#0f172a; font-family:Arial,sans-serif;">Aucun contenu à prévisualiser.</p>';
         });
       }
 
