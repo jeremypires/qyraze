@@ -42,28 +42,9 @@
           <div class="login-badge">Admin sécurisé</div>
           <h1 class="login-title">Dashboard Qyraze</h1>
           <p class="login-subtitle">Gère tes emails, tes leads et tes actions depuis une interface propre et sécurisée.</p>
-          <p id="adminSessionText" class="admin-session-text">Vérification de la session...</p>
         </div>
       </header>
 
-      <section class="admin-kpi-grid">
-        <article class="admin-kpi-card">
-          <span>Session</span>
-          <strong id="adminSessionStatus">Vérification</strong>
-        </article>
-        <article class="admin-kpi-card">
-          <span>Sécurité</span>
-          <strong>2FA actif</strong>
-        </article>
-        <article class="admin-kpi-card">
-          <span>Email</span>
-          <strong>Resend</strong>
-        </article>
-        <article class="admin-kpi-card">
-          <span>Base</span>
-          <strong>Supabase</strong>
-        </article>
-      </section>
 
       <section class="admin-panel">
         <div class="admin-panel-head">
@@ -136,8 +117,6 @@
     }
 
     async function checkAdminSession() {
-      const sessionText = document.getElementById('adminSessionText');
-      const sessionStatus = document.getElementById('adminSessionStatus');
       const loader = document.getElementById('adminLoader');
       const adminContent = document.getElementById('adminAppContent');
       const nav = document.querySelector('.nav');
@@ -156,8 +135,6 @@
           return false;
         }
 
-        if (sessionText) sessionText.textContent = data.email ? `Connecté : ${data.email}` : 'Session admin active';
-        if (sessionStatus) sessionStatus.textContent = 'Connecté';
         if (adminContent) adminContent.classList.remove('admin-locked');
         if (nav) nav.classList.remove('admin-locked');
         if (loader) loader.classList.add('hidden');
