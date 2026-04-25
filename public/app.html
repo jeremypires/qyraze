@@ -18,7 +18,7 @@
       <p>Vérification de la session sécurisée...</p>
     </div>
   </div>
-  <nav class="nav">
+  <nav class="nav admin-locked">
     <div class="nav-inner">
       <a class="brand brand-logo-only" href="/" aria-label="Retour à l’accueil">
         <img class="brand-mark" src="/logo.png" alt="Qyraze" />
@@ -30,7 +30,7 @@
     </div>
   </nav>
 
-  <main class="admin-page">
+  <main class="admin-page admin-locked" id="adminAppContent">
     <section class="admin-shell">
       <header class="admin-hero">
         <div>
@@ -128,6 +128,8 @@
       const sessionText = document.getElementById('adminSessionText');
       const sessionStatus = document.getElementById('adminSessionStatus');
       const loader = document.getElementById('adminLoader');
+      const adminContent = document.getElementById('adminAppContent');
+      const nav = document.querySelector('.nav');
 
       try {
         const response = await fetch('/api/admin/session', {
@@ -139,18 +141,19 @@
         const data = await response.json().catch(() => ({}));
 
         if (!response.ok || data.authenticated !== true) {
-          window.location.href = '/connexion';
+          window.location.replace('/connexion');
           return false;
         }
 
         if (sessionText) sessionText.textContent = data.email ? `Connecté : ${data.email}` : 'Session admin active';
         if (sessionStatus) sessionStatus.textContent = 'Connecté';
+        if (adminContent) adminContent.classList.remove('admin-locked');
+        if (nav) nav.classList.remove('admin-locked');
         if (loader) loader.classList.add('hidden');
         return true;
       } catch {
-        const loader = document.getElementById('adminLoader');
         if (loader) loader.classList.add('hidden');
-        window.location.href = '/connexion';
+        window.location.replace('/connexion');
         return false;
       }
     }
