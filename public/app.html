@@ -7,6 +7,17 @@
   <link rel="stylesheet" href="/style.css" />
 </head>
 <body>
+  <div id="adminLoader" class="admin-loader">
+    <div class="admin-loader-card">
+      <div class="admin-loader-logo"></div>
+      <div class="admin-loader-line wide"></div>
+      <div class="admin-loader-line"></div>
+      <div class="admin-loader-grid">
+        <div></div><div></div><div></div><div></div>
+      </div>
+      <p>Vérification de la session sécurisée...</p>
+    </div>
+  </div>
   <nav class="nav">
     <div class="nav-inner">
       <a class="brand brand-logo-only" href="/" aria-label="Retour à l’accueil">
@@ -116,6 +127,7 @@
     async function checkAdminSession() {
       const sessionText = document.getElementById('adminSessionText');
       const sessionStatus = document.getElementById('adminSessionStatus');
+      const loader = document.getElementById('adminLoader');
 
       try {
         const response = await fetch('/api/admin/session', {
@@ -133,8 +145,11 @@
 
         if (sessionText) sessionText.textContent = data.email ? `Connecté : ${data.email}` : 'Session admin active';
         if (sessionStatus) sessionStatus.textContent = 'Connecté';
+        if (loader) loader.classList.add('hidden');
         return true;
       } catch {
+        const loader = document.getElementById('adminLoader');
+        if (loader) loader.classList.add('hidden');
         window.location.href = '/connexion';
         return false;
       }
