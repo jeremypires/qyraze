@@ -356,7 +356,7 @@
         previewBtn.addEventListener('click', () => {
           previewEl.style.display = 'block';
           previewEl.innerHTML = htmlInput.value
-            ? buildEmailHTML(htmlInput.value, { name: 'Preview', unsubscribe: '#' })
+            ? buildEmailHTML(htmlInput.value, { name: 'Prénom', unsubscribe: '#' })
             : '<p style="color:#0f172a; font-family:Arial,sans-serif;">Aucun contenu à prévisualiser.</p>';
         });
       }
@@ -458,14 +458,14 @@
                 email: '',
                 recipients: [],
                 subject: subjectInput.value.trim(),
-                html: buildEmailHTML(htmlInput.value.trim(), { name: 'Client', unsubscribe: '#' }),
+                message: htmlInput.value.trim(),
               }
             : {
                 type: selectedEmails.length > 1 ? 'group' : 'single',
                 email: selectedEmails.length === 1 ? selectedEmails[0] : '',
                 recipients: selectedEmails,
                 subject: subjectInput.value.trim(),
-                html: buildEmailHTML(htmlInput.value.trim(), { name: 'Client', unsubscribe: '#' }),
+                message: htmlInput.value.trim(),
               };
 
           if (!sendAll?.checked && selectedEmails.length === 0) {
