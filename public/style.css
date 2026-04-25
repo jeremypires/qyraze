@@ -2193,3 +2193,110 @@ a {
     grid-template-columns: 1fr;
   }
 }
+/* ─────────────────────────────────────────
+   ADMIN LOADER / SKELETON
+───────────────────────────────────────── */
+.admin-loader {
+  position: fixed;
+  inset: 0;
+  z-index: 5000;
+  display: grid;
+  place-items: center;
+  padding: 24px;
+  background:
+    radial-gradient(circle at 50% 0%, rgba(91, 200, 255, 0.12), transparent 36%),
+    rgba(6, 8, 15, 0.96);
+  backdrop-filter: blur(18px);
+  -webkit-backdrop-filter: blur(18px);
+  transition: opacity 0.25s ease, visibility 0.25s ease;
+}
+
+.admin-loader.hidden {
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+}
+
+.admin-loader-card {
+  width: min(100%, 420px);
+  padding: 28px;
+  border: 1px solid var(--border);
+  border-radius: var(--r-lg);
+  background: var(--surface-card);
+  box-shadow: var(--shadow-lg);
+}
+
+.admin-loader-logo {
+  width: 44px;
+  height: 44px;
+  border-radius: 14px;
+  margin-bottom: 20px;
+  background: linear-gradient(135deg, rgba(91, 200, 255, 0.95), rgba(91, 200, 255, 0.18));
+  box-shadow: 0 0 40px rgba(91, 200, 255, 0.2);
+  animation: adminLoaderPulse 1.4s ease-in-out infinite;
+}
+
+.admin-loader-line,
+.admin-loader-grid div {
+  position: relative;
+  overflow: hidden;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.06);
+}
+
+.admin-loader-line {
+  height: 12px;
+  width: 68%;
+  margin-bottom: 10px;
+}
+
+.admin-loader-line.wide {
+  width: 88%;
+}
+
+.admin-loader-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 8px;
+  margin: 20px 0 16px;
+}
+
+.admin-loader-grid div {
+  height: 54px;
+  border-radius: var(--r-sm);
+}
+
+.admin-loader-line::after,
+.admin-loader-grid div::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  transform: translateX(-100%);
+  background: linear-gradient(90deg, transparent, rgba(91, 200, 255, 0.18), transparent);
+  animation: adminSkeletonSweep 1.3s ease-in-out infinite;
+}
+
+.admin-loader-card p {
+  margin: 0;
+  color: var(--muted);
+  font-size: 13px;
+}
+
+@keyframes adminSkeletonSweep {
+  to {
+    transform: translateX(100%);
+  }
+}
+
+@keyframes adminLoaderPulse {
+  50% {
+    transform: scale(0.96);
+    opacity: 0.72;
+  }
+}
+
+@media (max-width: 700px) {
+  .admin-loader-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
