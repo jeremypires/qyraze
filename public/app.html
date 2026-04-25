@@ -67,15 +67,10 @@
 
           <div class="admin-form-row" id="adminRecipientsWrap">
             <label class="admin-field">
-              <span>Leads</span>
-              <select id="adminLeadSelect" class="admin-input" multiple size="6"></select>
-              <small class="admin-help-text">Maintiens Cmd/Ctrl pour sélectionner plusieurs leads.</small>
-            </label>
-
-            <label class="admin-field">
-              <span>Emails manuels</span>
-              <textarea id="adminManualEmails" class="admin-textarea small" rows="6" placeholder="email1@exemple.com&#10;email2@exemple.com"></textarea>
-              <small class="admin-help-text">Un email par ligne, ou séparés par des virgules.</small>
+              <span>Destinataires</span>
+              <div id="adminChips" class="admin-chips"></div>
+              <input id="adminEmailInput" class="admin-input" type="text" placeholder="Ajouter un email et appuyer sur Entrée" />
+              <small class="admin-help-text">Clique sur un lead ou tape un email puis Entrée.</small>
             </label>
           </div>
 
@@ -159,14 +154,14 @@
       const form = document.getElementById('adminEmailForm');
       const sendAll = document.getElementById('adminSendAll');
       const recipientsWrap = document.getElementById('adminRecipientsWrap');
-      const manualEmails = document.getElementById('adminManualEmails');
+      const emailInput = document.getElementById('adminEmailInput');
+      const chipsContainer = document.getElementById('adminChips');
       const subjectInput = document.getElementById('adminSubject');
       const htmlInput = document.getElementById('adminHtml');
       const resultEl = document.getElementById('adminEmailResult');
       const previewEl = document.getElementById('adminEmailPreview');
       const previewBtn = document.getElementById('adminPreviewBtn');
       const sendBtn = document.getElementById('adminSendBtn');
-      const leadSelect = document.getElementById('adminLeadSelect');
 
       if (!form || !subjectInput || !htmlInput) return;
 
@@ -175,49 +170,68 @@
         recipientsWrap.style.display = sendAll.checked ? 'none' : 'grid';
       }
 
-      function parseManualEmails(value) {
-        return String(value || '')
-          .split(/[\n,;]/)
-          .map((email) => email.trim().toLowerCase())
-          .filter(Boolean);
-      }
+      let recipients = [];
 
-      function getSelectedLeadEmails() {
-        if (!leadSelect) return [];
-        return Array.from(leadSelect.selectedOptions)
-          .map((option) => option.value.trim().toLowerCase())
-          .filter(Boolean);
+      function addRecipient(email) {
+        email = email.trim().toLowerCase();
+        if (!email || recipients.includes(email)) return;
+
+        recipients.push(email);
+
+        const chip = document.createElement('div');
+        chip.className = 'admin-chip';
+        chip.textContent = email;
+
+        const remove = document.createElement('span');
+        remove.textContent = '×';
+        remove.className = 'admin-chip-remove';
+        remove.onclick = () => {
+          recipients = recipients.filter(e => e !== email);
+          chip.remove();
+        };
+
+        chip.appendChild(remove);
+        chipsContainer.appendChild(chip);
       }
 
       if (sendAll) sendAll.addEventListener('change', updateRecipientVisibility);
       updateRecipientVisibility();
 
-      // Load leads from API
-      if (leadSelect) {
-        fetch('/api/admin/leads', {
-          method: 'GET',
-          credentials: 'include'
+      fetch('/api/admin/leads', {
+        method: 'GET',
+        credentials: 'include'
+      })
+        .then(res => res.json())
+        .then(data => {
+          if (!data?.leads) return;
+
+          data.leads.forEach(lead => {
+            const btn = document.createElement('button');
+            btn.type = 'button';
+            btn.className = 'admin-lead-btn';
+            btn.textContent = lead.email;
+
+            btn.onclick = () => addRecipient(lead.email);
+
+            chipsContainer.appendChild(btn);
+          });
         })
-          .then(res => res.json())
-          .then(data => {
-            if (!data?.leads) return;
-
-            leadSelect.innerHTML = '';
-
-            data.leads.forEach(lead => {
-              const option = document.createElement('option');
-              option.value = lead.email;
-              option.textContent = lead.email;
-              leadSelect.appendChild(option);
-            });
-          })
-          .catch(() => {});
-      }
+        .catch(() => {});
 
       if (previewBtn && previewEl) {
         previewBtn.addEventListener('click', () => {
           previewEl.style.display = 'block';
           previewEl.innerHTML = htmlInput.value || '<p>Aucun contenu à prévisualiser.</p>';
+        });
+      }
+
+      if (emailInput) {
+        emailInput.addEventListener('keydown', (e) => {
+          if (e.key === 'Enter') {
+            e.preventDefault();
+            addRecipient(emailInput.value);
+            emailInput.value = '';
+          }
         });
       }
 
@@ -236,10 +250,7 @@
         }
 
         try {
-          const selectedEmails = Array.from(new Set([
-            ...getSelectedLeadEmails(),
-            ...parseManualEmails(manualEmails?.value),
-          ]));
+          const selectedEmails = recipients;
 
           const payload = sendAll?.checked
             ? {
