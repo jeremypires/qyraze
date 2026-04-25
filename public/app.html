@@ -206,9 +206,15 @@
         if (!suggestionsBox) return;
 
         const normalizedQuery = query.trim().toLowerCase();
+
+        if (!normalizedQuery) {
+          suggestionsBox.style.display = 'none';
+          return;
+        }
+
         const matches = availableLeads
           .filter((lead) => lead.email && !recipients.includes(lead.email))
-          .filter((lead) => !normalizedQuery || lead.email.includes(normalizedQuery))
+          .filter((lead) => lead.email.includes(normalizedQuery))
           .slice(0, 8);
 
         suggestionsBox.innerHTML = '';
@@ -259,7 +265,9 @@
         });
 
         emailInput.addEventListener('focus', () => {
-          renderSuggestions(emailInput.value);
+          if (emailInput.value.trim()) {
+            renderSuggestions(emailInput.value);
+          }
         });
 
         emailInput.addEventListener('keydown', (e) => {
@@ -372,78 +380,3 @@
   </script>
 </body>
 </html>
-/* Admin recipients combobox */
-.admin-recipient-field {
-  grid-column: 1 / -1;
-}
-
-.admin-combobox {
-  position: relative;
-  display: grid;
-  gap: 10px;
-}
-
-.admin-recipient-input {
-  width: 100%;
-}
-
-.admin-chips {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 8px;
-  min-height: 0;
-}
-
-.admin-chip {
-  display: inline-flex;
-  align-items: center;
-  gap: 8px;
-  padding: 8px 10px;
-  border-radius: 999px;
-  border: 1px solid rgba(91, 200, 255, 0.24);
-  background: rgba(91, 200, 255, 0.09);
-  color: var(--white);
-  font-size: 13px;
-}
-
-.admin-chip-remove {
-  display: inline-grid;
-  place-items: center;
-  width: 18px;
-  height: 18px;
-  border-radius: 999px;
-  background: rgba(255, 255, 255, 0.08);
-  cursor: pointer;
-  font-weight: 800;
-}
-
-.admin-lead-suggestions {
-  display: none;
-  position: absolute;
-  left: 0;
-  right: 0;
-  top: calc(100% + 6px);
-  z-index: 50;
-  gap: 4px;
-  padding: 8px;
-  border-radius: var(--r-sm);
-  border: 1px solid var(--border);
-  background: rgba(10, 14, 25, 0.98);
-  box-shadow: var(--shadow-lg);
-}
-
-.admin-lead-suggestion {
-  width: 100%;
-  border: 0;
-  border-radius: 10px;
-  background: transparent;
-  color: var(--white);
-  text-align: left;
-  padding: 10px 12px;
-  cursor: pointer;
-  font: inherit;
-}
-
-.admin-lead-suggestion:hover {
-  background: rgba(91, 200, 255, 0.1);
-}
