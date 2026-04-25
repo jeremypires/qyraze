@@ -129,8 +129,9 @@
   </main>
 
   <script>
-    // Quick client-side guard (prevents access before API call)
-    if (!document.cookie.includes('qyraze_admin_session')) {
+    // Quick client-side guard. The real protected session is HttpOnly,
+    // so this checks only the non-sensitive UI flag cookie.
+    if (!document.cookie.includes('qyraze_admin_flag=1')) {
       window.location.replace('/connexion');
     }
 
@@ -251,7 +252,11 @@
     }
 
     document.getElementById('logoutBtn')?.addEventListener('click', async () => {
-      document.cookie = 'qyraze_admin_session=; Max-Age=0; Path=/; SameSite=Lax; Secure';
+      document.cookie = 'qyraze_admin_flag=; Max-Age=0; Path=/; SameSite=Lax; Secure';
+      await fetch('/api/admin/logout', {
+        method: 'POST',
+        credentials: 'include',
+      }).catch(() => {});
       window.location.href = '/connexion';
     });
 

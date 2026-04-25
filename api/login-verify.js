@@ -121,10 +121,10 @@ export default async function handler(req, res) {
 
     const sessionToken = createAdminSession(payload.email || 'admin');
 
-    res.setHeader(
-      'Set-Cookie',
-      `qyraze_admin_session=${encodeURIComponent(sessionToken)}; HttpOnly; Secure; SameSite=Lax; Path=/; Max-Age=${ADMIN_SESSION_TTL_MS / 1000}`
-    );
+    res.setHeader('Set-Cookie', [
+      `qyraze_admin_session=${encodeURIComponent(sessionToken)}; HttpOnly; Secure; SameSite=Lax; Path=/; Max-Age=${ADMIN_SESSION_TTL_MS / 1000}`,
+      `qyraze_admin_flag=1; Secure; SameSite=Lax; Path=/; Max-Age=${ADMIN_SESSION_TTL_MS / 1000}`
+    ]);
 
     return res.status(200).json({ success: true });
   } catch (error) {
