@@ -186,24 +186,32 @@
         if (!email || recipients.includes(email)) return;
 
         recipients.push(email);
-
-        const chip = document.createElement('div');
-        chip.className = 'admin-chip';
-        chip.textContent = email;
-
-        const remove = document.createElement('span');
-        remove.textContent = '×';
-        remove.className = 'admin-chip-remove';
-        remove.onclick = () => {
-          recipients = recipients.filter(e => e !== email);
-          chip.remove();
-        };
-
-        chip.appendChild(remove);
-        chipsContainer.appendChild(chip);
+        renderChips();
         if (emailInput) emailInput.value = '';
         if (suggestionsBox) suggestionsBox.style.display = 'none';
         activeSuggestionIndex = -1;
+      }
+
+      function renderChips() {
+        if (!chipsContainer) return;
+        chipsContainer.innerHTML = '';
+
+        recipients.forEach((email) => {
+          const chip = document.createElement('div');
+          chip.className = 'admin-chip';
+          chip.textContent = email;
+
+          const remove = document.createElement('span');
+          remove.textContent = '×';
+          remove.className = 'admin-chip-remove';
+          remove.onclick = () => {
+            recipients = recipients.filter(e => e !== email);
+            renderChips();
+          };
+
+          chip.appendChild(remove);
+          chipsContainer.appendChild(chip);
+        });
       }
 
       function updateActiveSuggestion() {
@@ -423,9 +431,3 @@
   </script>
 </body>
 </html>
-/* Keyboard UX for admin lead suggestions */
-.admin-lead-suggestion.active,
-.admin-lead-suggestion:focus-visible {
-  background: rgba(91, 200, 255, 0.16);
-  outline: 1px solid rgba(91, 200, 255, 0.22);
-}
