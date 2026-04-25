@@ -1,6 +1,7 @@
 import crypto from 'crypto';
 
 const COOKIE_NAME = 'qyraze_admin_session';
+const ADMIN_SESSION_TTL_MS = 60 * 60 * 1000;
 
 function sign(value) {
   return crypto
@@ -96,6 +97,18 @@ export default async function handler(req, res) {
       clearAdminCookie(res);
       return res.status(401).json({ authenticated: false });
     }
+
+    // Refresh session expiration (auto extend)
+    payload.exp = Date.now() + ADMIN_SESSION_TTL_MS;
+
+    const newEncodedPayload = Buffer.from(JSON.stringify(payload)).toString('base64url');
+    const newSignature = sign(newEncodedPayload);
+    const newSessionToken = `${newEncodedPayload}.${newSignature}`;
+
+    res.setHeader('Set-Cookie', [
+      `${COOKIE_NAME}=${encodeURIComponent(newSessionToken)}; HttpOnly; Secure; SameSite=Lax; Path=/; Max-Age=${ADMIN_SESSION_TTL_MS / 1000}`,
+      `qyraze_admin_flag=1; Secure; SameSite=Lax; Path=/; Max-Age=${ADMIN_SESSION_TTL_MS / 1000}`
+    ]);
 
     return res.status(200).json({
       authenticated: true,
