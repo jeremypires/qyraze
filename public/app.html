@@ -66,11 +66,14 @@
           </div>
 
           <div class="admin-form-row" id="adminRecipientsWrap">
-            <label class="admin-field">
+            <label class="admin-field admin-recipient-field">
               <span>Destinataires</span>
-              <div id="adminChips" class="admin-chips"></div>
-              <input id="adminEmailInput" class="admin-input" type="text" placeholder="Ajouter un email et appuyer sur Entrée" />
-              <small class="admin-help-text">Clique sur un lead ou tape un email puis Entrée.</small>
+              <div class="admin-combobox">
+                <div id="adminChips" class="admin-chips"></div>
+                <input id="adminEmailInput" class="admin-input admin-recipient-input" type="text" placeholder="Rechercher un lead ou ajouter un email" autocomplete="off" />
+                <div id="adminLeadSuggestions" class="admin-lead-suggestions"></div>
+              </div>
+              <small class="admin-help-text">Recherche un lead, clique dessus, ou tape un email complet puis Entrée.</small>
             </label>
           </div>
 
@@ -156,6 +159,7 @@
       const recipientsWrap = document.getElementById('adminRecipientsWrap');
       const emailInput = document.getElementById('adminEmailInput');
       const chipsContainer = document.getElementById('adminChips');
+      const suggestionsBox = document.getElementById('adminLeadSuggestions');
       const subjectInput = document.getElementById('adminSubject');
       const htmlInput = document.getElementById('adminHtml');
       const resultEl = document.getElementById('adminEmailResult');
@@ -171,9 +175,11 @@
       }
 
       let recipients = [];
+      let availableLeads = [];
 
       function addRecipient(email) {
         email = email.trim().toLowerCase();
+        if (!/^\S+@\S+\.\S+$/.test(email)) return;
         if (!email || recipients.includes(email)) return;
 
         recipients.push(email);
@@ -192,6 +198,36 @@
 
         chip.appendChild(remove);
         chipsContainer.appendChild(chip);
+        if (emailInput) emailInput.value = '';
+        if (suggestionsBox) suggestionsBox.style.display = 'none';
+      }
+
+      function renderSuggestions(query = '') {
+        if (!suggestionsBox) return;
+
+        const normalizedQuery = query.trim().toLowerCase();
+        const matches = availableLeads
+          .filter((lead) => lead.email && !recipients.includes(lead.email))
+          .filter((lead) => !normalizedQuery || lead.email.includes(normalizedQuery))
+          .slice(0, 8);
+
+        suggestionsBox.innerHTML = '';
+
+        if (!matches.length) {
+          suggestionsBox.style.display = 'none';
+          return;
+        }
+
+        matches.forEach((lead) => {
+          const button = document.createElement('button');
+          button.type = 'button';
+          button.className = 'admin-lead-suggestion';
+          button.textContent = lead.email;
+          button.onclick = () => addRecipient(lead.email);
+          suggestionsBox.appendChild(button);
+        });
+
+        suggestionsBox.style.display = 'grid';
       }
 
       if (sendAll) sendAll.addEventListener('change', updateRecipientVisibility);
@@ -204,17 +240,9 @@
         .then(res => res.json())
         .then(data => {
           if (!data?.leads) return;
-
-          data.leads.forEach(lead => {
-            const btn = document.createElement('button');
-            btn.type = 'button';
-            btn.className = 'admin-lead-btn';
-            btn.textContent = lead.email;
-
-            btn.onclick = () => addRecipient(lead.email);
-
-            chipsContainer.appendChild(btn);
-          });
+          availableLeads = data.leads
+            .map((lead) => ({ email: String(lead.email || '').toLowerCase().trim() }))
+            .filter((lead) => lead.email);
         })
         .catch(() => {});
 
@@ -226,11 +254,35 @@
       }
 
       if (emailInput) {
+        emailInput.addEventListener('input', () => {
+          renderSuggestions(emailInput.value);
+        });
+
+        emailInput.addEventListener('focus', () => {
+          renderSuggestions(emailInput.value);
+        });
+
         emailInput.addEventListener('keydown', (e) => {
           if (e.key === 'Enter') {
             e.preventDefault();
+            const firstSuggestion = suggestionsBox?.querySelector('.admin-lead-suggestion');
+
+            if (firstSuggestion && emailInput.value.trim() && !/^\S+@\S+\.\S+$/.test(emailInput.value.trim())) {
+              firstSuggestion.click();
+              return;
+            }
+
             addRecipient(emailInput.value);
-            emailInput.value = '';
+          }
+
+          if (e.key === 'Escape' && suggestionsBox) {
+            suggestionsBox.style.display = 'none';
+          }
+        });
+
+        document.addEventListener('click', (event) => {
+          if (!event.target.closest('.admin-combobox') && suggestionsBox) {
+            suggestionsBox.style.display = 'none';
           }
         });
       }
@@ -320,3 +372,78 @@
   </script>
 </body>
 </html>
+/* Admin recipients combobox */
+.admin-recipient-field {
+  grid-column: 1 / -1;
+}
+
+.admin-combobox {
+  position: relative;
+  display: grid;
+  gap: 10px;
+}
+
+.admin-recipient-input {
+  width: 100%;
+}
+
+.admin-chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  min-height: 0;
+}
+
+.admin-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 10px;
+  border-radius: 999px;
+  border: 1px solid rgba(91, 200, 255, 0.24);
+  background: rgba(91, 200, 255, 0.09);
+  color: var(--white);
+  font-size: 13px;
+}
+
+.admin-chip-remove {
+  display: inline-grid;
+  place-items: center;
+  width: 18px;
+  height: 18px;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.08);
+  cursor: pointer;
+  font-weight: 800;
+}
+
+.admin-lead-suggestions {
+  display: none;
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: calc(100% + 6px);
+  z-index: 50;
+  gap: 4px;
+  padding: 8px;
+  border-radius: var(--r-sm);
+  border: 1px solid var(--border);
+  background: rgba(10, 14, 25, 0.98);
+  box-shadow: var(--shadow-lg);
+}
+
+.admin-lead-suggestion {
+  width: 100%;
+  border: 0;
+  border-radius: 10px;
+  background: transparent;
+  color: var(--white);
+  text-align: left;
+  padding: 10px 12px;
+  cursor: pointer;
+  font: inherit;
+}
+
+.admin-lead-suggestion:hover {
+  background: rgba(91, 200, 255, 0.1);
+}
