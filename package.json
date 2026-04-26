@@ -4,9 +4,9 @@
   "description": "Qyraze — Analyse personnalisée",
   "type": "module",
   "scripts": {
-    "dev": "vercel dev",
+    "dev": "echo 'use vercel dev directly'",
     "build": "echo \"No build step\"",
-    "start": "vercel dev"
+    "start": "echo 'use vercel'"
   },
   "dependencies": {
     "@supabase/supabase-js": "^2.104.0",
