@@ -115,11 +115,6 @@
   </main>
 
   <script>
-    // Quick client-side guard. The real protected session is HttpOnly,
-    // so this checks only the non-sensitive UI flag cookie.
-    if (!document.cookie.includes('qyraze_admin_flag=1')) {
-      window.location.replace('/connexion');
-    }
 
     async function checkAdminSession() {
       const loader = document.getElementById('adminLoader');
@@ -162,62 +157,6 @@
           .replaceAll('"', '&quot;')
           .replaceAll("'", '&#039;');
       }
-
-      function buildEmailHTML(message, user = {}) {
-        const name = user.name || 'there';
-        const unsubscribe = user.unsubscribe || '#';
-
-        const safeMessage = escapeHtml(message)
-          .split('\n')
-          .map((line) => line.trim() ? line : '&nbsp;')
-          .join('<br>');
-
-        return `
-          <div style="margin:0; padding:0; background:#f1f5f9; font-family: Arial, Helvetica, sans-serif;">
-            <table width="100%" cellpadding="0" cellspacing="0" style="max-width:640px; margin:auto;">
-
-              <tr>
-                <td style="background:#ffffff; border-radius:18px; padding:30px; border:1px solid #e2e8f0;">
-
-                  <div style="text-align:center; margin-bottom:20px;">
-                    <img src="https://qyraze.com/logo.png" style="height:42px;" />
-                  </div>
-
-                  <h2 style="font-size:22px; margin-bottom:10px; color:#0f172a;">
-                    Hey ${name},
-                  </h2>
-
-                  <p style="font-size:15px; color:#334155; line-height:1.7; margin-bottom:20px;">
-                    ${safeMessage}
-                  </p>
-
-                  <div style="background:#f8fafc; border:1px solid #e2e8f0; padding:18px; border-radius:12px; font-size:14px; color:#475569; margin-bottom:20px;">
-                    Cet email a été envoyé depuis Qyraze.
-                  </div>
-
-                  <div style="text-align:center; margin-bottom:20px;">
-                    <a href="https://qyraze.com" style="background:#0f172a; color:#ffffff; padding:12px 20px; border-radius:10px; text-decoration:none; font-weight:600;">
-                      Accéder à Qyraze
-                    </a>
-                  </div>
-
-                  <hr style="border:none; border-top:1px solid #e2e8f0; margin:20px 0;">
-
-                  <div style="font-size:13px; color:#64748b; line-height:1.6;">
-                    <strong>QYRAZE</strong><br>
-                    Plateforme intelligente<br>
-                    <br>
-                    Si tu ne souhaites plus recevoir d’emails :<br>
-                    <a href="${unsubscribe}" style="color:#2563eb;">Se désinscrire</a>
-                  </div>
-
-                </td>
-              </tr>
-
-            </table>
-          </div>
-        `;
-      }
       const form = document.getElementById('adminEmailForm');
       const sendAll = document.getElementById('adminSendAll');
       const recipientsWrap = document.getElementById('adminRecipientsWrap');
@@ -242,6 +181,25 @@
       function updateRecipientVisibility() {
         if (!recipientsWrap || !sendAll) return;
         recipientsWrap.style.display = sendAll.checked ? 'none' : 'grid';
+      }
+
+      function updateRecipientCount() {
+        if (!resultEl) return;
+        if (sendAll?.checked) {
+          resultEl.className = 'admin-result';
+          resultEl.style.display = 'block';
+          resultEl.textContent = 'Mode envoi global activé.';
+          return;
+        }
+
+        if (recipients.length > 0) {
+          resultEl.className = 'admin-result';
+          resultEl.style.display = 'block';
+          resultEl.textContent = `${recipients.length} destinataire(s) sélectionné(s).`;
+        } else if (resultEl.textContent.includes('destinataire')) {
+          resultEl.textContent = '';
+          resultEl.style.display = 'none';
+        }
       }
 
       let recipients = [];
@@ -285,6 +243,7 @@
           chip.appendChild(remove);
           chipsContainer.appendChild(chip);
         });
+        updateRecipientCount();
       }
 
       function updateActiveSuggestion() {
@@ -310,7 +269,10 @@
 
         const matches = availableLeads
           .filter((lead) => lead.email && !recipients.includes(lead.email))
-          .filter((lead) => lead.email.includes(normalizedQuery))
+          .filter((lead) =>
+            lead.email.includes(normalizedQuery) ||
+            (lead.name && lead.name.toLowerCase().includes(normalizedQuery))
+          )
           .slice(0, 8);
 
         suggestionsBox.innerHTML = '';
@@ -325,7 +287,7 @@
           const button = document.createElement('button');
           button.type = 'button';
           button.className = 'admin-lead-suggestion';
-          button.textContent = lead.email;
+          button.textContent = lead.name ? `${lead.name} — ${lead.email}` : lead.email;
           button.onclick = () => addRecipient(lead.email);
           suggestionsBox.appendChild(button);
         });
@@ -335,7 +297,12 @@
         updateActiveSuggestion();
       }
 
-      if (sendAll) sendAll.addEventListener('change', updateRecipientVisibility);
+      if (sendAll) {
+        sendAll.addEventListener('change', () => {
+          updateRecipientVisibility();
+          updateRecipientCount();
+        });
+      }
       updateRecipientVisibility();
 
       fetch('/api/admin/leads', {
@@ -347,7 +314,10 @@
         .then(data => {
           if (!data?.leads) return;
           availableLeads = data.leads
-            .map((lead) => ({ email: String(lead.email || '').toLowerCase().trim() }))
+            .map((lead) => ({
+              name: lead.name ? String(lead.name).trim() : null,
+              email: String(lead.email || '').toLowerCase().trim(),
+            }))
             .filter((lead) => lead.email);
         })
         .catch(() => {});
@@ -356,7 +326,7 @@
         previewBtn.addEventListener('click', () => {
           previewEl.style.display = 'block';
           previewEl.innerHTML = htmlInput.value
-            ? buildEmailHTML(htmlInput.value, { name: 'Prénom', unsubscribe: '#' })
+            ? `<div style="color:#0f172a; font-family:Arial,sans-serif; line-height:1.7;">${escapeHtml(htmlInput.value).replace(/\n/g, '<br>')}</div>`
             : '<p style="color:#0f172a; font-family:Arial,sans-serif;">Aucun contenu à prévisualiser.</p>';
         });
       }
@@ -433,7 +403,7 @@
         if (resultEl) {
           resultEl.className = 'admin-result';
           resultEl.style.display = 'block';
-          resultEl.textContent = 'Envoi en cours...';
+          resultEl.textContent = '⏳ Envoi en cours...';
         }
 
         if (sendBtn) {
@@ -450,6 +420,14 @@
 
           if (!htmlInput.value.trim()) {
             throw new Error('Ajoute un message avant d’envoyer.');
+          }
+
+          if (sendAll?.checked) {
+            const confirmSend = window.confirm('⚠️ Tu vas envoyer cet email à tous les leads actifs. Continuer ?');
+            if (!confirmSend) {
+              setResult('Envoi annulé. Aucun email envoyé.');
+              return;
+            }
           }
 
           const payload = sendAll?.checked
@@ -485,9 +463,9 @@
             throw new Error(data.error || 'Envoi impossible');
           }
 
-          setResult(`Email envoyé : ${data.sent || 0}/${data.total || 0} succès.`, true);
+          setResult(`✅ Email envoyé : ${data.sent || 0}/${data.total || 0} succès.`, true);
         } catch (error) {
-          setResult(error.message || 'Erreur pendant l’envoi');
+          setResult(`❌ ${error.message || 'Erreur pendant l’envoi'}`);
         } finally {
           if (sendBtn) {
             sendBtn.disabled = false;
