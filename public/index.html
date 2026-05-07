@@ -1,13 +1,16 @@
 <!DOCTYPE html>
 <html lang="fr">
 <head>
-  <!-- Google Tag Manager -->
+  <!-- Google Tag Manager — chargé uniquement après consentement -->
   <script>
-    (function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':new Date().getTime(),event:'gtm.js'});
-    var f=d.getElementsByTagName(s)[0],j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';
-    j.async=true;j.src='https://www.googletagmanager.com/gtm.js?id='+i+dl;
-    f.parentNode.insertBefore(j,f);
-    })(window,document,'script','dataLayer','GTM-MC2DR98S');
+    function loadGTM() {
+      (function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':new Date().getTime(),event:'gtm.js'});
+      var f=d.getElementsByTagName(s)[0],j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';
+      j.async=true;j.src='https://www.googletagmanager.com/gtm.js?id='+i+dl;
+      f.parentNode.insertBefore(j,f);
+      })(window,document,'script','dataLayer','GTM-MC2DR98S');
+    }
+    if (localStorage.getItem('qyraze_cookie_consent') === 'accepted') { loadGTM(); }
   </script>
 
   <meta charset="UTF-8" />
@@ -67,7 +70,37 @@
   <script type="module" src="/app.js" defer></script>
 </head>
 <body>
-  <noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-MC2DR98S" height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
+  <!-- Bandeau consentement cookies -->
+  <div id="cookieBanner" class="cookie-banner" style="display:none">
+    <div class="cookie-banner-inner">
+      <div class="cookie-banner-text">
+        <strong>Ce site utilise des cookies</strong>
+        <p>Nous utilisons Google Analytics pour mesurer l'audience du site. Ces cookies sont activés uniquement avec votre consentement. <a href="/confidentialite">En savoir plus</a></p>
+      </div>
+      <div class="cookie-banner-actions">
+        <button id="cookieRefuse" class="cookie-btn cookie-btn-refuse">Refuser</button>
+        <button id="cookieAccept" class="cookie-btn cookie-btn-accept">Accepter</button>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    (function() {
+      var consent = localStorage.getItem('qyraze_cookie_consent');
+      if (!consent) {
+        document.getElementById('cookieBanner').style.display = 'block';
+      }
+      document.getElementById('cookieAccept').addEventListener('click', function() {
+        localStorage.setItem('qyraze_cookie_consent', 'accepted');
+        document.getElementById('cookieBanner').style.display = 'none';
+        loadGTM();
+      });
+      document.getElementById('cookieRefuse').addEventListener('click', function() {
+        localStorage.setItem('qyraze_cookie_consent', 'refused');
+        document.getElementById('cookieBanner').style.display = 'none';
+      });
+    })();
+  </script>
 
   <nav class="nav">
     <div class="nav-inner">
@@ -484,7 +517,7 @@
             <span>·</span>
             <a href="/cgu">CGU</a>
             <span>·</span>
-            <a href="mailto:contact@qyraze.com">contact@qyraze.com</a>
+            <a href="mailto:jeremy.pereirapires@gmail.com">jeremy.pereirapires@gmail.com</a>
             <span>·</span>
             <a href="https://calendar.app.google/Tr3jnHzo7oHt8Ehd7" target="_blank" rel="noopener">Réserver un appel</a>
           </div>
