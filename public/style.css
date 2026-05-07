@@ -945,36 +945,6 @@ a {
   }
 }
 
-/* ─────────────────────────────────────────
-   STICKY CTA — MOBILE
-───────────────────────────────────────── */
-.sticky-cta {
-  position: fixed;
-  left: 16px;
-  right: 16px;
-  bottom: 16px;
-  z-index: 1200;
-  display: none;
-  pointer-events: none;
-}
-
-.sticky-cta a {
-  display: block;
-  width: 100%;
-  padding: 16px 18px;
-  border-radius: 14px;
-  background: linear-gradient(135deg, #5bc8ff, #3aa8ff);
-  color: #03101e;
-  text-align: center;
-  font-weight: 900;
-  letter-spacing: 0.02em;
-  box-shadow: 0 18px 40px rgba(91, 200, 255, 0.32);
-  pointer-events: auto;
-}
-
-.sticky-cta a:active {
-  transform: translateY(1px);
-}
 
 /* ─────────────────────────────────────────
    ADMIN APP
@@ -1421,7 +1391,6 @@ a {
 
   body {
     padding-top: 64px;
-    padding-bottom: 86px;
   }
 
   .nav-links {
@@ -1535,10 +1504,6 @@ a {
     line-height: 1.5;
     text-align: center;
     overflow-wrap: anywhere;
-  }
-
-  .sticky-cta {
-    display: block;
   }
 
   .admin-recipient-input {
@@ -1796,8 +1761,7 @@ a {
   .btn-primary,
   .btn-secondary,
   .login-submit,
-  .app-btn-secondary,
-  .sticky-cta a {
+  .app-btn-secondary {
     transition: none !important;
   }
 }
