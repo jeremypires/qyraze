@@ -164,6 +164,15 @@ a {
   flex: 0 0 auto;
 }
 
+.brand-name {
+  font-family: var(--font-head);
+  font-size: 15px;
+  font-weight: 800;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--white);
+}
+
 .brand-mark {
   width: 24px;
   height: 24px;
