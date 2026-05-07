@@ -1,16 +1,36 @@
 <!DOCTYPE html>
 <html lang="fr">
 <head>
-  <!-- Google Tag Manager — chargé uniquement après consentement -->
+  <!-- Google Consent Mode v2 + GTM -->
   <script>
-    function loadGTM() {
-      (function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':new Date().getTime(),event:'gtm.js'});
-      var f=d.getElementsByTagName(s)[0],j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';
-      j.async=true;j.src='https://www.googletagmanager.com/gtm.js?id='+i+dl;
-      f.parentNode.insertBefore(j,f);
-      })(window,document,'script','dataLayer','GTM-MC2DR98S');
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+
+    // Consent Mode v2 — refus par défaut avant tout chargement
+    gtag('consent', 'default', {
+      'ad_storage':        'denied',
+      'analytics_storage': 'denied',
+      'ad_user_data':      'denied',
+      'ad_personalization':'denied',
+      'wait_for_update':   500
+    });
+
+    // Si l'utilisateur avait déjà accepté, on restaure le consentement
+    if (localStorage.getItem('qyraze_cookie_consent') === 'accepted') {
+      gtag('consent', 'update', {
+        'ad_storage':        'granted',
+        'analytics_storage': 'granted',
+        'ad_user_data':      'granted',
+        'ad_personalization':'granted'
+      });
     }
-    if (localStorage.getItem('qyraze_cookie_consent') === 'accepted') { loadGTM(); }
+
+    // GTM se charge toujours — Consent Mode contrôle ce qui s'exécute
+    (function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':new Date().getTime(),event:'gtm.js'});
+    var f=d.getElementsByTagName(s)[0],j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';
+    j.async=true;j.src='https://www.googletagmanager.com/gtm.js?id='+i+dl;
+    f.parentNode.insertBefore(j,f);
+    })(window,document,'script','dataLayer','GTM-MC2DR98S');
   </script>
 
   <meta charset="UTF-8" />
@@ -93,11 +113,22 @@
       document.getElementById('cookieAccept').addEventListener('click', function() {
         localStorage.setItem('qyraze_cookie_consent', 'accepted');
         document.getElementById('cookieBanner').style.display = 'none';
-        loadGTM();
+        gtag('consent', 'update', {
+          'ad_storage':        'granted',
+          'analytics_storage': 'granted',
+          'ad_user_data':      'granted',
+          'ad_personalization':'granted'
+        });
       });
       document.getElementById('cookieRefuse').addEventListener('click', function() {
         localStorage.setItem('qyraze_cookie_consent', 'refused');
         document.getElementById('cookieBanner').style.display = 'none';
+        gtag('consent', 'update', {
+          'ad_storage':        'denied',
+          'analytics_storage': 'denied',
+          'ad_user_data':      'denied',
+          'ad_personalization':'denied'
+        });
       });
     })();
   </script>
