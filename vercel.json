@@ -6,7 +6,8 @@
     { "source": "/app/(.*)", "destination": "/app.html" },
     { "source": "/mentions-legales", "destination": "/mentions-legales.html" },
     { "source": "/confidentialite", "destination": "/confidentialite.html" },
-    { "source": "/cgu", "destination": "/cgu.html" }
+    { "source": "/cgu", "destination": "/cgu.html" },
+    { "source": "/programme", "destination": "/programme.html" }
   ],
   "crons": [
     {
