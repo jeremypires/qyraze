@@ -1,468 +1,608 @@
 <!DOCTYPE html>
 <html lang="fr">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Programme Définitif — Jeremy</title>
-<link href="https://fonts.googleapis.com/css2?family=Archivo+Black&family=Archivo:wght@300;400;500;600&display=swap" rel="stylesheet">
-<style>
-*{margin:0;padding:0;box-sizing:border-box}
-:root{
-  --on:#00f5a0;--off:#ff6b35;--bg:#080810;
-  --surface:#10101e;--surface2:#16162a;
-  --border:#ffffff0f;--text:#f0f0f8;--muted:#5a5a78;
-  --p:#5b9cf6;--g:#fbbf24;--l:#f472b6;--gold:#ffd166;
-}
-body{background:var(--bg);color:var(--text);font-family:'Archivo',sans-serif;min-height:100vh;padding:24px 16px 80px;}
-body::before{content:'';position:fixed;top:-200px;left:-200px;width:600px;height:600px;background:radial-gradient(circle,rgba(0,245,160,0.05) 0%,transparent 60%);pointer-events:none;z-index:0;}
+  <!-- Google Consent Mode v2 + GTM -->
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
 
-.header{text-align:center;padding:32px 0 28px;position:relative;z-index:1}
-.eyebrow{font-size:10px;letter-spacing:5px;text-transform:uppercase;color:var(--muted);margin-bottom:10px}
-.header h1{font-family:'Archivo Black',sans-serif;font-size:clamp(36px,9vw,64px);line-height:1;letter-spacing:-1px}
-.header h1 .on{color:var(--on)}.header h1 .off{color:var(--off)}
-.header h1 .def{color:var(--gold)}
-.header-sub{font-size:12px;color:var(--muted);margin-top:8px;font-weight:300}
+    gtag('consent', 'default', {
+      'ad_storage':        'denied',
+      'analytics_storage': 'denied',
+      'ad_user_data':      'denied',
+      'ad_personalization':'denied',
+      'wait_for_update':   500
+    });
 
-.obj-banner{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-bottom:24px;position:relative;z-index:1}
-.obj-item{background:var(--surface);border:1px solid var(--border);border-radius:14px;padding:12px 8px;text-align:center}
-.obj-item label{display:block;font-size:9px;letter-spacing:2px;text-transform:uppercase;color:var(--muted);margin-bottom:4px}
-.obj-item span{font-family:'Archivo Black',sans-serif;font-size:18px}
-.obj-item.green span{color:var(--on)}
-.obj-item.orange span{color:var(--off)}
-.obj-item.gold span{color:var(--gold)}
+    if (localStorage.getItem('qyraze_cookie_consent') === 'accepted') {
+      gtag('consent', 'update', {
+        'ad_storage':        'granted',
+        'analytics_storage': 'granted',
+        'ad_user_data':      'granted',
+        'ad_personalization':'granted'
+      });
+    }
 
-.toggle-wrap{display:flex;justify-content:center;margin-bottom:24px;position:relative;z-index:1}
-.toggle{display:flex;background:var(--surface);border:1px solid var(--border);border-radius:100px;padding:4px;gap:4px}
-.toggle-btn{padding:10px 28px;border-radius:100px;border:none;background:transparent;color:var(--muted);font-family:'Archivo',sans-serif;font-size:13px;font-weight:600;letter-spacing:1px;text-transform:uppercase;cursor:pointer;transition:all 0.25s ease}
-.toggle-btn.active-on{background:var(--on);color:#080810}
-.toggle-btn.active-off{background:var(--off);color:#080810}
+    (function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':new Date().getTime(),event:'gtm.js'});
+    var f=d.getElementsByTagName(s)[0],j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';
+    j.async=true;j.src='https://www.googletagmanager.com/gtm.js?id='+i+dl;
+    f.parentNode.insertBefore(j,f);
+    })(window,document,'script','dataLayer','GTM-MC2DR98S');
+  </script>
 
-.kcal-hero{text-align:center;margin-bottom:20px;position:relative;z-index:1}
-.kcal-num{font-family:'Archivo Black',sans-serif;font-size:clamp(72px,18vw,120px);line-height:1;letter-spacing:-4px}
-.kcal-label{font-size:11px;letter-spacing:4px;text-transform:uppercase;color:var(--muted);margin-top:4px}
-.deficit-tag{display:inline-block;margin-top:8px;padding:4px 14px;border-radius:20px;font-size:11px;font-weight:700;letter-spacing:1px}
-.deficit-on{background:rgba(0,245,160,0.15);color:var(--on);border:1px solid rgba(0,245,160,0.3)}
-.deficit-off{background:rgba(255,107,53,0.15);color:var(--off);border:1px solid rgba(255,107,53,0.3)}
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
 
-.macros-strip{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-bottom:24px;position:relative;z-index:1}
-.macro-pill{background:var(--surface);border:1px solid var(--border);border-radius:16px;padding:14px 10px;text-align:center}
-.macro-pill label{display:block;font-size:9px;letter-spacing:3px;text-transform:uppercase;color:var(--muted);margin-bottom:4px}
-.macro-pill span{font-family:'Archivo Black',sans-serif;font-size:22px;letter-spacing:-1px}
-.macro-pill.p span{color:var(--p)}.macro-pill.g span{color:var(--g)}.macro-pill.l span{color:var(--l)}
+  <title>Programme — Qyraze</title>
+  <meta name="robots" content="noindex, nofollow" />
 
-.stack-banner{display:flex;gap:8px;margin-bottom:24px;position:relative;z-index:1;flex-wrap:wrap}
-.stack-pill{flex:1;min-width:70px;background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:10px 8px;text-align:center}
-.stack-pill .s-icon{font-size:18px;margin-bottom:4px}
-.stack-pill .s-name{font-size:10px;font-weight:600;color:var(--text);display:block}
-.stack-pill .s-dose{font-size:10px;color:var(--muted);display:block;margin-top:2px}
-.stack-pill .s-time{font-size:9px;color:var(--on);display:block;margin-top:2px;font-weight:600}
+  <!-- Icons -->
+  <link rel="icon" type="image/png" sizes="512x512" href="https://qyraze.com/logo.png" />
+  <link rel="shortcut icon" type="image/png" href="https://qyraze.com/logo.png" />
+  <link rel="apple-touch-icon" href="https://qyraze.com/logo.png" />
 
-.section-title{font-size:10px;letter-spacing:4px;text-transform:uppercase;color:var(--muted);margin-bottom:12px;padding-left:4px;position:relative;z-index:1}
+  <link rel="preload" href="/style.css" as="style" />
+  <link rel="stylesheet" href="/style.css" />
 
-.meals-list{display:flex;flex-direction:column;gap:10px;position:relative;z-index:1}
-.meal-card{background:var(--surface);border:1px solid var(--border);border-radius:18px;overflow:hidden;transition:border-color 0.2s}
-.meal-card:hover{border-color:rgba(255,255,255,0.1)}
-.meal-header{display:flex;align-items:center;justify-content:space-between;padding:14px 16px;cursor:pointer}
-.meal-header-left{display:flex;align-items:center;gap:12px}
-.meal-emoji{width:40px;height:40px;border-radius:10px;background:var(--surface2);display:flex;align-items:center;justify-content:center;font-size:19px;flex-shrink:0}
-.meal-name{font-weight:600;font-size:14px}
-.meal-time{font-size:11px;color:var(--muted);margin-top:1px}
-.kcal-badge{font-family:'Archivo Black',sans-serif;font-size:17px;letter-spacing:-0.5px}
-.chevron{width:16px;height:16px;color:var(--muted);transition:transform 0.3s;margin-left:8px;flex-shrink:0}
-.meal-card.open .chevron{transform:rotate(180deg)}
-.meal-body{display:none;padding:0 16px 14px}
-.meal-card.open .meal-body{display:block}
+  <style>
+    /* ── Programme-specific styles ── */
+    .programme-wrap {
+      max-width: 560px;
+      margin: 0 auto;
+      padding: 32px 16px 80px;
+    }
 
-.meal-macros{display:flex;gap:8px;margin-bottom:12px;padding:10px;background:var(--surface2);border-radius:10px}
-.mm{flex:1;text-align:center}
-.mm label{display:block;font-size:9px;letter-spacing:2px;text-transform:uppercase;color:var(--muted);margin-bottom:2px}
-.mm span{font-weight:700;font-size:15px}
-.mm.p span{color:var(--p)}.mm.g span{color:var(--g)}.mm.l span{color:var(--l)}
+    .prog-header {
+      text-align: center;
+      padding: 32px 0 28px;
+    }
+    .prog-eyebrow {
+      font-size: 10px;
+      letter-spacing: 5px;
+      text-transform: uppercase;
+      color: var(--muted, #888);
+      margin-bottom: 10px;
+    }
+    .prog-header h1 {
+      font-size: clamp(36px, 9vw, 64px);
+      line-height: 1;
+      letter-spacing: -1px;
+      font-weight: 900;
+    }
+    .prog-header h1 .col-on  { color: #00f5a0; }
+    .prog-header h1 .col-off { color: #ff6b35; }
+    .prog-header-sub {
+      font-size: 12px;
+      color: var(--muted, #888);
+      margin-top: 8px;
+      font-weight: 300;
+    }
 
-.items{display:flex;flex-direction:column;gap:3px}
-.item{display:flex;justify-content:space-between;align-items:center;padding:7px 10px;border-radius:8px;background:rgba(255,255,255,0.02)}
-.item-name{font-size:13px;font-weight:400}
-.item-qty{font-size:12px;color:var(--muted);font-weight:500}
-.item.hl{background:rgba(0,245,160,0.06);border:1px solid rgba(0,245,160,0.15)}
-.item.hl .item-name{color:var(--on)}.item.hl .item-qty{color:var(--on)}
-.item.hl2{background:rgba(91,156,246,0.06);border:1px solid rgba(91,156,246,0.15)}
-.item.hl2 .item-name{color:var(--p)}.item.hl2 .item-qty{color:var(--p)}
-.item.hl3{background:rgba(251,191,36,0.06);border:1px solid rgba(251,191,36,0.15)}
-.item.hl3 .item-name{color:var(--g)}.item.hl3 .item-qty{color:var(--g)}
+    /* obj banner */
+    .obj-banner { display: grid; grid-template-columns: repeat(3,1fr); gap: 8px; margin-bottom: 24px; }
+    .obj-item { background: var(--surface, #141420); border: 1px solid rgba(255,255,255,.06); border-radius: 14px; padding: 12px 8px; text-align: center; }
+    .obj-item label { display: block; font-size: 9px; letter-spacing: 2px; text-transform: uppercase; color: var(--muted, #888); margin-bottom: 4px; }
+    .obj-item span { font-size: 18px; font-weight: 900; }
+    .obj-item.green span { color: #00f5a0; }
+    .obj-item.orange span { color: #ff6b35; }
+    .obj-item.gold span { color: #ffd166; }
 
-.total-bar{display:flex;justify-content:space-between;align-items:center;padding:14px 16px;margin-top:10px;background:var(--surface2);border-radius:14px;position:relative;z-index:1;border:1px solid var(--border)}
-.total-bar-label{font-size:11px;letter-spacing:2px;text-transform:uppercase;color:var(--muted)}
-.total-bar-macros{display:flex;gap:12px}
-.tbm{text-align:center}
-.tbm span{font-family:'Archivo Black',sans-serif;font-size:16px}
-.tbm label{display:block;font-size:9px;color:var(--muted);letter-spacing:1px;text-transform:uppercase}
+    /* toggle */
+    .toggle-wrap { display: flex; justify-content: center; margin-bottom: 24px; }
+    .toggle { display: flex; background: var(--surface, #141420); border: 1px solid rgba(255,255,255,.06); border-radius: 100px; padding: 4px; gap: 4px; }
+    .toggle-btn { padding: 10px 28px; border-radius: 100px; border: none; background: transparent; color: var(--muted, #888); font-size: 13px; font-weight: 600; letter-spacing: 1px; text-transform: uppercase; cursor: pointer; transition: all .25s; }
+    .toggle-btn.active-on  { background: #00f5a0; color: #080810; }
+    .toggle-btn.active-off { background: #ff6b35; color: #080810; }
 
-.rule-box{margin-top:20px;padding:16px;border-radius:14px;position:relative;z-index:1;font-size:13px;line-height:1.7;font-weight:500}
-.rule-box.green{background:rgba(0,245,160,0.07);border:1px solid rgba(0,245,160,0.2);color:var(--on)}
-.rule-box.orange{background:rgba(255,107,53,0.07);border:1px solid rgba(255,107,53,0.2);color:var(--off)}
+    /* kcal hero */
+    .kcal-hero { text-align: center; margin-bottom: 20px; }
+    .kcal-num { font-size: clamp(72px,18vw,120px); line-height: 1; letter-spacing: -4px; font-weight: 900; }
+    .kcal-label { font-size: 11px; letter-spacing: 4px; text-transform: uppercase; color: var(--muted, #888); margin-top: 4px; }
+    .deficit-tag { display: inline-block; margin-top: 8px; padding: 4px 14px; border-radius: 20px; font-size: 11px; font-weight: 700; letter-spacing: 1px; }
+    .deficit-on  { background: rgba(0,245,160,.15); color: #00f5a0; border: 1px solid rgba(0,245,160,.3); }
+    .deficit-off { background: rgba(255,107,53,.15); color: #ff6b35; border: 1px solid rgba(255,107,53,.3); }
 
-.note{margin-top:16px;padding:14px 16px;background:rgba(255,255,255,0.02);border:1px solid var(--border);border-radius:14px;font-size:12px;color:var(--muted);line-height:1.8;position:relative;z-index:1}
-.note strong{color:var(--text)}
+    /* macros strip */
+    .macros-strip { display: grid; grid-template-columns: repeat(3,1fr); gap: 8px; margin-bottom: 24px; }
+    .macro-pill { background: var(--surface, #141420); border: 1px solid rgba(255,255,255,.06); border-radius: 16px; padding: 14px 10px; text-align: center; }
+    .macro-pill label { display: block; font-size: 9px; letter-spacing: 3px; text-transform: uppercase; color: var(--muted, #888); margin-bottom: 4px; }
+    .macro-pill span { font-size: 22px; letter-spacing: -1px; font-weight: 900; }
+    .macro-pill.p span { color: #5b9cf6; }
+    .macro-pill.g span { color: #fbbf24; }
+    .macro-pill.l span { color: #f472b6; }
 
-.view{display:none}.view.active{display:block}
-</style>
+    /* stack banner */
+    .stack-banner { display: flex; gap: 8px; margin-bottom: 24px; flex-wrap: wrap; }
+    .stack-pill { flex: 1; min-width: 70px; background: var(--surface, #141420); border: 1px solid rgba(255,255,255,.06); border-radius: 12px; padding: 10px 8px; text-align: center; }
+    .stack-pill .s-icon { font-size: 18px; margin-bottom: 4px; }
+    .stack-pill .s-name  { font-size: 10px; font-weight: 600; color: var(--text-primary, #f0f0f8); display: block; }
+    .stack-pill .s-dose  { font-size: 10px; color: var(--muted, #888); display: block; margin-top: 2px; }
+    .stack-pill .s-time  { font-size: 9px; color: #00f5a0; display: block; margin-top: 2px; font-weight: 600; }
+
+    .prog-section-title { font-size: 10px; letter-spacing: 4px; text-transform: uppercase; color: var(--muted, #888); margin-bottom: 12px; padding-left: 4px; }
+
+    /* meal cards */
+    .meals-list { display: flex; flex-direction: column; gap: 10px; }
+    .meal-card { background: var(--surface, #141420); border: 1px solid rgba(255,255,255,.06); border-radius: 18px; overflow: hidden; transition: border-color .2s; }
+    .meal-card:hover { border-color: rgba(255,255,255,.1); }
+    .meal-header { display: flex; align-items: center; justify-content: space-between; padding: 14px 16px; cursor: pointer; }
+    .meal-header-left { display: flex; align-items: center; gap: 12px; }
+    .meal-emoji { width: 40px; height: 40px; border-radius: 10px; background: rgba(255,255,255,.04); display: flex; align-items: center; justify-content: center; font-size: 19px; flex-shrink: 0; }
+    .meal-name { font-weight: 600; font-size: 14px; }
+    .meal-time { font-size: 11px; color: var(--muted, #888); margin-top: 1px; }
+    .kcal-badge { font-size: 17px; letter-spacing: -.5px; font-weight: 900; }
+    .chevron { width: 16px; height: 16px; color: var(--muted, #888); transition: transform .3s; margin-left: 8px; flex-shrink: 0; }
+    .meal-card.open .chevron { transform: rotate(180deg); }
+    .meal-body { display: none; padding: 0 16px 14px; }
+    .meal-card.open .meal-body { display: block; }
+
+    .meal-macros { display: flex; gap: 8px; margin-bottom: 12px; padding: 10px; background: rgba(255,255,255,.03); border-radius: 10px; }
+    .mm { flex: 1; text-align: center; }
+    .mm label { display: block; font-size: 9px; letter-spacing: 2px; text-transform: uppercase; color: var(--muted, #888); margin-bottom: 2px; }
+    .mm span { font-weight: 700; font-size: 15px; }
+    .mm.p span { color: #5b9cf6; }
+    .mm.g span { color: #fbbf24; }
+    .mm.l span { color: #f472b6; }
+
+    .items { display: flex; flex-direction: column; gap: 3px; }
+    .item { display: flex; justify-content: space-between; align-items: center; padding: 7px 10px; border-radius: 8px; background: rgba(255,255,255,.02); }
+    .item-name { font-size: 13px; font-weight: 400; }
+    .item-qty  { font-size: 12px; color: var(--muted, #888); font-weight: 500; }
+    .item.hl  { background: rgba(0,245,160,.06);  border: 1px solid rgba(0,245,160,.15); }
+    .item.hl  .item-name, .item.hl  .item-qty { color: #00f5a0; }
+    .item.hl2 { background: rgba(91,156,246,.06); border: 1px solid rgba(91,156,246,.15); }
+    .item.hl2 .item-name, .item.hl2 .item-qty { color: #5b9cf6; }
+    .item.hl3 { background: rgba(251,191,36,.06); border: 1px solid rgba(251,191,36,.15); }
+    .item.hl3 .item-name, .item.hl3 .item-qty { color: #fbbf24; }
+
+    /* total bar */
+    .total-bar { display: flex; justify-content: space-between; align-items: center; padding: 14px 16px; margin-top: 10px; background: rgba(255,255,255,.03); border-radius: 14px; border: 1px solid rgba(255,255,255,.06); }
+    .total-bar-label { font-size: 11px; letter-spacing: 2px; text-transform: uppercase; color: var(--muted, #888); }
+    .total-bar-macros { display: flex; gap: 12px; }
+    .tbm { text-align: center; }
+    .tbm span { font-size: 16px; font-weight: 900; }
+    .tbm label { display: block; font-size: 9px; color: var(--muted, #888); letter-spacing: 1px; text-transform: uppercase; }
+
+    /* rule box */
+    .rule-box { margin-top: 20px; padding: 16px; border-radius: 14px; font-size: 13px; line-height: 1.7; font-weight: 500; }
+    .rule-box.green  { background: rgba(0,245,160,.07);  border: 1px solid rgba(0,245,160,.2);  color: #00f5a0; }
+    .rule-box.orange { background: rgba(255,107,53,.07); border: 1px solid rgba(255,107,53,.2); color: #ff6b35; }
+
+    .prog-note { margin-top: 16px; padding: 14px 16px; background: rgba(255,255,255,.02); border: 1px solid rgba(255,255,255,.06); border-radius: 14px; font-size: 12px; color: var(--muted, #888); line-height: 1.8; }
+    .prog-note strong { color: var(--text-primary, #f0f0f8); }
+
+    .view { display: none; }
+    .view.active { display: block; }
+  </style>
 </head>
 <body>
-
-<div class="header">
-  <div class="eyebrow">Jeremy · Programme Définitif 🏆</div>
-  <h1><span class="on">ON</span> / <span class="off">OFF</span></h1>
-  <div class="header-sub">Abdos visibles · Muscle préservé · 87.15 kg → 78 kg</div>
-</div>
-
-<div class="obj-banner">
-  <div class="obj-item green"><label>Départ</label><span>87.15 kg</span></div>
-  <div class="obj-item gold"><label>Objectif</label><span>78 kg</span></div>
-  <div class="obj-item orange"><label>Deadline</label><span>22 Août</span></div>
-</div>
-
-<div class="toggle-wrap">
-  <div class="toggle">
-    <button class="toggle-btn active-on" onclick="switchView('on')">💪 Jour ON</button>
-    <button class="toggle-btn" onclick="switchView('off')">🔴 Jour OFF</button>
-  </div>
-</div>
-
-<!-- ===== JOUR ON ===== -->
-<div class="view active" id="view-on">
-
-  <div class="kcal-hero">
-    <div class="kcal-num" style="color:var(--on)">2400</div>
-    <div class="kcal-label">kcal — jour entraînement</div>
-    <div><span class="deficit-on">Déficit -500 kcal · Dépense ~2900 kcal</span></div>
-  </div>
-
-  <div class="macros-strip">
-    <div class="macro-pill p"><label>Protéines</label><span>183g</span></div>
-    <div class="macro-pill g"><label>Glucides</label><span>258g</span></div>
-    <div class="macro-pill l"><label>Lipides</label><span>59g</span></div>
-  </div>
-
-  <div class="section-title">Stack quotidien 7j/7</div>
-  <div class="stack-banner">
-    <div class="stack-pill"><div class="s-icon">🥛</div><span class="s-name">Whey ESN</span><span class="s-dose">30g matin</span><span class="s-time">Petit déj</span></div>
-    <div class="stack-pill"><div class="s-icon">🥛</div><span class="s-name">Whey ESN</span><span class="s-dose">30g goûter</span><span class="s-time">16h</span></div>
-    <div class="stack-pill"><div class="s-icon">⚡</div><span class="s-name">Créatine</span><span class="s-dose">5g</span><span class="s-time">16h</span></div>
-    <div class="stack-pill"><div class="s-icon">🐟</div><span class="s-name">Oméga 3</span><span class="s-dose">2+1 caps</span><span class="s-time">Matin/Soir</span></div>
-  </div>
-
-  <div class="section-title">Repas de la journée</div>
-  <div class="meals-list">
-
-    <!-- PETIT DEJ ON -->
-    <div class="meal-card open">
-      <div class="meal-header" onclick="toggle(this)">
-        <div class="meal-header-left">
-          <div class="meal-emoji">🌅</div>
-          <div><div class="meal-name">Petit Déjeuner</div><div class="meal-time">Au réveil · avant séance 9h</div></div>
-        </div>
-        <div style="display:flex;align-items:center">
-          <div class="kcal-badge" style="color:var(--on)">820</div>
-          <svg class="chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"/></svg>
-        </div>
+  <!-- Cookie banner -->
+  <div id="cookieBanner" class="cookie-banner" style="display:none">
+    <div class="cookie-banner-inner">
+      <div class="cookie-banner-text">
+        <strong>Ce site utilise des cookies</strong>
+        <p>Nous utilisons Google Analytics pour mesurer l'audience du site. Ces cookies sont activés uniquement avec votre consentement. <a href="/confidentialite">En savoir plus</a></p>
       </div>
-      <div class="meal-body">
-        <div class="meal-macros">
-          <div class="mm p"><label>Prot.</label><span>47g</span></div>
-          <div class="mm g"><label>Glu.</label><span>82g</span></div>
-          <div class="mm l"><label>Lip.</label><span>27g</span></div>
-        </div>
-        <div class="items">
-          <div class="item"><span class="item-name">Œufs entiers</span><span class="item-qty">3 œufs</span></div>
-          <div class="item hl"><span class="item-name">🥛 Whey ESN Vanilla</span><span class="item-qty">30g</span></div>
-          <div class="item hl2"><span class="item-name">🥛 Skyr 0%</span><span class="item-qty">120g</span></div>
-          <div class="item"><span class="item-name">Banane</span><span class="item-qty">120g</span></div>
-          <div class="item"><span class="item-name">Avoine CRU</span><span class="item-qty">50g</span></div>
-          <div class="item"><span class="item-name">Miel</span><span class="item-qty">10g</span></div>
-          <div class="item hl3"><span class="item-name">🥜 Beurre cacahouète</span><span class="item-qty">15g</span></div>
-          <div class="item hl"><span class="item-name">🐟 Oméga 3</span><span class="item-qty">2 capsules</span></div>
-        </div>
+      <div class="cookie-banner-actions">
+        <button id="cookieRefuse" class="cookie-btn cookie-btn-refuse">Refuser</button>
+        <button id="cookieAccept" class="cookie-btn cookie-btn-accept">Accepter</button>
       </div>
     </div>
-
-    <!-- DEJEUNER ON -->
-    <div class="meal-card">
-      <div class="meal-header" onclick="toggle(this)">
-        <div class="meal-header-left">
-          <div class="meal-emoji">🍽️</div>
-          <div><div class="meal-name">Déjeuner</div><div class="meal-time">12h00 · post-séance</div></div>
-        </div>
-        <div style="display:flex;align-items:center">
-          <div class="kcal-badge" style="color:var(--on)">530</div>
-          <svg class="chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"/></svg>
-        </div>
-      </div>
-      <div class="meal-body">
-        <div class="meal-macros">
-          <div class="mm p"><label>Prot.</label><span>48g</span></div>
-          <div class="mm g"><label>Glu.</label><span>55g</span></div>
-          <div class="mm l"><label>Lip.</label><span>15g</span></div>
-        </div>
-        <div class="items">
-          <div class="item"><span class="item-name">Blanc poulet/dinde CRU</span><span class="item-qty">230g</span></div>
-          <div class="item"><span class="item-name">Légumes surgelés</span><span class="item-qty">200g</span></div>
-          <div class="item hl3"><span class="item-name">🍚 Riz basmati CRU</span><span class="item-qty">60g</span></div>
-          <div class="item"><span class="item-name">Huile d'olive</span><span class="item-qty">10g</span></div>
-          <div class="item hl"><span class="item-name">🌶️ Sauce Basque Sakari</span><span class="item-qty">20g</span></div>
-        </div>
-      </div>
-    </div>
-
-    <!-- GOUTER 16H ON -->
-    <div class="meal-card">
-      <div class="meal-header" onclick="toggle(this)">
-        <div class="meal-header-left">
-          <div class="meal-emoji">🥛</div>
-          <div><div class="meal-name">Goûter</div><div class="meal-time">16h00 — tous les jours</div></div>
-        </div>
-        <div style="display:flex;align-items:center">
-          <div class="kcal-badge" style="color:var(--on)">330</div>
-          <svg class="chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"/></svg>
-        </div>
-      </div>
-      <div class="meal-body">
-        <div class="meal-macros">
-          <div class="mm p"><label>Prot.</label><span>41g</span></div>
-          <div class="mm g"><label>Glu.</label><span>22g</span></div>
-          <div class="mm l"><label>Lip.</label><span>2g</span></div>
-        </div>
-        <div class="items">
-          <div class="item hl"><span class="item-name">🥛 Whey ESN Vanilla</span><span class="item-qty">30g</span></div>
-          <div class="item hl2"><span class="item-name">🥛 Skyr 0%</span><span class="item-qty">150g</span></div>
-          <div class="item hl"><span class="item-name">⚡ Créatine</span><span class="item-qty">5g</span></div>
-        </div>
-      </div>
-    </div>
-
-    <!-- DINER ON -->
-    <div class="meal-card">
-      <div class="meal-header" onclick="toggle(this)">
-        <div class="meal-header-left">
-          <div class="meal-emoji">🌙</div>
-          <div><div class="meal-name">Dîner</div><div class="meal-time">Soir · vendredi = 2 wraps 🌯</div></div>
-        </div>
-        <div style="display:flex;align-items:center">
-          <div class="kcal-badge" style="color:var(--on)">530</div>
-          <svg class="chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"/></svg>
-        </div>
-      </div>
-      <div class="meal-body">
-        <div class="meal-macros">
-          <div class="mm p"><label>Prot.</label><span>48g</span></div>
-          <div class="mm g"><label>Glu.</label><span>55g</span></div>
-          <div class="mm l"><label>Lip.</label><span>15g</span></div>
-        </div>
-        <div class="items">
-          <div class="item"><span class="item-name">Blanc poulet/dinde CRU</span><span class="item-qty">230g</span></div>
-          <div class="item"><span class="item-name">Légumes surgelés</span><span class="item-qty">200g</span></div>
-          <div class="item hl3"><span class="item-name">🍚 Riz basmati CRU</span><span class="item-qty">60g</span></div>
-          <div class="item"><span class="item-name">Huile d'olive</span><span class="item-qty">10g</span></div>
-          <div class="item hl"><span class="item-name">🌶️ Sauce Basque Sakari</span><span class="item-qty">20g</span></div>
-          <div class="item hl"><span class="item-name">🐟 Oméga 3</span><span class="item-qty">1 capsule</span></div>
-        </div>
-      </div>
-    </div>
-
   </div>
 
-  <div class="total-bar">
-    <div class="total-bar-label">Total ON</div>
-    <div class="total-bar-macros">
-      <div class="tbm"><span style="color:var(--p)">183g</span><label>Prot.</label></div>
-      <div class="tbm"><span style="color:var(--g)">258g</span><label>Glu.</label></div>
-      <div class="tbm"><span style="color:var(--l)">59g</span><label>Lip.</label></div>
-      <div class="tbm"><span style="color:var(--on)">2400</span><label>Kcal</label></div>
-    </div>
-  </div>
+  <script>
+    (function() {
+      var consent = localStorage.getItem('qyraze_cookie_consent');
+      if (!consent) {
+        document.getElementById('cookieBanner').style.display = 'block';
+      }
+      document.getElementById('cookieAccept').addEventListener('click', function() {
+        localStorage.setItem('qyraze_cookie_consent', 'accepted');
+        document.getElementById('cookieBanner').style.display = 'none';
+        gtag('consent', 'update', {
+          'ad_storage':        'granted',
+          'analytics_storage': 'granted',
+          'ad_user_data':      'granted',
+          'ad_personalization':'granted'
+        });
+      });
+      document.getElementById('cookieRefuse').addEventListener('click', function() {
+        localStorage.setItem('qyraze_cookie_consent', 'refused');
+        document.getElementById('cookieBanner').style.display = 'none';
+        gtag('consent', 'update', {
+          'ad_storage':        'denied',
+          'analytics_storage': 'denied',
+          'ad_user_data':      'denied',
+          'ad_personalization':'denied'
+        });
+      });
+    })();
+  </script>
 
-  <div class="rule-box green">
-    💪 Mardi · Mercredi · Vendredi · Samedi<br>
-    Salle 9h→11h · Tapis 20min 10%/5kmh · 2.5L eau
-  </div>
-
-</div>
-
-<!-- ===== JOUR OFF ===== -->
-<div class="view" id="view-off">
-
-  <div class="kcal-hero">
-    <div class="kcal-num" style="color:var(--off)">1700</div>
-    <div class="kcal-label">kcal — jour repos</div>
-    <div><span class="deficit-off">Déficit -400 kcal · Dépense ~2100 kcal</span></div>
-  </div>
-
-  <div class="macros-strip">
-    <div class="macro-pill p"><label>Protéines</label><span>181g</span></div>
-    <div class="macro-pill g"><label>Glucides</label><span>110g</span></div>
-    <div class="macro-pill l"><label>Lipides</label><span>59g</span></div>
-  </div>
-
-  <div class="section-title">Stack quotidien 7j/7</div>
-  <div class="stack-banner">
-    <div class="stack-pill"><div class="s-icon">🥛</div><span class="s-name">Whey ESN</span><span class="s-dose">30g matin</span><span class="s-time">Petit déj</span></div>
-    <div class="stack-pill"><div class="s-icon">🥛</div><span class="s-name">Whey ESN</span><span class="s-dose">30g goûter</span><span class="s-time">16h</span></div>
-    <div class="stack-pill"><div class="s-icon">⚡</div><span class="s-name">Créatine</span><span class="s-dose">5g</span><span class="s-time">16h</span></div>
-    <div class="stack-pill"><div class="s-icon">🐟</div><span class="s-name">Oméga 3</span><span class="s-dose">2+1 caps</span><span class="s-time">Matin/Soir</span></div>
-  </div>
-
-  <div class="section-title">Repas de la journée</div>
-  <div class="meals-list">
-
-    <!-- PETIT DEJ OFF -->
-    <div class="meal-card open">
-      <div class="meal-header" onclick="toggle(this)">
-        <div class="meal-header-left">
-          <div class="meal-emoji">🌅</div>
-          <div><div class="meal-name">Petit Déjeuner</div><div class="meal-time">Au réveil · sans banane jour OFF</div></div>
-        </div>
-        <div style="display:flex;align-items:center">
-          <div class="kcal-badge" style="color:var(--off)">715</div>
-          <svg class="chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"/></svg>
-        </div>
+  <nav class="nav">
+    <div class="nav-inner">
+      <div class="brand">
+        <img class="brand-mark" src="/logo.png" alt="Qyraze" width="40" height="40" fetchpriority="high" decoding="async" />
+        <span class="brand-name">Qyraze</span>
       </div>
-      <div class="meal-body">
-        <div class="meal-macros">
-          <div class="mm p"><label>Prot.</label><span>46g</span></div>
-          <div class="mm g"><label>Glu.</label><span>55g</span></div>
-          <div class="mm l"><label>Lip.</label><span>27g</span></div>
-        </div>
-        <div class="items">
-          <div class="item"><span class="item-name">Œufs entiers</span><span class="item-qty">3 œufs</span></div>
-          <div class="item hl"><span class="item-name">🥛 Whey ESN Vanilla</span><span class="item-qty">30g</span></div>
-          <div class="item hl2"><span class="item-name">🥛 Skyr 0%</span><span class="item-qty">120g</span></div>
-          <div class="item"><span class="item-name">Avoine CRU</span><span class="item-qty">50g</span></div>
-          <div class="item"><span class="item-name">Miel</span><span class="item-qty">10g</span></div>
-          <div class="item hl3"><span class="item-name">🥜 Beurre cacahouète</span><span class="item-qty">15g</span></div>
-          <div class="item hl"><span class="item-name">🐟 Oméga 3</span><span class="item-qty">2 capsules</span></div>
-        </div>
+      <div class="nav-links">
+        <a href="/">Accueil</a>
+        <a class="nav-cta" href="https://calendar.app.google/Tr3jnHzo7oHt8Ehd7" target="_blank" rel="noopener">Réserver un appel</a>
       </div>
     </div>
+  </nav>
 
-    <!-- DEJEUNER OFF -->
-    <div class="meal-card">
-      <div class="meal-header" onclick="toggle(this)">
-        <div class="meal-header-left">
-          <div class="meal-emoji">🍽️</div>
-          <div><div class="meal-name">Déjeuner</div><div class="meal-time">12h00 · riz réduit</div></div>
-        </div>
-        <div style="display:flex;align-items:center">
-          <div class="kcal-badge" style="color:var(--off)">390</div>
-          <svg class="chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"/></svg>
+  <main>
+    <div class="programme-wrap">
+
+      <div class="prog-header">
+        <div class="prog-eyebrow">Jeremy · Programme Définitif</div>
+        <h1><span class="col-on">ON</span> / <span class="col-off">OFF</span></h1>
+        <div class="prog-header-sub">Abdos visibles · Muscle préservé · 87.15 kg → 78 kg</div>
+      </div>
+
+      <div class="obj-banner">
+        <div class="obj-item green"><label>Départ</label><span>87.15 kg</span></div>
+        <div class="obj-item gold"><label>Objectif</label><span>78 kg</span></div>
+        <div class="obj-item orange"><label>Deadline</label><span>22 Août</span></div>
+      </div>
+
+      <div class="toggle-wrap">
+        <div class="toggle">
+          <button class="toggle-btn active-on" onclick="switchView('on')">💪 Jour ON</button>
+          <button class="toggle-btn" onclick="switchView('off')">🔴 Jour OFF</button>
         </div>
       </div>
-      <div class="meal-body">
-        <div class="meal-macros">
-          <div class="mm p"><label>Prot.</label><span>44g</span></div>
-          <div class="mm g"><label>Glu.</label><span>18g</span></div>
-          <div class="mm l"><label>Lip.</label><span>15g</span></div>
+
+      <!-- ===== JOUR ON ===== -->
+      <div class="view active" id="view-on">
+
+        <div class="kcal-hero">
+          <div class="kcal-num" style="color:#00f5a0">2400</div>
+          <div class="kcal-label">kcal — jour entraînement</div>
+          <div><span class="deficit-tag deficit-on">Déficit -500 kcal · Dépense ~2900 kcal</span></div>
         </div>
-        <div class="items">
-          <div class="item"><span class="item-name">Blanc poulet/dinde CRU</span><span class="item-qty">220g</span></div>
-          <div class="item"><span class="item-name">Légumes surgelés</span><span class="item-qty">200g</span></div>
-          <div class="item hl3"><span class="item-name">🍚 Riz basmati CRU</span><span class="item-qty">20g</span></div>
-          <div class="item"><span class="item-name">Huile d'olive</span><span class="item-qty">10g</span></div>
-          <div class="item hl"><span class="item-name">🌶️ Sauce Basque Sakari</span><span class="item-qty">20g</span></div>
+
+        <div class="macros-strip">
+          <div class="macro-pill p"><label>Protéines</label><span>183g</span></div>
+          <div class="macro-pill g"><label>Glucides</label><span>258g</span></div>
+          <div class="macro-pill l"><label>Lipides</label><span>59g</span></div>
         </div>
+
+        <div class="prog-section-title">Stack quotidien 7j/7</div>
+        <div class="stack-banner">
+          <div class="stack-pill"><div class="s-icon">🥛</div><span class="s-name">Whey ESN</span><span class="s-dose">30g matin</span><span class="s-time">Petit déj</span></div>
+          <div class="stack-pill"><div class="s-icon">🥛</div><span class="s-name">Whey ESN</span><span class="s-dose">30g goûter</span><span class="s-time">16h</span></div>
+          <div class="stack-pill"><div class="s-icon">⚡</div><span class="s-name">Créatine</span><span class="s-dose">5g</span><span class="s-time">16h</span></div>
+          <div class="stack-pill"><div class="s-icon">🐟</div><span class="s-name">Oméga 3</span><span class="s-dose">2+1 caps</span><span class="s-time">Matin/Soir</span></div>
+        </div>
+
+        <div class="prog-section-title">Repas de la journée</div>
+        <div class="meals-list">
+
+          <div class="meal-card open">
+            <div class="meal-header" onclick="toggle(this)">
+              <div class="meal-header-left">
+                <div class="meal-emoji">🌅</div>
+                <div><div class="meal-name">Petit Déjeuner</div><div class="meal-time">Au réveil · avant séance 9h</div></div>
+              </div>
+              <div style="display:flex;align-items:center">
+                <div class="kcal-badge" style="color:#00f5a0">820</div>
+                <svg class="chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"/></svg>
+              </div>
+            </div>
+            <div class="meal-body">
+              <div class="meal-macros">
+                <div class="mm p"><label>Prot.</label><span>47g</span></div>
+                <div class="mm g"><label>Glu.</label><span>82g</span></div>
+                <div class="mm l"><label>Lip.</label><span>27g</span></div>
+              </div>
+              <div class="items">
+                <div class="item"><span class="item-name">Œufs entiers</span><span class="item-qty">3 œufs</span></div>
+                <div class="item hl"><span class="item-name">🥛 Whey ESN Vanilla</span><span class="item-qty">30g</span></div>
+                <div class="item hl2"><span class="item-name">🥛 Skyr 0%</span><span class="item-qty">120g</span></div>
+                <div class="item"><span class="item-name">Banane</span><span class="item-qty">120g</span></div>
+                <div class="item"><span class="item-name">Avoine CRU</span><span class="item-qty">50g</span></div>
+                <div class="item"><span class="item-name">Miel</span><span class="item-qty">10g</span></div>
+                <div class="item hl3"><span class="item-name">🥜 Beurre cacahouète</span><span class="item-qty">15g</span></div>
+                <div class="item hl"><span class="item-name">🐟 Oméga 3</span><span class="item-qty">2 capsules</span></div>
+              </div>
+            </div>
+          </div>
+
+          <div class="meal-card">
+            <div class="meal-header" onclick="toggle(this)">
+              <div class="meal-header-left">
+                <div class="meal-emoji">🍽️</div>
+                <div><div class="meal-name">Déjeuner</div><div class="meal-time">12h00 · post-séance</div></div>
+              </div>
+              <div style="display:flex;align-items:center">
+                <div class="kcal-badge" style="color:#00f5a0">530</div>
+                <svg class="chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"/></svg>
+              </div>
+            </div>
+            <div class="meal-body">
+              <div class="meal-macros">
+                <div class="mm p"><label>Prot.</label><span>48g</span></div>
+                <div class="mm g"><label>Glu.</label><span>55g</span></div>
+                <div class="mm l"><label>Lip.</label><span>15g</span></div>
+              </div>
+              <div class="items">
+                <div class="item"><span class="item-name">Blanc poulet/dinde CRU</span><span class="item-qty">230g</span></div>
+                <div class="item"><span class="item-name">Légumes surgelés</span><span class="item-qty">200g</span></div>
+                <div class="item hl3"><span class="item-name">🍚 Riz basmati CRU</span><span class="item-qty">60g</span></div>
+                <div class="item"><span class="item-name">Huile d'olive</span><span class="item-qty">10g</span></div>
+                <div class="item hl"><span class="item-name">🌶️ Sauce Basque Sakari</span><span class="item-qty">20g</span></div>
+              </div>
+            </div>
+          </div>
+
+          <div class="meal-card">
+            <div class="meal-header" onclick="toggle(this)">
+              <div class="meal-header-left">
+                <div class="meal-emoji">🥛</div>
+                <div><div class="meal-name">Goûter</div><div class="meal-time">16h00 — tous les jours</div></div>
+              </div>
+              <div style="display:flex;align-items:center">
+                <div class="kcal-badge" style="color:#00f5a0">330</div>
+                <svg class="chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"/></svg>
+              </div>
+            </div>
+            <div class="meal-body">
+              <div class="meal-macros">
+                <div class="mm p"><label>Prot.</label><span>41g</span></div>
+                <div class="mm g"><label>Glu.</label><span>22g</span></div>
+                <div class="mm l"><label>Lip.</label><span>2g</span></div>
+              </div>
+              <div class="items">
+                <div class="item hl"><span class="item-name">🥛 Whey ESN Vanilla</span><span class="item-qty">30g</span></div>
+                <div class="item hl2"><span class="item-name">🥛 Skyr 0%</span><span class="item-qty">150g</span></div>
+                <div class="item hl"><span class="item-name">⚡ Créatine</span><span class="item-qty">5g</span></div>
+              </div>
+            </div>
+          </div>
+
+          <div class="meal-card">
+            <div class="meal-header" onclick="toggle(this)">
+              <div class="meal-header-left">
+                <div class="meal-emoji">🌙</div>
+                <div><div class="meal-name">Dîner</div><div class="meal-time">Soir · vendredi = 2 wraps 🌯</div></div>
+              </div>
+              <div style="display:flex;align-items:center">
+                <div class="kcal-badge" style="color:#00f5a0">530</div>
+                <svg class="chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"/></svg>
+              </div>
+            </div>
+            <div class="meal-body">
+              <div class="meal-macros">
+                <div class="mm p"><label>Prot.</label><span>48g</span></div>
+                <div class="mm g"><label>Glu.</label><span>55g</span></div>
+                <div class="mm l"><label>Lip.</label><span>15g</span></div>
+              </div>
+              <div class="items">
+                <div class="item"><span class="item-name">Blanc poulet/dinde CRU</span><span class="item-qty">230g</span></div>
+                <div class="item"><span class="item-name">Légumes surgelés</span><span class="item-qty">200g</span></div>
+                <div class="item hl3"><span class="item-name">🍚 Riz basmati CRU</span><span class="item-qty">60g</span></div>
+                <div class="item"><span class="item-name">Huile d'olive</span><span class="item-qty">10g</span></div>
+                <div class="item hl"><span class="item-name">🌶️ Sauce Basque Sakari</span><span class="item-qty">20g</span></div>
+                <div class="item hl"><span class="item-name">🐟 Oméga 3</span><span class="item-qty">1 capsule</span></div>
+              </div>
+            </div>
+          </div>
+
+        </div>
+
+        <div class="total-bar">
+          <div class="total-bar-label">Total ON</div>
+          <div class="total-bar-macros">
+            <div class="tbm"><span style="color:#5b9cf6">183g</span><label>Prot.</label></div>
+            <div class="tbm"><span style="color:#fbbf24">258g</span><label>Glu.</label></div>
+            <div class="tbm"><span style="color:#f472b6">59g</span><label>Lip.</label></div>
+            <div class="tbm"><span style="color:#00f5a0">2400</span><label>Kcal</label></div>
+          </div>
+        </div>
+
+        <div class="rule-box green">
+          💪 Mardi · Mercredi · Vendredi · Samedi<br>
+          Salle 9h→11h · Tapis 20min 10%/5kmh · 2.5L eau
+        </div>
+
       </div>
+
+      <!-- ===== JOUR OFF ===== -->
+      <div class="view" id="view-off">
+
+        <div class="kcal-hero">
+          <div class="kcal-num" style="color:#ff6b35">1700</div>
+          <div class="kcal-label">kcal — jour repos</div>
+          <div><span class="deficit-tag deficit-off">Déficit -400 kcal · Dépense ~2100 kcal</span></div>
+        </div>
+
+        <div class="macros-strip">
+          <div class="macro-pill p"><label>Protéines</label><span>181g</span></div>
+          <div class="macro-pill g"><label>Glucides</label><span>110g</span></div>
+          <div class="macro-pill l"><label>Lipides</label><span>59g</span></div>
+        </div>
+
+        <div class="prog-section-title">Stack quotidien 7j/7</div>
+        <div class="stack-banner">
+          <div class="stack-pill"><div class="s-icon">🥛</div><span class="s-name">Whey ESN</span><span class="s-dose">30g matin</span><span class="s-time">Petit déj</span></div>
+          <div class="stack-pill"><div class="s-icon">🥛</div><span class="s-name">Whey ESN</span><span class="s-dose">30g goûter</span><span class="s-time">16h</span></div>
+          <div class="stack-pill"><div class="s-icon">⚡</div><span class="s-name">Créatine</span><span class="s-dose">5g</span><span class="s-time">16h</span></div>
+          <div class="stack-pill"><div class="s-icon">🐟</div><span class="s-name">Oméga 3</span><span class="s-dose">2+1 caps</span><span class="s-time">Matin/Soir</span></div>
+        </div>
+
+        <div class="prog-section-title">Repas de la journée</div>
+        <div class="meals-list">
+
+          <div class="meal-card open">
+            <div class="meal-header" onclick="toggle(this)">
+              <div class="meal-header-left">
+                <div class="meal-emoji">🌅</div>
+                <div><div class="meal-name">Petit Déjeuner</div><div class="meal-time">Au réveil · sans banane jour OFF</div></div>
+              </div>
+              <div style="display:flex;align-items:center">
+                <div class="kcal-badge" style="color:#ff6b35">715</div>
+                <svg class="chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"/></svg>
+              </div>
+            </div>
+            <div class="meal-body">
+              <div class="meal-macros">
+                <div class="mm p"><label>Prot.</label><span>46g</span></div>
+                <div class="mm g"><label>Glu.</label><span>55g</span></div>
+                <div class="mm l"><label>Lip.</label><span>27g</span></div>
+              </div>
+              <div class="items">
+                <div class="item"><span class="item-name">Œufs entiers</span><span class="item-qty">3 œufs</span></div>
+                <div class="item hl"><span class="item-name">🥛 Whey ESN Vanilla</span><span class="item-qty">30g</span></div>
+                <div class="item hl2"><span class="item-name">🥛 Skyr 0%</span><span class="item-qty">120g</span></div>
+                <div class="item"><span class="item-name">Avoine CRU</span><span class="item-qty">50g</span></div>
+                <div class="item"><span class="item-name">Miel</span><span class="item-qty">10g</span></div>
+                <div class="item hl3"><span class="item-name">🥜 Beurre cacahouète</span><span class="item-qty">15g</span></div>
+                <div class="item hl"><span class="item-name">🐟 Oméga 3</span><span class="item-qty">2 capsules</span></div>
+              </div>
+            </div>
+          </div>
+
+          <div class="meal-card">
+            <div class="meal-header" onclick="toggle(this)">
+              <div class="meal-header-left">
+                <div class="meal-emoji">🍽️</div>
+                <div><div class="meal-name">Déjeuner</div><div class="meal-time">12h00 · riz réduit</div></div>
+              </div>
+              <div style="display:flex;align-items:center">
+                <div class="kcal-badge" style="color:#ff6b35">390</div>
+                <svg class="chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"/></svg>
+              </div>
+            </div>
+            <div class="meal-body">
+              <div class="meal-macros">
+                <div class="mm p"><label>Prot.</label><span>44g</span></div>
+                <div class="mm g"><label>Glu.</label><span>18g</span></div>
+                <div class="mm l"><label>Lip.</label><span>15g</span></div>
+              </div>
+              <div class="items">
+                <div class="item"><span class="item-name">Blanc poulet/dinde CRU</span><span class="item-qty">220g</span></div>
+                <div class="item"><span class="item-name">Légumes surgelés</span><span class="item-qty">200g</span></div>
+                <div class="item hl3"><span class="item-name">🍚 Riz basmati CRU</span><span class="item-qty">20g</span></div>
+                <div class="item"><span class="item-name">Huile d'olive</span><span class="item-qty">10g</span></div>
+                <div class="item hl"><span class="item-name">🌶️ Sauce Basque Sakari</span><span class="item-qty">20g</span></div>
+              </div>
+            </div>
+          </div>
+
+          <div class="meal-card">
+            <div class="meal-header" onclick="toggle(this)">
+              <div class="meal-header-left">
+                <div class="meal-emoji">🥛</div>
+                <div><div class="meal-name">Goûter</div><div class="meal-time">16h00 — tous les jours</div></div>
+              </div>
+              <div style="display:flex;align-items:center">
+                <div class="kcal-badge" style="color:#ff6b35">330</div>
+                <svg class="chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"/></svg>
+              </div>
+            </div>
+            <div class="meal-body">
+              <div class="meal-macros">
+                <div class="mm p"><label>Prot.</label><span>41g</span></div>
+                <div class="mm g"><label>Glu.</label><span>22g</span></div>
+                <div class="mm l"><label>Lip.</label><span>2g</span></div>
+              </div>
+              <div class="items">
+                <div class="item hl"><span class="item-name">🥛 Whey ESN Vanilla</span><span class="item-qty">30g</span></div>
+                <div class="item hl2"><span class="item-name">🥛 Skyr 0%</span><span class="item-qty">150g</span></div>
+                <div class="item hl"><span class="item-name">⚡ Créatine</span><span class="item-qty">5g</span></div>
+              </div>
+            </div>
+          </div>
+
+          <div class="meal-card">
+            <div class="meal-header" onclick="toggle(this)">
+              <div class="meal-header-left">
+                <div class="meal-emoji">🌙</div>
+                <div><div class="meal-name">Dîner</div><div class="meal-time">Soir</div></div>
+              </div>
+              <div style="display:flex;align-items:center">
+                <div class="kcal-badge" style="color:#ff6b35">390</div>
+                <svg class="chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"/></svg>
+              </div>
+            </div>
+            <div class="meal-body">
+              <div class="meal-macros">
+                <div class="mm p"><label>Prot.</label><span>44g</span></div>
+                <div class="mm g"><label>Glu.</label><span>18g</span></div>
+                <div class="mm l"><label>Lip.</label><span>15g</span></div>
+              </div>
+              <div class="items">
+                <div class="item"><span class="item-name">Blanc poulet/dinde CRU</span><span class="item-qty">220g</span></div>
+                <div class="item"><span class="item-name">Légumes surgelés</span><span class="item-qty">200g</span></div>
+                <div class="item hl3"><span class="item-name">🍚 Riz basmati CRU</span><span class="item-qty">20g</span></div>
+                <div class="item"><span class="item-name">Huile d'olive</span><span class="item-qty">10g</span></div>
+                <div class="item hl"><span class="item-name">🌶️ Sauce Basque Sakari</span><span class="item-qty">20g</span></div>
+                <div class="item hl"><span class="item-name">🐟 Oméga 3</span><span class="item-qty">1 capsule</span></div>
+              </div>
+            </div>
+          </div>
+
+        </div>
+
+        <div class="total-bar">
+          <div class="total-bar-label">Total OFF</div>
+          <div class="total-bar-macros">
+            <div class="tbm"><span style="color:#5b9cf6">181g</span><label>Prot.</label></div>
+            <div class="tbm"><span style="color:#fbbf24">110g</span><label>Glu.</label></div>
+            <div class="tbm"><span style="color:#f472b6">59g</span><label>Lip.</label></div>
+            <div class="tbm"><span style="color:#ff6b35">1700</span><label>Kcal</label></div>
+          </div>
+        </div>
+
+        <div class="rule-box orange">
+          🔴 Lundi · Jeudi · Dimanche · Sans banane<br>
+          Marche 20-30 min à jeun · 2.5L eau · Repos total
+        </div>
+
+      </div>
+
+      <div class="prog-note">
+        ⚖️ <strong>Pesée chaque samedi matin</strong> à jeun ·
+        📱 <strong>Body Battery Garmin</strong> chaque matin ·
+        🏆 <strong>~180g protéines</strong> tous les jours ·
+        💧 <strong>2.5L eau</strong> minimum ·
+        🎯 <strong>78 kg — Abdos visibles — 22 Août 2026</strong>
+      </div>
+
     </div>
 
-    <!-- GOUTER 16H OFF -->
-    <div class="meal-card">
-      <div class="meal-header" onclick="toggle(this)">
-        <div class="meal-header-left">
-          <div class="meal-emoji">🥛</div>
-          <div><div class="meal-name">Goûter</div><div class="meal-time">16h00 — tous les jours</div></div>
-        </div>
-        <div style="display:flex;align-items:center">
-          <div class="kcal-badge" style="color:var(--off)">330</div>
-          <svg class="chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"/></svg>
-        </div>
-      </div>
-      <div class="meal-body">
-        <div class="meal-macros">
-          <div class="mm p"><label>Prot.</label><span>41g</span></div>
-          <div class="mm g"><label>Glu.</label><span>22g</span></div>
-          <div class="mm l"><label>Lip.</label><span>2g</span></div>
-        </div>
-        <div class="items">
-          <div class="item hl"><span class="item-name">🥛 Whey ESN Vanilla</span><span class="item-qty">30g</span></div>
-          <div class="item hl2"><span class="item-name">🥛 Skyr 0%</span><span class="item-qty">150g</span></div>
-          <div class="item hl"><span class="item-name">⚡ Créatine</span><span class="item-qty">5g</span></div>
+    <footer class="footer">
+      <div class="container">
+        <div class="footer-inner">
+          <div class="footer-left">
+            <a href="/mentions-legales">Mentions légales</a>
+            <span>·</span>
+            <a href="/confidentialite">Confidentialité</a>
+            <span>·</span>
+            <a href="/cgu">CGU</a>
+            <span>·</span>
+            <a href="mailto:jeremy.pereirapires@gmail.com">jeremy.pereirapires@gmail.com</a>
+            <span>·</span>
+            <a href="https://calendar.app.google/Tr3jnHzo7oHt8Ehd7" target="_blank" rel="noopener">Réserver un appel</a>
+          </div>
+          <div class="footer-copy">© Qyraze · Jérémy Pereira Pires · 2026</div>
         </div>
       </div>
-    </div>
+    </footer>
+  </main>
 
-    <!-- DINER OFF -->
-    <div class="meal-card">
-      <div class="meal-header" onclick="toggle(this)">
-        <div class="meal-header-left">
-          <div class="meal-emoji">🌙</div>
-          <div><div class="meal-name">Dîner</div><div class="meal-time">Soir</div></div>
-        </div>
-        <div style="display:flex;align-items:center">
-          <div class="kcal-badge" style="color:var(--off)">390</div>
-          <svg class="chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"/></svg>
-        </div>
-      </div>
-      <div class="meal-body">
-        <div class="meal-macros">
-          <div class="mm p"><label>Prot.</label><span>44g</span></div>
-          <div class="mm g"><label>Glu.</label><span>18g</span></div>
-          <div class="mm l"><label>Lip.</label><span>15g</span></div>
-        </div>
-        <div class="items">
-          <div class="item"><span class="item-name">Blanc poulet/dinde CRU</span><span class="item-qty">220g</span></div>
-          <div class="item"><span class="item-name">Légumes surgelés</span><span class="item-qty">200g</span></div>
-          <div class="item hl3"><span class="item-name">🍚 Riz basmati CRU</span><span class="item-qty">20g</span></div>
-          <div class="item"><span class="item-name">Huile d'olive</span><span class="item-qty">10g</span></div>
-          <div class="item hl"><span class="item-name">🌶️ Sauce Basque Sakari</span><span class="item-qty">20g</span></div>
-          <div class="item hl"><span class="item-name">🐟 Oméga 3</span><span class="item-qty">1 capsule</span></div>
-        </div>
-      </div>
-    </div>
-
-  </div>
-
-  <div class="total-bar">
-    <div class="total-bar-label">Total OFF</div>
-    <div class="total-bar-macros">
-      <div class="tbm"><span style="color:var(--p)">181g</span><label>Prot.</label></div>
-      <div class="tbm"><span style="color:var(--g)">110g</span><label>Glu.</label></div>
-      <div class="tbm"><span style="color:var(--l)">59g</span><label>Lip.</label></div>
-      <div class="tbm"><span style="color:var(--off)">1700</span><label>Kcal</label></div>
-    </div>
-  </div>
-
-  <div class="rule-box orange">
-    🔴 Lundi · Jeudi · Dimanche · Sans banane<br>
-    Marche 20-30 min à jeun · 2.5L eau · Repos total
-  </div>
-
-</div>
-
-<div class="note" style="margin-top:20px;position:relative;z-index:1">
-  ⚖️ <strong>Pesée chaque samedi matin</strong> à jeun ·
-  📱 <strong>Body Battery Garmin</strong> chaque matin ·
-  🏆 <strong>~180g protéines</strong> tous les jours ·
-  💧 <strong>2.5L eau</strong> minimum ·
-  🎯 <strong>78 kg — Abdos visibles — 22 Août 2026</strong>
-</div>
-
-<script>
-function switchView(t){
-  document.querySelectorAll('.view').forEach(v=>v.classList.remove('active'));
-  document.getElementById('view-'+t).classList.add('active');
-  document.querySelectorAll('.toggle-btn').forEach(b=>b.classList.remove('active-on','active-off'));
-  const btns=document.querySelectorAll('.toggle-btn');
-  if(t==='on')btns[0].classList.add('active-on');
-  else btns[1].classList.add('active-off');
-}
-function toggle(h){h.parentElement.classList.toggle('open')}
-</script>
+  <script>
+    function switchView(t) {
+      document.querySelectorAll('.view').forEach(v => v.classList.remove('active'));
+      document.getElementById('view-' + t).classList.add('active');
+      document.querySelectorAll('.toggle-btn').forEach(b => b.classList.remove('active-on', 'active-off'));
+      const btns = document.querySelectorAll('.toggle-btn');
+      if (t === 'on') btns[0].classList.add('active-on');
+      else btns[1].classList.add('active-off');
+    }
+    function toggle(h) { h.parentElement.classList.toggle('open'); }
+  </script>
 </body>
 </html>
