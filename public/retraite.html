@@ -1,0 +1,699 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <!-- Google Consent Mode v2 + GTM -->
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('consent', 'default', {
+      'ad_storage':        'denied',
+      'analytics_storage': 'denied',
+      'ad_user_data':      'denied',
+      'ad_personalization':'denied',
+      'wait_for_update':   500
+    });
+    if (localStorage.getItem('qyraze_cookie_consent') === 'accepted') {
+      gtag('consent', 'update', {
+        'ad_storage':        'granted',
+        'analytics_storage': 'granted',
+        'ad_user_data':      'granted',
+        'ad_personalization':'granted'
+      });
+    }
+    (function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':new Date().getTime(),event:'gtm.js'});
+    var f=d.getElementsByTagName(s)[0],j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';
+    j.async=true;j.src='https://www.googletagmanager.com/gtm.js?id='+i+dl;
+    f.parentNode.insertBefore(j,f);
+    })(window,document,'script','dataLayer','GTM-MC2DR98S');
+  </script>
+
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Retraite Entrepreneurs — Qyraze</title>
+  <meta name="robots" content="noindex, nofollow" />
+
+  <link rel="icon" type="image/png" sizes="512x512" href="https://qyraze.com/logo.png" />
+  <link rel="shortcut icon" type="image/png" href="https://qyraze.com/logo.png" />
+  <link rel="apple-touch-icon" href="https://qyraze.com/logo.png" />
+
+  <link rel="preload" href="/style.css" as="style" />
+  <link rel="stylesheet" href="/style.css" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet" />
+
+  <style>
+    /* ── Retraite page — light theme ── */
+    .ret-bg {
+      background: #F8F9FA;
+      min-height: 100vh;
+    }
+    .ret-wrap {
+      max-width: 640px;
+      margin: 0 auto;
+      padding: 2.5rem 1.5rem 5rem;
+      font-family: 'DM Sans', system-ui, sans-serif;
+      color: #111827;
+    }
+
+    /* divider */
+    .ret-divider { border: none; border-top: 1px solid #E5E7EB; margin: 2rem 0; }
+
+    /* ── HERO ── */
+    .ret-tag {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      background: #EFF6FF;
+      color: #2563EB;
+      font-size: 13px;
+      font-weight: 500;
+      padding: 5px 12px;
+      border-radius: 100px;
+      margin-bottom: 1.25rem;
+    }
+    .ret-tag svg { width: 14px; height: 14px; }
+
+    .ret-hero-title {
+      font-size: 26px;
+      font-weight: 500;
+      line-height: 1.35;
+      color: #111827;
+      margin: 0 0 .75rem;
+    }
+    .ret-hero-sub {
+      font-size: 15px;
+      line-height: 1.7;
+      color: #6B7280;
+      margin: 0 0 1.5rem;
+    }
+
+    .ret-metrics {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 10px;
+    }
+    .ret-metric {
+      background: #F3F4F6;
+      border-radius: 12px;
+      padding: 1rem .75rem;
+      text-align: center;
+    }
+    .ret-metric-num {
+      font-size: 24px;
+      font-weight: 600;
+      color: #111827;
+      line-height: 1;
+      margin-bottom: 4px;
+    }
+    .ret-metric-label {
+      font-size: 12px;
+      color: #6B7280;
+      line-height: 1.4;
+    }
+
+    /* ── SECTION TITLES ── */
+    .ret-section-title {
+      font-size: 18px;
+      font-weight: 500;
+      color: #111827;
+      margin: 0 0 1rem;
+    }
+    .ret-section-sub {
+      font-size: 14px;
+      color: #6B7280;
+      margin: -.5rem 0 1rem;
+      line-height: 1.6;
+    }
+
+    /* ── INCLUDES CARD ── */
+    .ret-card {
+      background: #fff;
+      border: 1px solid #E5E7EB;
+      border-radius: 14px;
+      overflow: hidden;
+    }
+    .ret-include-item {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 13px 1.25rem;
+      border-bottom: 1px solid #F3F4F6;
+      font-size: 14px;
+      color: #374151;
+      line-height: 1.5;
+    }
+    .ret-include-item:last-child { border-bottom: none; }
+    .ret-include-icon {
+      width: 30px;
+      height: 30px;
+      background: #EFF6FF;
+      border-radius: 8px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+      font-size: 15px;
+    }
+
+    /* ── POUR QUI — badges ── */
+    .ret-badges {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+    .ret-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      background: #F3F4F6;
+      color: #374151;
+      font-size: 13px;
+      font-weight: 400;
+      padding: 7px 13px;
+      border-radius: 100px;
+    }
+    .ret-badge span { font-size: 14px; }
+
+    /* ── PROGRAMME GRILLE ── */
+    .ret-prog-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 10px;
+    }
+    .ret-prog-card {
+      background: #fff;
+      border: 1px solid #E5E7EB;
+      border-radius: 14px;
+      padding: 1rem 1.25rem;
+    }
+    .ret-prog-icon { font-size: 20px; margin-bottom: 8px; }
+    .ret-prog-title {
+      font-size: 14px;
+      font-weight: 500;
+      color: #111827;
+      margin-bottom: 4px;
+    }
+    .ret-prog-desc { font-size: 13px; color: #6B7280; line-height: 1.6; }
+
+    /* ── QUESTIONNAIRE ── */
+    .ret-candidature-sep {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 1.5rem;
+    }
+    .ret-candidature-sep::before,
+    .ret-candidature-sep::after {
+      content: '';
+      flex: 1;
+      border-top: 1px solid #E5E7EB;
+    }
+    .ret-candidature-label {
+      font-size: 12px;
+      font-weight: 500;
+      color: #9CA3AF;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      white-space: nowrap;
+    }
+
+    .ret-form-title {
+      font-size: 20px;
+      font-weight: 500;
+      color: #111827;
+      margin: 0 0 .4rem;
+    }
+    .ret-form-sub {
+      font-size: 14px;
+      color: #6B7280;
+      margin: 0 0 1.5rem;
+      line-height: 1.6;
+    }
+
+    /* Progress dots */
+    .ret-progress {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      margin-bottom: 1.75rem;
+    }
+    .ret-dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: #E5E7EB;
+      transition: background .25s, transform .25s;
+    }
+    .ret-dot.active {
+      background: #2563EB;
+      transform: scale(1.25);
+    }
+    .ret-dot.done { background: #BFDBFE; }
+
+    /* Form steps */
+    .ret-step { display: none; }
+    .ret-step.active { display: block; }
+
+    .ret-field-label {
+      display: block;
+      font-size: 14px;
+      color: #374151;
+      font-weight: 500;
+      margin-bottom: 6px;
+    }
+    .ret-field-hint {
+      font-size: 12px;
+      color: #9CA3AF;
+      margin-bottom: 8px;
+      display: block;
+    }
+    .ret-input,
+    .ret-select,
+    .ret-textarea {
+      width: 100%;
+      padding: 11px 14px;
+      border: 1px solid #E5E7EB;
+      border-radius: 10px;
+      font-size: 14px;
+      font-family: 'DM Sans', system-ui, sans-serif;
+      color: #111827;
+      background: #fff;
+      outline: none;
+      transition: border-color .2s, box-shadow .2s;
+      box-sizing: border-box;
+    }
+    .ret-input:focus,
+    .ret-select:focus,
+    .ret-textarea:focus {
+      border-color: #2563EB;
+      box-shadow: 0 0 0 3px rgba(37,99,235,.08);
+    }
+    .ret-textarea { resize: vertical; min-height: 100px; line-height: 1.6; }
+    .ret-select { appearance: none; background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%236B7280' stroke-width='2'%3E%3Cpolyline points='6 9 12 15 18 9'/%3E%3C/svg%3E"); background-repeat: no-repeat; background-position: right 14px center; padding-right: 36px; }
+
+    /* Step nav buttons */
+    .ret-step-nav {
+      display: flex;
+      gap: 8px;
+      margin-top: 1.25rem;
+    }
+    .ret-btn-back {
+      padding: 11px 20px;
+      border: 1px solid #E5E7EB;
+      border-radius: 10px;
+      background: #fff;
+      font-size: 14px;
+      font-family: 'DM Sans', system-ui, sans-serif;
+      color: #6B7280;
+      cursor: pointer;
+      transition: background .2s;
+    }
+    .ret-btn-back:hover { background: #F9FAFB; }
+    .ret-btn-next {
+      flex: 1;
+      padding: 12px 20px;
+      border: none;
+      border-radius: 10px;
+      background: #2563EB;
+      color: #fff;
+      font-size: 14px;
+      font-weight: 500;
+      font-family: 'DM Sans', system-ui, sans-serif;
+      cursor: pointer;
+      transition: background .2s;
+    }
+    .ret-btn-next:hover { background: #1D4ED8; }
+
+    .ret-btn-submit {
+      width: 100%;
+      padding: 14px 20px;
+      border: none;
+      border-radius: 10px;
+      background: #2563EB;
+      color: #fff;
+      font-size: 15px;
+      font-weight: 500;
+      font-family: 'DM Sans', system-ui, sans-serif;
+      cursor: pointer;
+      transition: background .2s;
+      margin-top: 1.25rem;
+    }
+    .ret-btn-submit:hover { background: #1D4ED8; }
+
+    .ret-form-note {
+      text-align: center;
+      font-size: 12px;
+      color: #9CA3AF;
+      margin-top: .75rem;
+      line-height: 1.6;
+    }
+
+    /* ── MOBILE ── */
+    @media (max-width: 520px) {
+      .ret-prog-grid { grid-template-columns: 1fr; }
+      .ret-metrics { grid-template-columns: repeat(3, 1fr); }
+      .ret-hero-title { font-size: 22px; }
+    }
+  </style>
+</head>
+<body>
+  <!-- Cookie banner -->
+  <div id="cookieBanner" class="cookie-banner" style="display:none">
+    <div class="cookie-banner-inner">
+      <div class="cookie-banner-text">
+        <strong>Ce site utilise des cookies</strong>
+        <p>Nous utilisons Google Analytics pour mesurer l'audience du site. Ces cookies sont activés uniquement avec votre consentement. <a href="/confidentialite">En savoir plus</a></p>
+      </div>
+      <div class="cookie-banner-actions">
+        <button id="cookieRefuse" class="cookie-btn cookie-btn-refuse">Refuser</button>
+        <button id="cookieAccept" class="cookie-btn cookie-btn-accept">Accepter</button>
+      </div>
+    </div>
+  </div>
+  <script>
+    (function() {
+      var c = localStorage.getItem('qyraze_cookie_consent');
+      if (!c) document.getElementById('cookieBanner').style.display = 'block';
+      document.getElementById('cookieAccept').addEventListener('click', function() {
+        localStorage.setItem('qyraze_cookie_consent', 'accepted');
+        document.getElementById('cookieBanner').style.display = 'none';
+        gtag('consent', 'update', { 'ad_storage':'granted','analytics_storage':'granted','ad_user_data':'granted','ad_personalization':'granted' });
+      });
+      document.getElementById('cookieRefuse').addEventListener('click', function() {
+        localStorage.setItem('qyraze_cookie_consent', 'refused');
+        document.getElementById('cookieBanner').style.display = 'none';
+        gtag('consent', 'update', { 'ad_storage':'denied','analytics_storage':'denied','ad_user_data':'denied','ad_personalization':'denied' });
+      });
+    })();
+  </script>
+
+  <nav class="nav">
+    <div class="nav-inner">
+      <div class="brand">
+        <img class="brand-mark" src="/logo.png" alt="Qyraze" width="40" height="40" fetchpriority="high" decoding="async" />
+        <span class="brand-name">Qyraze</span>
+      </div>
+      <div class="nav-links">
+        <a href="/">Accueil</a>
+        <a class="nav-cta" href="https://calendar.app.google/Tr3jnHzo7oHt8Ehd7" target="_blank" rel="noopener">Réserver un appel</a>
+      </div>
+    </div>
+  </nav>
+
+  <main class="ret-bg">
+    <div class="ret-wrap">
+
+      <!-- ── SECTION 1 : HERO ── -->
+      <div class="ret-tag">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+        10 places — édition privée
+      </div>
+      <h1 class="ret-hero-title">Une semaine pour débloquer ta croissance, entouré des bonnes personnes</h1>
+      <p class="ret-hero-sub">Une retraite intensive pour entrepreneurs ambitieux. Travail en profondeur, environnement premium, connexions réelles.</p>
+      <div class="ret-metrics">
+        <div class="ret-metric">
+          <div class="ret-metric-num">10</div>
+          <div class="ret-metric-label">entrepreneurs sélectionnés</div>
+        </div>
+        <div class="ret-metric">
+          <div class="ret-metric-num">2</div>
+          <div class="ret-metric-label">experts présents</div>
+        </div>
+        <div class="ret-metric">
+          <div class="ret-metric-num">7</div>
+          <div class="ret-metric-label">jours d'immersion</div>
+        </div>
+      </div>
+
+      <hr class="ret-divider" />
+
+      <!-- ── SECTION 2 : CE QUI EST INCLUS ── -->
+      <h2 class="ret-section-title">Ce qui est inclus</h2>
+      <div class="ret-card">
+        <div class="ret-include-item">
+          <div class="ret-include-icon">🏠</div>
+          <span>Maison avec piscine — hébergement inclus pour toute la durée</span>
+        </div>
+        <div class="ret-include-item">
+          <div class="ret-include-icon">🍽️</div>
+          <span>Tous les repas préparés — petit-déjeuner, déjeuner, dîner</span>
+        </div>
+        <div class="ret-include-item">
+          <div class="ret-include-icon">🎯</div>
+          <span>Sessions avec 2 experts en stratégie, vente et scaling</span>
+        </div>
+        <div class="ret-include-item">
+          <div class="ret-include-icon">⚡</div>
+          <span>Sport quotidien — séances matinales pour maintenir l'énergie</span>
+        </div>
+        <div class="ret-include-item">
+          <div class="ret-include-icon">🤝</div>
+          <span>Réseau privé — accès à un groupe WhatsApp des participants post-retraite</span>
+        </div>
+        <div class="ret-include-item">
+          <div class="ret-include-icon">🎬</div>
+          <span>Contenu filmé — les sessions clés sont enregistrées et partagées</span>
+        </div>
+      </div>
+
+      <hr class="ret-divider" />
+
+      <!-- ── SECTION 3 : POUR QUI ── -->
+      <h2 class="ret-section-title">Pour qui</h2>
+      <p class="ret-section-sub">Cette retraite est sélective. Tu dois cocher ces cases pour candidater.</p>
+      <div class="ret-badges">
+        <div class="ret-badge"><span>💰</span> 2k–10k€/mois</div>
+        <div class="ret-badge"><span>⚡</span> Haute énergie</div>
+        <div class="ret-badge"><span>🚀</span> Entrepreneur actif</div>
+        <div class="ret-badge"><span>📈</span> Veut progresser</div>
+        <div class="ret-badge"><span>🧠</span> Bonne mentalité</div>
+        <div class="ret-badge"><span>🎯</span> Prêt à agir</div>
+      </div>
+
+      <hr class="ret-divider" />
+
+      <!-- ── SECTION 4 : PROGRAMME TYPE ── -->
+      <h2 class="ret-section-title">Programme type</h2>
+      <div class="ret-prog-grid">
+        <div class="ret-prog-card">
+          <div class="ret-prog-icon">🌅</div>
+          <div class="ret-prog-title">Matin</div>
+          <div class="ret-prog-desc">Sport collectif, petit-déjeuner, session stratégique avec un expert.</div>
+        </div>
+        <div class="ret-prog-card">
+          <div class="ret-prog-icon">☀️</div>
+          <div class="ret-prog-title">Après-midi</div>
+          <div class="ret-prog-desc">Travail en solo ou en binôme, implémentation, feedback en groupe.</div>
+        </div>
+        <div class="ret-prog-card">
+          <div class="ret-prog-icon">🌙</div>
+          <div class="ret-prog-title">Soirée</div>
+          <div class="ret-prog-desc">Repas partagé, discussions informelles, connexions entre participants.</div>
+        </div>
+        <div class="ret-prog-card">
+          <div class="ret-prog-icon">📅</div>
+          <div class="ret-prog-title">Dates</div>
+          <div class="ret-prog-desc">Édition 2026 — dates confirmées aux candidats retenus.</div>
+        </div>
+      </div>
+
+      <hr class="ret-divider" />
+
+      <!-- ── SECTION 5 : QUESTIONNAIRE ── -->
+      <div class="ret-candidature-sep">
+        <span class="ret-candidature-label">Candidature</span>
+      </div>
+
+      <h2 class="ret-form-title">Postule pour une place</h2>
+      <p class="ret-form-sub">7 questions courtes. Réponds honnêtement — on cherche des profils sérieux, pas des réponses parfaites.</p>
+
+      <div class="ret-progress" id="retProgress">
+        <div class="ret-dot active" id="dot-0"></div>
+        <div class="ret-dot" id="dot-1"></div>
+        <div class="ret-dot" id="dot-2"></div>
+        <div class="ret-dot" id="dot-3"></div>
+        <div class="ret-dot" id="dot-4"></div>
+        <div class="ret-dot" id="dot-5"></div>
+        <div class="ret-dot" id="dot-6"></div>
+      </div>
+
+      <form id="retForm" novalidate>
+
+        <!-- Étape 1 -->
+        <div class="ret-step active" data-step="0">
+          <label class="ret-field-label">Quelle est ton activité ?</label>
+          <span class="ret-field-hint">Décris ce que tu fais en quelques mots.</span>
+          <input type="text" class="ret-input" id="field-activite" placeholder="Ex : coaching business, e-commerce, formation en ligne…" />
+          <div class="ret-step-nav">
+            <button type="button" class="ret-btn-next" onclick="nextStep(0)">Continuer →</button>
+          </div>
+        </div>
+
+        <!-- Étape 2 -->
+        <div class="ret-step" data-step="1">
+          <label class="ret-field-label">Quels sont tes revenus mensuels actuels ?</label>
+          <span class="ret-field-hint">Sois honnête, ça reste confidentiel.</span>
+          <select class="ret-select" id="field-revenus">
+            <option value="" disabled selected>Sélectionne une tranche</option>
+            <option value="moins-2k">Moins de 2 000€/mois</option>
+            <option value="2k-5k">2 000€ – 5 000€/mois</option>
+            <option value="5k-10k">5 000€ – 10 000€/mois</option>
+            <option value="10k-20k">10 000€ – 20 000€/mois</option>
+            <option value="plus-20k">Plus de 20 000€/mois</option>
+          </select>
+          <div class="ret-step-nav">
+            <button type="button" class="ret-btn-back" onclick="prevStep(1)">←</button>
+            <button type="button" class="ret-btn-next" onclick="nextStep(1)">Continuer →</button>
+          </div>
+        </div>
+
+        <!-- Étape 3 -->
+        <div class="ret-step" data-step="2">
+          <label class="ret-field-label">Qu'est-ce qui bloque ta croissance en ce moment ?</label>
+          <span class="ret-field-hint">Sois précis — c'est là que tout commence.</span>
+          <textarea class="ret-textarea" id="field-blocage" placeholder="Ex : je n'arrive pas à déléguer, mon acquisition est irrégulière, je tourne en rond…"></textarea>
+          <div class="ret-step-nav">
+            <button type="button" class="ret-btn-back" onclick="prevStep(2)">←</button>
+            <button type="button" class="ret-btn-next" onclick="nextStep(2)">Continuer →</button>
+          </div>
+        </div>
+
+        <!-- Étape 4 -->
+        <div class="ret-step" data-step="3">
+          <label class="ret-field-label">Quelles sont tes disponibilités ?</label>
+          <span class="ret-field-hint">Donne-nous une idée de quand tu pourrais te libérer une semaine.</span>
+          <input type="text" class="ret-input" id="field-dispos" placeholder="Ex : juillet, septembre, pas avant octobre…" />
+          <div class="ret-step-nav">
+            <button type="button" class="ret-btn-back" onclick="prevStep(3)">←</button>
+            <button type="button" class="ret-btn-next" onclick="nextStep(3)">Continuer →</button>
+          </div>
+        </div>
+
+        <!-- Étape 5 -->
+        <div class="ret-step" data-step="4">
+          <label class="ret-field-label">Pourquoi mérites-tu une place ?</label>
+          <span class="ret-field-hint">Convaincs-nous en quelques lignes.</span>
+          <textarea class="ret-textarea" id="field-motivation" placeholder="Ex : je suis sérieux, j'ai déjà X résultats, je veux apporter autant que je reçois…"></textarea>
+          <div class="ret-step-nav">
+            <button type="button" class="ret-btn-back" onclick="prevStep(4)">←</button>
+            <button type="button" class="ret-btn-next" onclick="nextStep(4)">Continuer →</button>
+          </div>
+        </div>
+
+        <!-- Étape 6 -->
+        <div class="ret-step" data-step="5">
+          <label class="ret-field-label">Quel est ton budget pour cette retraite ?</label>
+          <span class="ret-field-hint">Le tarif exact est communiqué aux candidats retenus.</span>
+          <select class="ret-select" id="field-budget">
+            <option value="" disabled selected>Sélectionne une tranche</option>
+            <option value="moins-1k">Moins de 1 000€</option>
+            <option value="1k-2k">1 000€ – 2 000€</option>
+            <option value="2k-3k">2 000€ – 3 000€</option>
+            <option value="plus-3k">Plus de 3 000€</option>
+          </select>
+          <div class="ret-step-nav">
+            <button type="button" class="ret-btn-back" onclick="prevStep(5)">←</button>
+            <button type="button" class="ret-btn-next" onclick="nextStep(5)">Continuer →</button>
+          </div>
+        </div>
+
+        <!-- Étape 7 — Confirmation -->
+        <div class="ret-step" data-step="6">
+          <label class="ret-field-label">Ton numéro de téléphone</label>
+          <span class="ret-field-hint">Pour te recontacter rapidement si ton profil est retenu.</span>
+          <input type="tel" class="ret-input" id="field-tel" placeholder="Ex : +33 6 00 00 00 00" />
+          <div class="ret-step-nav">
+            <button type="button" class="ret-btn-back" onclick="prevStep(6)">←</button>
+          </div>
+          <button type="submit" class="ret-btn-submit">Envoyer ma candidature → Réserver un appel</button>
+          <p class="ret-form-note">Seulement les profils qualifiés passent à l'appel. On te répond sous 48h.</p>
+        </div>
+
+      </form>
+
+    </div>
+
+    <footer class="footer">
+      <div class="container">
+        <div class="footer-inner">
+          <div class="footer-left">
+            <a href="/mentions-legales">Mentions légales</a>
+            <span>·</span>
+            <a href="/confidentialite">Confidentialité</a>
+            <span>·</span>
+            <a href="/cgu">CGU</a>
+            <span>·</span>
+            <a href="mailto:jeremy.pereirapires@gmail.com">jeremy.pereirapires@gmail.com</a>
+            <span>·</span>
+            <a href="https://calendar.app.google/Tr3jnHzo7oHt8Ehd7" target="_blank" rel="noopener">Réserver un appel</a>
+          </div>
+          <div class="footer-copy">© Qyraze · Jérémy Pereira Pires · 2026</div>
+        </div>
+      </div>
+    </footer>
+  </main>
+
+  <script>
+    var currentStep = 0;
+    var totalSteps = 7;
+
+    function updateDots(step) {
+      for (var i = 0; i < totalSteps; i++) {
+        var dot = document.getElementById('dot-' + i);
+        dot.classList.remove('active', 'done');
+        if (i < step) dot.classList.add('done');
+        else if (i === step) dot.classList.add('active');
+      }
+    }
+
+    function showStep(step) {
+      document.querySelectorAll('.ret-step').forEach(function(el) {
+        el.classList.remove('active');
+      });
+      document.querySelector('[data-step="' + step + '"]').classList.add('active');
+      updateDots(step);
+      currentStep = step;
+    }
+
+    function nextStep(from) {
+      var fields = {
+        0: 'field-activite',
+        1: 'field-revenus',
+        2: 'field-blocage',
+        3: 'field-dispos',
+        4: 'field-motivation',
+        5: 'field-budget'
+      };
+      var fieldId = fields[from];
+      var el = document.getElementById(fieldId);
+      if (!el.value.trim()) {
+        el.focus();
+        el.style.borderColor = '#EF4444';
+        setTimeout(function() { el.style.borderColor = ''; }, 1500);
+        return;
+      }
+      showStep(from + 1);
+      window.scrollTo({ top: document.getElementById('retForm').offsetTop - 80, behavior: 'smooth' });
+    }
+
+    function prevStep(from) {
+      showStep(from - 1);
+      window.scrollTo({ top: document.getElementById('retForm').offsetTop - 80, behavior: 'smooth' });
+    }
+
+    document.getElementById('retForm').addEventListener('submit', function(e) {
+      e.preventDefault();
+      var tel = document.getElementById('field-tel').value.trim();
+      if (!tel) {
+        var el = document.getElementById('field-tel');
+        el.focus();
+        el.style.borderColor = '#EF4444';
+        setTimeout(function() { el.style.borderColor = ''; }, 1500);
+        return;
+      }
+      window.open('https://calendar.app.google/Tr3jnHzo7oHt8Ehd7', '_blank');
+    });
+  </script>
+</body>
+</html>
