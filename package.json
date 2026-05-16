@@ -8,6 +8,7 @@
   },
   "dependencies": {
     "@supabase/supabase-js": "^2.104.0",
+    "@vercel/og": "^0.6.3",
     "resend": "^6.1.3"
   }
 }
