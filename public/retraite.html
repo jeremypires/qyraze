@@ -161,6 +161,25 @@
     .r-pourqui-text { font-size: 18px; line-height: 2; color: #ccc; }
     .r-pourqui-text strong { color: var(--text); font-weight: 500; }
 
+    /* ── JOURS ── */
+    .r-days-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 16px; margin: 3rem 0 2rem; }
+    .r-day-card { background: var(--bg3); border: 1px solid #2a2a2a; border-radius: 12px; padding: 1.5rem; display: flex; gap: 1.25rem; align-items: flex-start; }
+    .r-day-num { font-family: 'Playfair Display', serif; font-size: 2.8rem; font-weight: 600; color: var(--gold); line-height: 1; flex-shrink: 0; }
+    .r-day-content { flex: 1; }
+    .r-day-title { font-family: 'Playfair Display', serif; font-size: 16px; font-weight: 500; color: var(--text); margin-bottom: 8px; }
+    .r-day-text { font-size: 13px; color: #b0a898; line-height: 1.75; }
+    .r-days-fixed { display: flex; flex-direction: column; gap: 12px; margin-bottom: 2.5rem; }
+    .r-days-fixed-card { display: flex; align-items: flex-start; gap: 1rem; background: rgba(201,168,76,.06); border: 1px solid rgba(201,168,76,.18); border-radius: 12px; padding: 1.1rem 1.4rem; }
+    .r-days-fixed-icon { font-size: 22px; flex-shrink: 0; margin-top: 2px; }
+    .r-days-fixed-card strong { display: block; font-size: 14px; color: var(--text); margin-bottom: 4px; }
+    .r-days-fixed-card p { font-size: 13px; color: #b0a898; line-height: 1.7; margin: 0; }
+    .r-days-quote { text-align: center; font-family: 'Playfair Display', serif; font-size: 1.5rem; font-style: italic; color: var(--gold); margin-top: 1rem; }
+    @media (max-width: 700px) {
+      .r-days-grid { grid-template-columns: 1fr; }
+      .r-day-num { font-size: 2.2rem; }
+      .r-days-quote { font-size: 1.2rem; }
+    }
+
     /* ── PROGRAMME ── */
     .r-prog-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 12px; }
     .r-prog-card { background: var(--surface); border: 1px solid var(--border); border-radius: 14px; padding: 1.25rem 1.5rem; }
@@ -398,6 +417,96 @@
           <span>Contenu filmé — les sessions clés sont enregistrées et partagées aux participants.</span>
         </div>
       </div>
+    </div>
+  </section>
+
+  <hr class="r-divider" />
+
+  <!-- ── SEMAINE JOUR PAR JOUR ── -->
+  <section class="r-section" style="background:var(--bg2);">
+    <div class="r-container">
+      <span class="r-eyebrow fade-up">Le programme</span>
+      <h2 class="r-title fade-up">La semaine — jour par jour</h2>
+
+      <div class="r-days-grid">
+
+        <div class="r-day-card fade-up">
+          <div class="r-day-num">01</div>
+          <div class="r-day-content">
+            <h3 class="r-day-title">Arrivée & ignition</h3>
+            <p class="r-day-text">Installation, tour de table, règles de la semaine posées dès le départ. Pas de temps perdu. Chaque participant dit à voix haute ce qu'il vient chercher et ce qu'il est prêt à faire pour l'obtenir. La semaine commence maintenant.</p>
+          </div>
+        </div>
+
+        <div class="r-day-card fade-up">
+          <div class="r-day-num">02</div>
+          <div class="r-day-content">
+            <h3 class="r-day-title">Croisement des regards</h3>
+            <p class="r-day-text">Binômes entre profils différents. Un e-commerçant challenge un freelance. Un closer challenge un coach. L'objectif : voir ton business avec des yeux neufs. Les meilleures idées viennent de ceux qui ne sont pas dans ton secteur.</p>
+          </div>
+        </div>
+
+        <div class="r-day-card fade-up">
+          <div class="r-day-num">03</div>
+          <div class="r-day-content">
+            <h3 class="r-day-title">Intervention expert #1 + rupture</h3>
+            <p class="r-day-text">Premier expert. Session intense, travail immédiat derrière. Le soir : méditation collective ou exercice de visualisation — où tu veux être dans 3 ans, ce que tu construis vraiment. On commence à toucher quelque chose de plus profond.</p>
+          </div>
+        </div>
+
+        <div class="r-day-card fade-up">
+          <div class="r-day-num">04</div>
+          <div class="r-day-content">
+            <h3 class="r-day-title">Implémentation & dépassement</h3>
+            <p class="r-day-text">Journée de travail pur sous pression collective. Pas de réseau social, pas de distraction. Le groupe maintient l'énergie de chacun. Sport du matin plus intense ce jour-là — on pousse les limites physiques pour pousser les limites mentales.</p>
+          </div>
+        </div>
+
+        <div class="r-day-card fade-up">
+          <div class="r-day-num">05</div>
+          <div class="r-day-content">
+            <h3 class="r-day-title">Intervention expert #2 + reset mental</h3>
+            <p class="r-day-text">Deuxième expert. Nouvelles pistes, nouvelles décisions. Session de méditation ou de respiration le soir pour recharger avant le sprint final. On arrive en jour 6 à 100%.</p>
+          </div>
+        </div>
+
+        <div class="r-day-card fade-up">
+          <div class="r-day-num">06</div>
+          <div class="r-day-content">
+            <h3 class="r-day-title">Sprint final</h3>
+            <p class="r-day-text">La journée la plus intense de la semaine. Chaque participant construit son plan des 90 prochains jours et le présente devant le groupe. Le groupe challenge, améliore, valide. On repart avec quelque chose de concret et un engagement public.</p>
+          </div>
+        </div>
+
+        <div class="r-day-card fade-up">
+          <div class="r-day-num">07</div>
+          <div class="r-day-content">
+            <h3 class="r-day-title">Clôture & départ</h3>
+            <p class="r-day-text">Bilan collectif. Ce que chacun repart avec — concrètement. Création du groupe WhatsApp privé. Dernier sport ensemble le matin. Départ chargé à bloc.</p>
+          </div>
+        </div>
+
+      </div>
+
+      <div class="r-days-fixed fade-up">
+        <div class="r-days-fixed-card">
+          <span class="r-days-fixed-icon">☀️</span>
+          <div>
+            <strong>Chaque matin sans exception</strong>
+            <p>Sport collectif : running, musculation, mobilité. Pas optionnel. C'est ce qui maintient l'énergie et la discipline toute la semaine.</p>
+          </div>
+        </div>
+        <div class="r-days-fixed-card">
+          <span class="r-days-fixed-icon">🧘</span>
+          <div>
+            <strong>En fil rouge toute la semaine</strong>
+            <p>Méditation, visualisation, respiration. Pas pour faire bien-être — pour maintenir le focus, gérer la pression et construire une énergie durable sur 7 jours.</p>
+          </div>
+        </div>
+      </div>
+
+      <p class="r-days-quote fade-up">"Tu ne viens pas te reposer. Tu viens te transformer."</p>
+
     </div>
   </section>
 
