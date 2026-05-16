@@ -17,7 +17,8 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Retraite Entrepreneurs — Qyraze</title>
-  <meta name="robots" content="noindex, nofollow" />
+  <meta name="description" content="7 jours pour casser ton plafond avec 9 entrepreneurs comme toi. Sport, travail, experts. Tu repars avec un plan clair et un cercle solide." />
+
   <link rel="icon" type="image/png" sizes="512x512" href="https://qyraze.com/logo.png" />
   <link rel="shortcut icon" type="image/png" href="https://qyraze.com/logo.png" />
   <link rel="apple-touch-icon" href="https://qyraze.com/logo.png" />
@@ -25,143 +26,265 @@
   <link rel="stylesheet" href="/style.css" />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet" />
 
   <style>
+    /* ── Base ── */
     :root {
-      --r-bg:#F8F9FA; --r-surface:#fff; --r-border:#E5E7EB;
-      --r-text:#111827; --r-muted:#6B7280; --r-hint:#9CA3AF;
-      --r-metric-bg:#F3F4F6; --r-badge-bg:#F3F4F6; --r-badge-text:#374151;
-      --r-item-text:#374151; --r-icon-bg:#EFF6FF; --r-input-bg:#fff;
-      --r-back-bg:#fff; --r-back-border:#E5E7EB; --r-back-text:#6B7280; --r-back-hover:#F9FAFB;
-      --r-note:#9CA3AF; --r-dot-off:#E5E7EB; --r-dot-done:#BFDBFE;
-      --r-divider:#E5E7EB; --r-tag-bg:#EFF6FF; --r-tag-text:#2563EB;
-      --r-warn-bg:#FFFBEB; --r-warn-border:#FCD34D; --r-warn-text:#92400E;
-      --r-reject-bg:#FEF2F2; --r-reject-border:#FECACA; --r-reject-text:#991B1B;
-    }
-    @media (prefers-color-scheme: dark) {
-      :root {
-        --r-bg:#09090f; --r-surface:#131320; --r-border:rgba(255,255,255,.08);
-        --r-text:#f0f0f8; --r-muted:#7a7a96; --r-hint:#5a5a78;
-        --r-metric-bg:rgba(255,255,255,.05); --r-badge-bg:rgba(255,255,255,.07); --r-badge-text:#c8c8e0;
-        --r-item-text:#c8c8e0; --r-icon-bg:rgba(37,99,235,.18); --r-input-bg:#1a1a2a;
-        --r-back-bg:rgba(255,255,255,.05); --r-back-border:rgba(255,255,255,.1); --r-back-text:#7a7a96; --r-back-hover:rgba(255,255,255,.09);
-        --r-note:#5a5a78; --r-dot-off:rgba(255,255,255,.12); --r-dot-done:rgba(37,99,235,.45);
-        --r-divider:rgba(255,255,255,.07); --r-tag-bg:rgba(37,99,235,.15); --r-tag-text:#7fb3ff;
-        --r-warn-bg:rgba(251,191,36,.1); --r-warn-border:rgba(251,191,36,.3); --r-warn-text:#fbbf24;
-        --r-reject-bg:rgba(239,68,68,.08); --r-reject-border:rgba(239,68,68,.25); --r-reject-text:#f87171;
-      }
+      --gold:     #c9a84c;
+      --gold-h:   #d9bc6e;
+      --bg:       #0a0a0a;
+      --bg2:      #111111;
+      --bg3:      #161616;
+      --text:     #f5f0eb;
+      --muted:    #888;
+      --hint:     #555;
+      --border:   rgba(255,255,255,.07);
+      --surface:  rgba(255,255,255,.04);
     }
 
-    .ret-bg { background:var(--r-bg); min-height:100vh; }
-    .ret-wrap { max-width:640px; margin:0 auto; padding:2.5rem 1.5rem 5rem; font-family:'DM Sans',system-ui,sans-serif; color:var(--r-text); }
-    .ret-divider { border:none; border-top:1px solid var(--r-divider); margin:2rem 0; }
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
-    /* Hero */
-    .ret-tag { display:inline-flex; align-items:center; gap:6px; background:var(--r-tag-bg); color:var(--r-tag-text); font-size:13px; font-weight:500; padding:5px 12px; border-radius:100px; margin-bottom:1.25rem; }
-    .ret-tag svg { width:14px; height:14px; flex-shrink:0; }
-    .ret-hero-title { font-size:26px; font-weight:500; line-height:1.35; margin:0 0 .75rem; }
-    .ret-hero-sub { font-size:15px; line-height:1.7; color:var(--r-muted); margin:0 0 1.5rem; }
-    .ret-metrics { display:grid; grid-template-columns:repeat(3,1fr); gap:10px; }
-    .ret-metric { background:var(--r-metric-bg); border-radius:12px; padding:1rem .75rem; text-align:center; }
-    .ret-metric-num { font-size:24px; font-weight:600; line-height:1; margin-bottom:4px; }
-    .ret-metric-label { font-size:12px; color:var(--r-muted); line-height:1.4; }
+    body { background: var(--bg); color: var(--text); font-family: 'DM Sans', system-ui, sans-serif; line-height: 1.7; }
 
-    /* Sections */
-    .ret-section-title { font-size:18px; font-weight:500; margin:0 0 1rem; }
-    .ret-section-sub { font-size:14px; color:var(--r-muted); margin:-.5rem 0 1rem; line-height:1.6; }
-    .ret-card { background:var(--r-surface); border:1px solid var(--r-border); border-radius:14px; overflow:hidden; }
-    .ret-include-item { display:flex; align-items:center; gap:12px; padding:13px 1.25rem; border-bottom:1px solid var(--r-border); font-size:14px; color:var(--r-item-text); line-height:1.5; }
-    .ret-include-item:last-child { border-bottom:none; }
-    .ret-include-icon { width:30px; height:30px; background:var(--r-icon-bg); border-radius:8px; display:flex; align-items:center; justify-content:center; flex-shrink:0; font-size:15px; }
-    .ret-badges { display:flex; flex-wrap:wrap; gap:8px; }
-    .ret-badge { display:inline-flex; align-items:center; gap:6px; background:var(--r-badge-bg); color:var(--r-badge-text); font-size:13px; padding:7px 13px; border-radius:100px; }
-    .ret-prog-grid { display:grid; grid-template-columns:repeat(2,1fr); gap:10px; }
-    .ret-prog-card { background:var(--r-surface); border:1px solid var(--r-border); border-radius:14px; padding:1rem 1.25rem; }
-    .ret-prog-icon { font-size:20px; margin-bottom:8px; }
-    .ret-prog-title { font-size:14px; font-weight:500; margin-bottom:4px; }
-    .ret-prog-desc { font-size:13px; color:var(--r-muted); line-height:1.6; }
+    /* ── Fade-up animation ── */
+    .fade-up { opacity: 0; transform: translateY(28px); transition: opacity .7s ease, transform .7s ease; }
+    .fade-up.visible { opacity: 1; transform: translateY(0); }
 
-    /* Questionnaire */
-    .ret-candidature-sep { display:flex; align-items:center; gap:12px; margin-bottom:1.5rem; }
-    .ret-candidature-sep::before,.ret-candidature-sep::after { content:''; flex:1; border-top:1px solid var(--r-divider); }
-    .ret-candidature-label { font-size:11px; font-weight:500; color:var(--r-hint); letter-spacing:2px; text-transform:uppercase; white-space:nowrap; }
-    .ret-form-title { font-size:20px; font-weight:500; margin:0 0 .4rem; }
-    .ret-form-sub { font-size:14px; color:var(--r-muted); margin:0 0 1.5rem; line-height:1.6; }
+    /* ── Layout ── */
+    .r-container { max-width: 680px; margin: 0 auto; padding: 0 1.5rem; }
+    .r-section { padding: 5rem 0; }
+    .r-section.alt { background: var(--bg2); }
+    .r-section.alt2 { background: var(--bg3); }
+    .r-divider { border: none; border-top: 1px solid var(--border); margin: 0; }
 
-    /* Step header */
-    .ret-step-header { font-size:11px; font-weight:600; letter-spacing:2px; text-transform:uppercase; color:var(--r-hint); margin-bottom:1.25rem; }
+    /* ── Typography ── */
+    .r-eyebrow { font-size: 11px; letter-spacing: 3px; text-transform: uppercase; color: var(--gold); font-weight: 500; margin-bottom: .75rem; display: block; }
+    .r-title { font-family: 'Playfair Display', Georgia, serif; font-size: clamp(28px, 5vw, 42px); font-weight: 500; line-height: 1.25; color: var(--text); }
+    .r-sub { font-size: 15px; color: var(--muted); line-height: 1.8; margin-top: .75rem; }
+    .r-section-label { font-size: 11px; letter-spacing: 3px; text-transform: uppercase; color: var(--hint); margin-bottom: 1.5rem; display: block; }
 
-    /* Dots */
-    .ret-progress { display:flex; align-items:center; gap:6px; margin-bottom:1.75rem; }
-    .ret-dot { width:8px; height:8px; border-radius:50%; background:var(--r-dot-off); transition:background .25s,transform .25s; }
-    .ret-dot.active { background:#2563EB; transform:scale(1.25); }
-    .ret-dot.done { background:var(--r-dot-done); }
-
-    /* Steps */
-    .ret-step { display:none; }
-    .ret-step.active { display:block; }
-
-    /* Fields */
-    .ret-field { margin-bottom:1rem; }
-    .ret-field-label { display:block; font-size:14px; color:var(--r-text); font-weight:500; margin-bottom:5px; }
-    .ret-field-hint  { font-size:12px; color:var(--r-hint); margin-bottom:7px; display:block; }
-    .ret-field-row { display:grid; grid-template-columns:1fr 1fr; gap:10px; }
-    .ret-input,.ret-select,.ret-textarea {
-      width:100%; padding:11px 14px; border:1px solid var(--r-border); border-radius:10px;
-      font-size:14px; font-family:'DM Sans',system-ui,sans-serif; color:var(--r-text);
-      background:var(--r-input-bg); outline:none; transition:border-color .2s,box-shadow .2s; box-sizing:border-box;
+    /* ── HERO ── */
+    .r-hero {
+      min-height: 92vh;
+      display: flex;
+      align-items: center;
+      background: var(--bg);
+      /* Hero image — décommenter quand le visuel est envoyé :
+         background: linear-gradient(rgba(0,0,0,0.58), rgba(0,0,0,0.58)), url('/retraite-hero.jpg') center/cover no-repeat; */
+      position: relative;
+      padding: 7rem 0 5rem;
+      border-bottom: 1px solid var(--border);
     }
-    .ret-input:focus,.ret-select:focus,.ret-textarea:focus { border-color:#2563EB; box-shadow:0 0 0 3px rgba(37,99,235,.1); }
-    .ret-textarea { resize:vertical; min-height:90px; line-height:1.6; }
-    .ret-select { appearance:none; background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%236B7280' stroke-width='2'%3E%3Cpolyline points='6 9 12 15 18 9'/%3E%3C/svg%3E"); background-repeat:no-repeat; background-position:right 14px center; padding-right:36px; }
-    .ret-optional { display:none; margin-top:8px; }
-    .ret-optional.visible { display:block; }
+    .r-hero-tag {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      background: rgba(201,168,76,.12);
+      color: var(--gold);
+      border: 1px solid rgba(201,168,76,.25);
+      font-size: 12px;
+      font-weight: 500;
+      letter-spacing: 1px;
+      padding: 6px 14px;
+      border-radius: 100px;
+      margin-bottom: 1.5rem;
+    }
+    .r-hero-title {
+      font-family: 'Playfair Display', Georgia, serif;
+      font-size: clamp(30px, 5.5vw, 52px);
+      font-weight: 500;
+      line-height: 1.2;
+      color: var(--text);
+      margin-bottom: 1rem;
+    }
+    .r-hero-sub {
+      font-size: 17px;
+      color: #bbb;
+      line-height: 1.7;
+      margin-bottom: .5rem;
+    }
+    .r-hero-tagline {
+      font-size: 14px;
+      color: var(--muted);
+      margin-bottom: 2rem;
+      font-style: italic;
+    }
 
-    /* Slider */
-    .ret-slider-wrap { margin-top:4px; }
-    .ret-slider { -webkit-appearance:none; appearance:none; width:100%; height:5px; border-radius:5px; background:var(--r-border); outline:none; border:none; padding:0; cursor:pointer; }
-    .ret-slider::-webkit-slider-thumb { -webkit-appearance:none; width:22px; height:22px; border-radius:50%; background:#2563EB; cursor:pointer; box-shadow:0 1px 4px rgba(0,0,0,.2); }
-    .ret-slider::-moz-range-thumb { width:22px; height:22px; border-radius:50%; background:#2563EB; cursor:pointer; border:none; }
-    .ret-slider-labels { display:flex; justify-content:space-between; font-size:11px; color:var(--r-hint); margin-top:4px; }
-    .ret-slider-value { text-align:center; margin-top:8px; font-size:15px; font-weight:600; color:#2563EB; }
+    /* Places badge */
+    .r-places-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      background: rgba(201,168,76,.08);
+      border: 1px solid rgba(201,168,76,.2);
+      color: var(--gold);
+      font-size: 13px;
+      font-weight: 500;
+      padding: 7px 16px;
+      border-radius: 8px;
+      margin-bottom: 2rem;
+    }
+    .r-places-dot { width: 7px; height: 7px; background: var(--gold); border-radius: 50%; display: inline-block; }
 
-    /* Nav buttons */
-    .ret-step-nav { display:flex; gap:8px; margin-top:1.25rem; }
-    .ret-btn-back { padding:11px 20px; border:1px solid var(--r-back-border); border-radius:10px; background:var(--r-back-bg); font-size:14px; font-family:'DM Sans',system-ui,sans-serif; color:var(--r-back-text); cursor:pointer; transition:background .2s; }
-    .ret-btn-back:hover { background:var(--r-back-hover); }
-    .ret-btn-next { flex:1; padding:12px 20px; border:none; border-radius:10px; background:#2563EB; color:#fff; font-size:14px; font-weight:500; font-family:'DM Sans',system-ui,sans-serif; cursor:pointer; transition:background .2s; }
-    .ret-btn-next:hover { background:#1D4ED8; }
-    .ret-btn-submit { width:100%; padding:14px 20px; border:none; border-radius:10px; background:#2563EB; color:#fff; font-size:15px; font-weight:500; font-family:'DM Sans',system-ui,sans-serif; cursor:pointer; transition:background .2s,opacity .2s; margin-top:1.25rem; }
-    .ret-btn-submit:hover { background:#1D4ED8; }
-    .ret-btn-submit:disabled { opacity:.6; cursor:default; }
-    .ret-form-note { text-align:center; font-size:12px; color:var(--r-note); margin-top:.75rem; line-height:1.6; }
+    /* Metrics */
+    .r-metrics { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; margin-bottom: 2.5rem; }
+    .r-metric { background: var(--surface); border: 1px solid var(--border); border-radius: 14px; padding: 1.1rem 1rem; text-align: center; }
+    .r-metric-num { font-family: 'Playfair Display', Georgia, serif; font-size: 32px; font-weight: 500; color: var(--text); line-height: 1; }
+    .r-metric-label { font-size: 11px; color: var(--muted); margin-top: 5px; line-height: 1.4; }
+
+    /* CTA */
+    .r-cta {
+      display: inline-block;
+      padding: 15px 32px;
+      background: var(--gold);
+      color: #0a0a0a;
+      font-size: 15px;
+      font-weight: 600;
+      font-family: 'DM Sans', sans-serif;
+      border-radius: 6px;
+      border: none;
+      cursor: pointer;
+      text-decoration: none;
+      transition: background .2s, box-shadow .2s;
+      letter-spacing: .3px;
+    }
+    .r-cta:hover { background: var(--gold-h); box-shadow: 0 4px 20px rgba(201,168,76,.25); }
+
+    /* ── INCLUS ── */
+    .r-includes { display: flex; flex-direction: column; border: 1px solid var(--border); border-radius: 16px; overflow: hidden; }
+    .r-include-item { display: flex; align-items: center; gap: 14px; padding: 15px 1.5rem; border-bottom: 1px solid var(--border); font-size: 14px; color: #ccc; line-height: 1.5; }
+    .r-include-item:last-child { border-bottom: none; }
+    .r-include-icon { width: 34px; height: 34px; background: rgba(201,168,76,.1); border: 1px solid rgba(201,168,76,.2); border-radius: 9px; display: flex; align-items: center; justify-content: center; flex-shrink: 0; font-size: 16px; }
+
+    /* ── POUR QUI ── */
+    .r-pourqui-text { font-size: 18px; line-height: 2; color: #ccc; }
+    .r-pourqui-text strong { color: var(--text); font-weight: 500; }
+
+    /* ── PROGRAMME ── */
+    .r-prog-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 12px; }
+    .r-prog-card { background: var(--surface); border: 1px solid var(--border); border-radius: 14px; padding: 1.25rem 1.5rem; }
+    .r-prog-icon { font-size: 22px; margin-bottom: 10px; }
+    .r-prog-title { font-size: 14px; font-weight: 600; color: var(--text); margin-bottom: 5px; }
+    .r-prog-desc { font-size: 13px; color: var(--muted); line-height: 1.7; }
+
+    /* ── QUI JE SUIS ── */
+    .r-about-grid { display: grid; grid-template-columns: 180px 1fr; gap: 2.5rem; align-items: start; }
+    .r-about-photo { width: 100%; border-radius: 14px; object-fit: cover; aspect-ratio: 4/5; filter: grayscale(15%); }
+    .r-about-photo-placeholder { width: 100%; aspect-ratio: 4/5; border-radius: 14px; background: var(--surface); border: 1px solid var(--border); display: flex; align-items: center; justify-content: center; color: var(--hint); font-size: 13px; }
+    .r-about-role { font-size: 11px; letter-spacing: 2px; text-transform: uppercase; color: var(--gold); margin-bottom: .5rem; }
+    .r-about-name { font-family: 'Playfair Display', Georgia, serif; font-size: 22px; font-weight: 500; color: var(--text); margin-bottom: 1rem; }
+    .r-about-text { font-size: 14px; color: #aaa; line-height: 1.9; }
+
+    /* ── FAQ ── */
+    .r-faq { display: flex; flex-direction: column; gap: 0; border: 1px solid var(--border); border-radius: 16px; overflow: hidden; }
+    .r-faq-item { border-bottom: 1px solid var(--border); }
+    .r-faq-item:last-child { border-bottom: none; }
+    .r-faq-q {
+      width: 100%; text-align: left; background: none; border: none; cursor: pointer;
+      padding: 1.1rem 1.5rem; display: flex; justify-content: space-between; align-items: center;
+      font-size: 14px; font-weight: 500; color: var(--text); font-family: 'DM Sans', sans-serif;
+      gap: 12px; line-height: 1.5;
+    }
+    .r-faq-q:hover { background: var(--surface); }
+    .r-faq-chevron { width: 16px; height: 16px; flex-shrink: 0; color: var(--gold); transition: transform .3s; }
+    .r-faq-item.open .r-faq-chevron { transform: rotate(180deg); }
+    .r-faq-a { display: none; padding: 0 1.5rem 1.1rem; font-size: 13px; color: var(--muted); line-height: 1.8; }
+    .r-faq-item.open .r-faq-a { display: block; }
+
+    /* ── QUESTIONNAIRE ── */
+    .r-form-sep { display: flex; align-items: center; gap: 14px; margin-bottom: 2rem; }
+    .r-form-sep::before, .r-form-sep::after { content: ''; flex: 1; border-top: 1px solid var(--border); }
+    .r-form-sep-label { font-size: 11px; letter-spacing: 3px; text-transform: uppercase; color: var(--hint); white-space: nowrap; }
+
+    .r-step-header { font-size: 11px; letter-spacing: 2px; text-transform: uppercase; color: var(--gold); margin-bottom: 1.25rem; }
+    .r-progress { display: flex; gap: 6px; margin-bottom: 2rem; }
+    .r-dot { width: 8px; height: 8px; border-radius: 50%; background: rgba(255,255,255,.1); transition: background .25s, transform .25s; }
+    .r-dot.active { background: var(--gold); transform: scale(1.3); }
+    .r-dot.done { background: rgba(201,168,76,.35); }
+
+    .r-step { display: none; }
+    .r-step.active { display: block; }
+
+    .r-field { margin-bottom: 1rem; }
+    .r-field-row { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+    .r-label { display: block; font-size: 13px; color: #bbb; font-weight: 500; margin-bottom: 5px; }
+    .r-hint { font-size: 11px; color: var(--hint); margin-bottom: 7px; display: block; }
+    .r-opt-label { font-size: 11px; color: var(--muted); font-weight: 400; }
+
+    .r-input, .r-select, .r-textarea {
+      width: 100%; padding: 12px 14px; border: 1px solid var(--border); border-radius: 10px;
+      font-size: 14px; font-family: 'DM Sans', sans-serif; color: var(--text);
+      background: rgba(255,255,255,.04); outline: none;
+      transition: border-color .2s, box-shadow .2s; box-sizing: border-box;
+    }
+    .r-input:focus, .r-select:focus, .r-textarea:focus {
+      border-color: var(--gold);
+      box-shadow: 0 0 0 3px rgba(201,168,76,.1);
+    }
+    .r-textarea { resize: vertical; min-height: 90px; line-height: 1.6; }
+    .r-select {
+      appearance: none;
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%23888' stroke-width='2'%3E%3Cpolyline points='6 9 12 15 18 9'/%3E%3C/svg%3E");
+      background-repeat: no-repeat; background-position: right 14px center;
+      padding-right: 36px;
+    }
+    .r-select option { background: #1a1a1a; color: var(--text); }
+    .r-optional { display: none; margin-top: 8px; }
+    .r-optional.visible { display: block; }
+
+    .r-slider { -webkit-appearance: none; appearance: none; width: 100%; height: 4px; border-radius: 4px; background: var(--border); outline: none; border: none; padding: 0; cursor: pointer; }
+    .r-slider::-webkit-slider-thumb { -webkit-appearance: none; width: 22px; height: 22px; border-radius: 50%; background: var(--gold); cursor: pointer; }
+    .r-slider::-moz-range-thumb { width: 22px; height: 22px; border-radius: 50%; background: var(--gold); border: none; cursor: pointer; }
+    .r-slider-labels { display: flex; justify-content: space-between; font-size: 11px; color: var(--hint); margin-top: 5px; }
+    .r-slider-value { text-align: center; margin-top: 10px; font-size: 18px; font-weight: 600; color: var(--gold); }
+
+    .r-step-nav { display: flex; gap: 8px; margin-top: 1.25rem; }
+    .r-btn-back {
+      padding: 12px 20px; border: 1px solid var(--border); border-radius: 8px;
+      background: transparent; font-size: 14px; font-family: 'DM Sans', sans-serif;
+      color: var(--muted); cursor: pointer; transition: background .2s;
+    }
+    .r-btn-back:hover { background: var(--surface); }
+    .r-btn-next {
+      flex: 1; padding: 13px 20px; border: none; border-radius: 8px;
+      background: var(--gold); color: #0a0a0a; font-size: 14px; font-weight: 600;
+      font-family: 'DM Sans', sans-serif; cursor: pointer; transition: background .2s;
+    }
+    .r-btn-next:hover { background: var(--gold-h); }
+    .r-btn-submit {
+      width: 100%; padding: 15px 20px; border: none; border-radius: 8px;
+      background: var(--gold); color: #0a0a0a; font-size: 15px; font-weight: 600;
+      font-family: 'DM Sans', sans-serif; cursor: pointer; transition: background .2s, opacity .2s;
+      margin-top: 1.25rem;
+    }
+    .r-btn-submit:hover { background: var(--gold-h); }
+    .r-btn-submit:disabled { opacity: .5; cursor: default; }
+    .r-form-note { text-align: center; font-size: 12px; color: var(--hint); margin-top: .75rem; line-height: 1.7; }
 
     /* Warning */
-    .ret-warning { display:none; background:var(--r-warn-bg); border:1px solid var(--r-warn-border); border-radius:14px; padding:1.25rem 1.5rem; margin-bottom:1rem; }
-    .ret-warning-icon { font-size:22px; margin-bottom:8px; }
-    .ret-warning-title { font-size:15px; font-weight:600; color:var(--r-warn-text); margin-bottom:6px; }
-    .ret-warning-text { font-size:13px; color:var(--r-warn-text); line-height:1.6; margin-bottom:1rem; opacity:.9; }
-    .ret-warning-nav { display:flex; gap:8px; }
-    .ret-warn-back { padding:10px 16px; border:1px solid var(--r-warn-border); border-radius:8px; background:transparent; font-size:13px; font-family:'DM Sans',system-ui,sans-serif; color:var(--r-warn-text); cursor:pointer; }
-    .ret-warn-continue { flex:1; padding:10px 16px; border:none; border-radius:8px; background:rgba(146,64,14,.15); font-size:13px; font-weight:500; font-family:'DM Sans',system-ui,sans-serif; color:var(--r-warn-text); cursor:pointer; }
+    .r-warning { display: none; background: rgba(201,168,76,.06); border: 1px solid rgba(201,168,76,.2); border-radius: 14px; padding: 1.25rem 1.5rem; margin-bottom: 1rem; }
+    .r-warning-icon { font-size: 20px; margin-bottom: 8px; }
+    .r-warning-title { font-size: 15px; font-weight: 600; color: var(--gold); margin-bottom: 6px; }
+    .r-warning-text { font-size: 13px; color: #aaa; line-height: 1.7; margin-bottom: 1rem; }
+    .r-warning-nav { display: flex; gap: 8px; }
+    .r-warn-back { padding: 10px 16px; border: 1px solid var(--border); border-radius: 8px; background: transparent; font-size: 13px; font-family: 'DM Sans', sans-serif; color: var(--muted); cursor: pointer; }
+    .r-warn-continue { flex: 1; padding: 10px 16px; border: none; border-radius: 8px; background: rgba(201,168,76,.15); font-size: 13px; font-weight: 500; font-family: 'DM Sans', sans-serif; color: var(--gold); cursor: pointer; }
 
-    /* Rejection */
-    .ret-rejected { display:none; text-align:center; padding:2rem 1rem; }
-    .ret-rejected-icon { font-size:38px; margin-bottom:12px; }
-    .ret-rejected-title { font-size:17px; font-weight:500; margin-bottom:8px; }
-    .ret-rejected-text { font-size:14px; color:var(--r-muted); line-height:1.7; }
+    /* Rejection / Success */
+    .r-rejected, .r-success { display: none; text-align: center; padding: 3rem 1rem; }
+    .r-rejected-icon, .r-success-icon { font-size: 40px; margin-bottom: 14px; }
+    .r-rejected-title, .r-success-title { font-family: 'Playfair Display', Georgia, serif; font-size: 22px; font-weight: 500; color: var(--text); margin-bottom: 10px; }
+    .r-rejected-text, .r-success-sub { font-size: 14px; color: var(--muted); line-height: 1.8; }
 
-    /* Success */
-    .ret-success { display:none; text-align:center; padding:2rem 1rem; }
-    .ret-success-icon { font-size:40px; margin-bottom:12px; }
-    .ret-success-title { font-size:18px; font-weight:500; margin-bottom:8px; }
-    .ret-success-sub { font-size:14px; color:var(--r-muted); line-height:1.7; }
-
-    @media (max-width:520px) {
-      .ret-prog-grid { grid-template-columns:1fr; }
-      .ret-hero-title { font-size:22px; }
-      .ret-field-row { grid-template-columns:1fr; }
+    /* ── Mobile ── */
+    @media (max-width: 560px) {
+      .r-prog-grid { grid-template-columns: 1fr; }
+      .r-about-grid { grid-template-columns: 1fr; }
+      .r-about-photo, .r-about-photo-placeholder { width: 140px; margin: 0 auto 1.5rem; display: block; }
+      .r-field-row { grid-template-columns: 1fr; }
+      .r-metrics { grid-template-columns: repeat(3, 1fr); }
+      .r-metric-num { font-size: 26px; }
     }
   </style>
 </head>
@@ -205,154 +328,280 @@
       </div>
       <div class="nav-links">
         <a href="/">Accueil</a>
+        <a class="nav-cta" href="#candidature">Candidater</a>
       </div>
     </div>
   </nav>
 
-  <main class="ret-bg">
-    <div class="ret-wrap">
-
-      <!-- HERO -->
-      <div class="ret-tag">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
-        10 places — édition privée
-      </div>
-      <h1 class="ret-hero-title">Une semaine pour débloquer ta croissance, entouré des bonnes personnes</h1>
-      <p class="ret-hero-sub">Une retraite intensive pour entrepreneurs ambitieux. Travail en profondeur, environnement premium, connexions réelles.</p>
-      <div class="ret-metrics">
-        <div class="ret-metric"><div class="ret-metric-num">10</div><div class="ret-metric-label">entrepreneurs sélectionnés</div></div>
-        <div class="ret-metric"><div class="ret-metric-num">2</div><div class="ret-metric-label">experts présents</div></div>
-        <div class="ret-metric"><div class="ret-metric-num">7</div><div class="ret-metric-label">jours d'immersion</div></div>
+  <!-- ── HERO ── -->
+  <section class="r-hero">
+    <div class="r-container">
+      <div class="fade-up">
+        <div class="r-hero-tag">✦ Édition privée — 10 places</div>
+        <h1 class="r-hero-title">Tu stagnes entre 2k et 10k/mois&nbsp;? 7 jours pour casser ton plafond avec 9 entrepreneurs comme toi.</h1>
+        <p class="r-hero-sub">Sport, travail, experts. Tu repars avec un plan clair et un cercle solide.</p>
+        <p class="r-hero-tagline">Pour les entrepreneurs qui refusent de rester au même niveau.</p>
       </div>
 
-      <hr class="ret-divider" />
-
-      <!-- CE QUI EST INCLUS -->
-      <h2 class="ret-section-title">Ce qui est inclus</h2>
-      <div class="ret-card">
-        <div class="ret-include-item"><div class="ret-include-icon">🏠</div><span>Maison avec piscine — hébergement inclus pour toute la durée</span></div>
-        <div class="ret-include-item"><div class="ret-include-icon">🍽️</div><span>Tous les repas préparés — petit-déjeuner, déjeuner, dîner</span></div>
-        <div class="ret-include-item"><div class="ret-include-icon">🎯</div><span>Sessions avec 2 experts en stratégie, vente et scaling</span></div>
-        <div class="ret-include-item"><div class="ret-include-icon">⚡</div><span>Sport quotidien — séances matinales pour maintenir l'énergie</span></div>
-        <div class="ret-include-item"><div class="ret-include-icon">🤝</div><span>Réseau privé — groupe WhatsApp des participants post-retraite</span></div>
-        <div class="ret-include-item"><div class="ret-include-icon">🎬</div><span>Contenu filmé — les sessions clés sont enregistrées et partagées</span></div>
-      </div>
-
-      <hr class="ret-divider" />
-
-      <!-- POUR QUI -->
-      <h2 class="ret-section-title">Pour qui</h2>
-      <p class="ret-section-sub">Cette retraite est sélective. Tu dois cocher ces cases pour candidater.</p>
-      <div class="ret-badges">
-        <div class="ret-badge"><span>💰</span> 2k–10k€/mois</div>
-        <div class="ret-badge"><span>⚡</span> Haute énergie</div>
-        <div class="ret-badge"><span>🚀</span> Entrepreneur actif</div>
-        <div class="ret-badge"><span>📈</span> Veut progresser</div>
-        <div class="ret-badge"><span>🧠</span> Bonne mentalité</div>
-        <div class="ret-badge"><span>🎯</span> Prêt à agir</div>
-      </div>
-
-      <hr class="ret-divider" />
-
-      <!-- PROGRAMME TYPE -->
-      <h2 class="ret-section-title">Programme type</h2>
-      <div class="ret-prog-grid">
-        <div class="ret-prog-card"><div class="ret-prog-icon">🌅</div><div class="ret-prog-title">Matin</div><div class="ret-prog-desc">Sport collectif, petit-déjeuner, session stratégique avec un expert.</div></div>
-        <div class="ret-prog-card"><div class="ret-prog-icon">☀️</div><div class="ret-prog-title">Après-midi</div><div class="ret-prog-desc">Travail en solo ou en binôme, implémentation, feedback en groupe.</div></div>
-        <div class="ret-prog-card"><div class="ret-prog-icon">🌙</div><div class="ret-prog-title">Soirée</div><div class="ret-prog-desc">Repas partagé, discussions informelles, connexions entre participants.</div></div>
-        <div class="ret-prog-card"><div class="ret-prog-icon">📅</div><div class="ret-prog-title">Dates</div><div class="ret-prog-desc">Édition 2026 — dates confirmées aux candidats retenus.</div></div>
-      </div>
-
-      <hr class="ret-divider" />
-
-      <!-- QUESTIONNAIRE -->
-      <div class="ret-candidature-sep"><span class="ret-candidature-label">Candidature</span></div>
-      <h2 class="ret-form-title">Postule pour une place</h2>
-      <p class="ret-form-sub">8 étapes. Réponds honnêtement — on cherche des profils sérieux, pas des réponses parfaites.</p>
-
-      <div class="ret-progress">
-        <div class="ret-dot active" id="dot-0"></div>
-        <div class="ret-dot" id="dot-1"></div>
-        <div class="ret-dot" id="dot-2"></div>
-        <div class="ret-dot" id="dot-3"></div>
-        <div class="ret-dot" id="dot-4"></div>
-        <div class="ret-dot" id="dot-5"></div>
-        <div class="ret-dot" id="dot-6"></div>
-        <div class="ret-dot" id="dot-7"></div>
-      </div>
-
-      <!-- Warning overlay -->
-      <div class="ret-warning" id="retWarning">
-        <div class="ret-warning-icon">⚠️</div>
-        <div class="ret-warning-title" id="retWarningTitle">Attention</div>
-        <div class="ret-warning-text" id="retWarningText"></div>
-        <div class="ret-warning-nav">
-          <button class="ret-warn-back" onclick="warnBack()">← Revenir</button>
-          <button class="ret-warn-continue" onclick="warnContinue()">Continuer quand même →</button>
+      <div class="fade-up">
+        <div class="r-places-badge">
+          <span class="r-places-dot"></span>
+          <!-- Mettre à jour ce chiffre manuellement selon les candidatures -->
+          <span><strong>3</strong> places restantes sur 10</span>
         </div>
       </div>
 
-      <!-- Rejection message -->
-      <div class="ret-rejected" id="retRejected">
-        <div class="ret-rejected-icon">😔</div>
-        <div class="ret-rejected-title">Profil non retenu pour cette édition</div>
-        <div class="ret-rejected-text" id="retRejectedText"></div>
+      <div class="r-metrics fade-up">
+        <div class="r-metric">
+          <div class="r-metric-num">10</div>
+          <div class="r-metric-label">entrepreneurs sélectionnés</div>
+        </div>
+        <div class="r-metric">
+          <div class="r-metric-num">2</div>
+          <div class="r-metric-label">experts présents</div>
+        </div>
+        <div class="r-metric">
+          <div class="r-metric-num">7</div>
+          <div class="r-metric-label">jours d'immersion</div>
+        </div>
       </div>
 
-      <form id="retForm" novalidate>
+      <div class="fade-up">
+        <a href="#candidature" class="r-cta">Candidater pour une place</a>
+      </div>
+    </div>
+  </section>
 
-        <!-- ÉTAPE 1 — Identité -->
-        <div class="ret-step active" data-step="0">
-          <div class="ret-step-header">Étape 1 · Identité</div>
-          <div class="ret-field-row">
-            <div class="ret-field">
-              <label class="ret-field-label">Prénom</label>
-              <input type="text" class="ret-input" id="f-prenom" placeholder="Ton prénom" />
-            </div>
-            <div class="ret-field">
-              <label class="ret-field-label">Nom</label>
-              <input type="text" class="ret-input" id="f-nom" placeholder="Ton nom" />
-            </div>
+  <hr class="r-divider" />
+
+  <!-- ── CE QUI EST INCLUS ── -->
+  <section class="r-section alt fade-up">
+    <div class="r-container">
+      <span class="r-eyebrow">Ce qui est inclus</span>
+      <h2 class="r-title" style="margin-bottom:2rem;">Tout est pris en charge.</h2>
+      <div class="r-includes">
+        <div class="r-include-item">
+          <div class="r-include-icon">🏠</div>
+          <span>Maison avec piscine et salle de sport — sélectionnée selon le groupe retenu, partout en France.</span>
+        </div>
+        <div class="r-include-item">
+          <div class="r-include-icon">🍽️</div>
+          <span>Tous les repas préparés — petit-déjeuner, déjeuner, dîner inclus.</span>
+        </div>
+        <div class="r-include-item">
+          <div class="r-include-icon">🎯</div>
+          <span>2 experts choisis selon les profils retenus — vente, marketing, mindset ou scaling.</span>
+        </div>
+        <div class="r-include-item">
+          <div class="r-include-icon">⚡</div>
+          <span>Sport quotidien — séances matinales pour maintenir l'énergie et la clarté.</span>
+        </div>
+        <div class="r-include-item">
+          <div class="r-include-icon">🤝</div>
+          <span>Réseau privé — groupe WhatsApp des participants post-retraite.</span>
+        </div>
+        <div class="r-include-item">
+          <div class="r-include-icon">🎬</div>
+          <span>Contenu filmé — les sessions clés sont enregistrées et partagées aux participants.</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <hr class="r-divider" />
+
+  <!-- ── POUR QUI ── -->
+  <section class="r-section fade-up">
+    <div class="r-container">
+      <span class="r-eyebrow">Pour qui</span>
+      <h2 class="r-title" style="margin-bottom:2rem;">C'est fait pour toi si...</h2>
+      <p class="r-pourqui-text">
+        Tu fais déjà entre <strong>2k et 10k€/mois</strong>. Tu bosses, mais tu sens que tu <strong>plafonnes</strong>. Tu es seul, sans vrai cercle pour t'élever. Cette retraite est faite pour <strong>casser ce plafond</strong>.
+      </p>
+    </div>
+  </section>
+
+  <hr class="r-divider" />
+
+  <!-- ── PROGRAMME TYPE ── -->
+  <section class="r-section alt fade-up">
+    <div class="r-container">
+      <span class="r-eyebrow">Programme type</span>
+      <h2 class="r-title" style="margin-bottom:2rem;">7 jours structurés.</h2>
+      <div class="r-prog-grid">
+        <div class="r-prog-card">
+          <div class="r-prog-icon">🌅</div>
+          <div class="r-prog-title">Matin</div>
+          <div class="r-prog-desc">Sport collectif, petit-déjeuner, session stratégique avec un expert.</div>
+        </div>
+        <div class="r-prog-card">
+          <div class="r-prog-icon">☀️</div>
+          <div class="r-prog-title">Après-midi</div>
+          <div class="r-prog-desc">Travail en solo ou en binôme, implémentation, feedback en groupe.</div>
+        </div>
+        <div class="r-prog-card">
+          <div class="r-prog-icon">🌙</div>
+          <div class="r-prog-title">Soirée</div>
+          <div class="r-prog-desc">Repas partagé, discussions informelles, connexions entre participants.</div>
+        </div>
+        <div class="r-prog-card">
+          <div class="r-prog-icon">📅</div>
+          <div class="r-prog-title">Dates</div>
+          <div class="r-prog-desc">Édition 2026 — lieu et dates communiqués aux candidats retenus.</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <hr class="r-divider" />
+
+  <!-- ── QUI JE SUIS ── -->
+  <section class="r-section alt2 fade-up">
+    <div class="r-container">
+      <span class="r-eyebrow">Qui je suis</span>
+      <div class="r-about-grid">
+        <div>
+          <!-- Remplacer par la vraie photo quand elle est envoyée -->
+          <img src="/jeremy.webp" alt="Jérémy" class="r-about-photo" loading="lazy" decoding="async" />
+        </div>
+        <div>
+          <div class="r-about-role">Créateur de la retraite</div>
+          <h3 class="r-about-name">Jérémy</h3>
+          <p class="r-about-text">
+            Je m'appelle Jérémy. Je fais entre 2k et 5k€/mois avec mon activité, et comme toi, je sais que l'environnement dans lequel tu travailles change tout. J'ai créé cette retraite parce que je voulais un cadre sérieux pour passer un cap — entouré de personnes qui avancent vraiment. Je ne suis pas là pour enseigner. Je suis là pour construire ça avec toi.
+          </p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <hr class="r-divider" />
+
+  <!-- ── FAQ ── -->
+  <section class="r-section fade-up">
+    <div class="r-container">
+      <span class="r-eyebrow">FAQ</span>
+      <h2 class="r-title" style="margin-bottom:2rem;">Questions fréquentes.</h2>
+      <div class="r-faq">
+        <div class="r-faq-item">
+          <button class="r-faq-q" onclick="toggleFaq(this)">
+            C'est pour quel niveau d'entrepreneur ?
+            <svg class="r-faq-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
+          </button>
+          <div class="r-faq-a">Pour ceux qui font déjà entre 2k et 10k€/mois et qui veulent passer un cap. Pas pour les débutants à 0.</div>
+        </div>
+        <div class="r-faq-item">
+          <button class="r-faq-q" onclick="toggleFaq(this)">
+            Ça se passe où ?
+            <svg class="r-faq-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
+          </button>
+          <div class="r-faq-a">Partout en France. Le lieu exact est communiqué aux participants retenus selon le groupe constitué.</div>
+        </div>
+        <div class="r-faq-item">
+          <button class="r-faq-q" onclick="toggleFaq(this)">
+            Qui sont les experts ?
+            <svg class="r-faq-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
+          </button>
+          <div class="r-faq-a">Les 2 experts sont sélectionnés en fonction des profils retenus — vente, marketing, mindset, scaling. Leurs identités sont communiquées aux candidats retenus.</div>
+        </div>
+        <div class="r-faq-item">
+          <button class="r-faq-q" onclick="toggleFaq(this)">
+            Combien ça coûte ?
+            <svg class="r-faq-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
+          </button>
+          <div class="r-faq-a">Le tarif est adapté à chaque édition et communiqué personnellement après sélection.</div>
+        </div>
+        <div class="r-faq-item">
+          <button class="r-faq-q" onclick="toggleFaq(this)">
+            Pourquoi vous ne montrez pas tout directement ?
+            <svg class="r-faq-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
+          </button>
+          <div class="r-faq-a">Parce qu'on sélectionne les profils. Le contenu et les intervenants sont adaptés au groupe retenu.</div>
+        </div>
+        <div class="r-faq-item">
+          <button class="r-faq-q" onclick="toggleFaq(this)">
+            Que se passe-t-il après ma candidature ?
+            <svg class="r-faq-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
+          </button>
+          <div class="r-faq-a">Si ton profil est retenu, tu es contacté sur WhatsApp sous 48h pour un appel rapide.</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <hr class="r-divider" />
+
+  <!-- ── QUESTIONNAIRE ── -->
+  <section class="r-section alt" id="candidature">
+    <div class="r-container">
+      <div class="r-form-sep"><span class="r-form-sep-label">Candidature</span></div>
+      <span class="r-eyebrow">Ta candidature</span>
+      <h2 class="r-title" style="margin-bottom:.5rem;">Postule pour une place.</h2>
+      <p class="r-sub" style="margin-bottom:2rem;">8 étapes. Réponds honnêtement — on cherche des profils sérieux, pas des réponses parfaites.</p>
+
+      <div class="r-progress">
+        <div class="r-dot active" id="dot-0"></div>
+        <div class="r-dot" id="dot-1"></div>
+        <div class="r-dot" id="dot-2"></div>
+        <div class="r-dot" id="dot-3"></div>
+        <div class="r-dot" id="dot-4"></div>
+        <div class="r-dot" id="dot-5"></div>
+        <div class="r-dot" id="dot-6"></div>
+        <div class="r-dot" id="dot-7"></div>
+      </div>
+
+      <!-- Warning overlay -->
+      <div class="r-warning" id="rWarning">
+        <div class="r-warning-icon">⚠️</div>
+        <div class="r-warning-title" id="rWarnTitle">Attention</div>
+        <div class="r-warning-text" id="rWarnText"></div>
+        <div class="r-warning-nav">
+          <button class="r-warn-back" onclick="warnBack()">← Revenir</button>
+          <button class="r-warn-continue" onclick="warnContinue()">Continuer quand même →</button>
+        </div>
+      </div>
+
+      <!-- Rejection -->
+      <div class="r-rejected" id="rRejected">
+        <div class="r-rejected-icon">😔</div>
+        <div class="r-rejected-title">Profil non retenu pour cette édition</div>
+        <div class="r-rejected-text" id="rRejectedText"></div>
+      </div>
+
+      <form id="rForm" novalidate>
+
+        <!-- Étape 1 — Identité -->
+        <div class="r-step active" data-step="0">
+          <div class="r-step-header">Étape 1 · Identité</div>
+          <div class="r-field-row">
+            <div class="r-field"><label class="r-label">Prénom</label><input type="text" class="r-input" id="f-prenom" placeholder="Ton prénom" /></div>
+            <div class="r-field"><label class="r-label">Nom</label><input type="text" class="r-input" id="f-nom" placeholder="Ton nom" /></div>
           </div>
-          <div class="ret-field-row">
-            <div class="ret-field">
-              <label class="ret-field-label">Âge</label>
-              <input type="number" class="ret-input" id="f-age" placeholder="Ex : 28" min="18" max="80" />
-            </div>
-            <div class="ret-field">
-              <label class="ret-field-label">Sexe</label>
-              <select class="ret-select" id="f-sexe" onchange="toggleOther('f-sexe','f-sexe-autre')">
+          <div class="r-field-row">
+            <div class="r-field"><label class="r-label">Âge</label><input type="number" class="r-input" id="f-age" placeholder="Ex : 28" min="18" max="80" /></div>
+            <div class="r-field">
+              <label class="r-label">Sexe</label>
+              <select class="r-select" id="f-sexe" onchange="toggleOther('f-sexe','f-sexe-autre')">
                 <option value="" disabled selected>Sélectionne</option>
                 <option value="Homme">Homme</option>
                 <option value="Femme">Femme</option>
                 <option value="Autre">Autre</option>
               </select>
-              <input type="text" class="ret-input ret-optional" id="f-sexe-autre" placeholder="Précise" />
+              <input type="text" class="r-input r-optional" id="f-sexe-autre" placeholder="Précise" />
             </div>
           </div>
-          <div class="ret-field">
-            <label class="ret-field-label">Ville / Pays</label>
-            <input type="text" class="ret-input" id="f-ville" placeholder="Ex : Paris, France" />
-          </div>
-          <div class="ret-field">
-            <label class="ret-field-label">Numéro WhatsApp</label>
-            <input type="tel" class="ret-input" id="f-tel" placeholder="Ex : +33 6 00 00 00 00" />
-          </div>
-          <div class="ret-step-nav">
-            <button type="button" class="ret-btn-next" onclick="goNext(0)">Continuer →</button>
-          </div>
+          <div class="r-field"><label class="r-label">Ville / Pays</label><input type="text" class="r-input" id="f-ville" placeholder="Ex : Paris, France" /></div>
+          <div class="r-field"><label class="r-label">Numéro WhatsApp</label><input type="tel" class="r-input" id="f-tel" placeholder="+33 6 00 00 00 00" /></div>
+          <div class="r-step-nav"><button type="button" class="r-btn-next" onclick="goNext(0)">Continuer →</button></div>
         </div>
 
-        <!-- ÉTAPE 2 — Activité -->
-        <div class="ret-step" data-step="1">
-          <div class="ret-step-header">Étape 2 · Activité</div>
-          <div class="ret-field">
-            <label class="ret-field-label">Quelle est ton activité principale ?</label>
-            <textarea class="ret-textarea" id="f-activite" placeholder="Décris ce que tu fais en quelques mots…"></textarea>
-          </div>
-          <div class="ret-field">
-            <label class="ret-field-label">Depuis combien de temps ?</label>
-            <select class="ret-select" id="f-anciennete">
+        <!-- Étape 2 — Activité -->
+        <div class="r-step" data-step="1">
+          <div class="r-step-header">Étape 2 · Activité</div>
+          <div class="r-field"><label class="r-label">Quelle est ton activité principale ?</label><textarea class="r-textarea" id="f-activite" placeholder="Décris ce que tu fais en quelques mots…"></textarea></div>
+          <div class="r-field">
+            <label class="r-label">Depuis combien de temps ?</label>
+            <select class="r-select" id="f-anciennete">
               <option value="" disabled selected>Sélectionne</option>
               <option value="Moins de 6 mois">Moins de 6 mois</option>
               <option value="6 mois – 1 an">6 mois – 1 an</option>
@@ -360,34 +609,28 @@
               <option value="Plus de 3 ans">Plus de 3 ans</option>
             </select>
           </div>
-          <div class="ret-field">
-            <label class="ret-field-label">Statut</label>
-            <select class="ret-select" id="f-statut" onchange="toggleOther('f-statut','f-statut-autre')">
+          <div class="r-field">
+            <label class="r-label">Statut</label>
+            <select class="r-select" id="f-statut" onchange="toggleOther('f-statut','f-statut-autre')">
               <option value="" disabled selected>Sélectionne</option>
               <option value="Auto-entrepreneur">Auto-entrepreneur</option>
               <option value="Société (SASU, SARL…)">Société (SASU, SARL…)</option>
               <option value="Salarié avec side business">Salarié avec side business</option>
               <option value="Autre">Autre</option>
             </select>
-            <input type="text" class="ret-input ret-optional" id="f-statut-autre" placeholder="Précise ton statut" />
+            <input type="text" class="r-input r-optional" id="f-statut-autre" placeholder="Précise ton statut" />
           </div>
-          <div class="ret-field">
-            <label class="ret-field-label">Site ou réseaux ? <span style="font-weight:400;color:var(--r-hint)">(optionnel)</span></label>
-            <input type="text" class="ret-input" id="f-reseaux" placeholder="Instagram, LinkedIn, site web…" />
-          </div>
-          <div class="ret-step-nav">
-            <button type="button" class="ret-btn-back" onclick="goPrev(1)">←</button>
-            <button type="button" class="ret-btn-next" onclick="goNext(1)">Continuer →</button>
-          </div>
+          <div class="r-field"><label class="r-label">Site ou réseaux ? <span class="r-opt-label">(optionnel)</span></label><input type="text" class="r-input" id="f-reseaux" placeholder="Instagram, LinkedIn, site web…" /></div>
+          <div class="r-step-nav"><button type="button" class="r-btn-back" onclick="goPrev(1)">←</button><button type="button" class="r-btn-next" onclick="goNext(1)">Continuer →</button></div>
         </div>
 
-        <!-- ÉTAPE 3 — Revenus -->
-        <div class="ret-step" data-step="2">
-          <div class="ret-step-header">Étape 3 · Revenus</div>
-          <div class="ret-field">
-            <label class="ret-field-label">Revenus mensuels actuels ?</label>
-            <span class="ret-field-hint">Sois honnête, ça reste confidentiel.</span>
-            <select class="ret-select" id="f-revenus">
+        <!-- Étape 3 — Revenus -->
+        <div class="r-step" data-step="2">
+          <div class="r-step-header">Étape 3 · Revenus</div>
+          <div class="r-field">
+            <label class="r-label">Revenus mensuels actuels ?</label>
+            <span class="r-hint">Sois honnête, ça reste confidentiel.</span>
+            <select class="r-select" id="f-revenus">
               <option value="" disabled selected>Sélectionne une tranche</option>
               <option value="reject">Moins de 2 000€</option>
               <option value="2 000€ – 5 000€">2 000€ – 5 000€</option>
@@ -395,40 +638,34 @@
               <option value="Plus de 10 000€">Plus de 10 000€</option>
             </select>
           </div>
-          <div class="ret-field">
-            <label class="ret-field-label">Tes revenus sont stables ou irréguliers ?</label>
-            <select class="ret-select" id="f-stabilite">
+          <div class="r-field">
+            <label class="r-label">Tes revenus sont stables ou irréguliers ?</label>
+            <select class="r-select" id="f-stabilite">
               <option value="" disabled selected>Sélectionne</option>
               <option value="Stables">Stables</option>
               <option value="Irréguliers mais en progression">Irréguliers mais en progression</option>
               <option value="warn">Irréguliers et stagnants</option>
             </select>
           </div>
-          <div class="ret-step-nav">
-            <button type="button" class="ret-btn-back" onclick="goPrev(2)">←</button>
-            <button type="button" class="ret-btn-next" onclick="goNext(2)">Continuer →</button>
-          </div>
+          <div class="r-step-nav"><button type="button" class="r-btn-back" onclick="goPrev(2)">←</button><button type="button" class="r-btn-next" onclick="goNext(2)">Continuer →</button></div>
         </div>
 
-        <!-- ÉTAPE 4 — Situation actuelle -->
-        <div class="ret-step" data-step="3">
-          <div class="ret-step-header">Étape 4 · Situation actuelle</div>
-          <div class="ret-field">
-            <label class="ret-field-label">Qu'est-ce qui bloque ta croissance en ce moment ?</label>
-            <textarea class="ret-textarea" id="f-blocage" placeholder="Sois précis — c'est là que tout commence…"></textarea>
-          </div>
-          <div class="ret-field">
-            <label class="ret-field-label">T'es entouré d'autres entrepreneurs ?</label>
-            <select class="ret-select" id="f-reseau-ent">
+        <!-- Étape 4 — Situation actuelle -->
+        <div class="r-step" data-step="3">
+          <div class="r-step-header">Étape 4 · Situation actuelle</div>
+          <div class="r-field"><label class="r-label">Qu'est-ce qui bloque ta croissance en ce moment ?</label><textarea class="r-textarea" id="f-blocage" placeholder="Sois précis…"></textarea></div>
+          <div class="r-field">
+            <label class="r-label">T'es entouré d'autres entrepreneurs ?</label>
+            <select class="r-select" id="f-reseau-ent">
               <option value="" disabled selected>Sélectionne</option>
               <option value="Oui j'ai un réseau solide">Oui, j'ai un réseau solide</option>
               <option value="Un peu mais pas assez">Un peu mais pas assez</option>
               <option value="Non je suis totalement seul">Non, je suis totalement seul</option>
             </select>
           </div>
-          <div class="ret-field">
-            <label class="ret-field-label">T'as déjà investi dans ta formation ou ton business ?</label>
-            <select class="ret-select" id="f-invest">
+          <div class="r-field">
+            <label class="r-label">T'as déjà investi dans ta formation ou ton business ?</label>
+            <select class="r-select" id="f-invest">
               <option value="" disabled selected>Sélectionne</option>
               <option value="warn">Jamais</option>
               <option value="Moins de 500€">Moins de 500€</option>
@@ -436,48 +673,31 @@
               <option value="Plus de 2 000€">Plus de 2 000€</option>
             </select>
           </div>
-          <div class="ret-step-nav">
-            <button type="button" class="ret-btn-back" onclick="goPrev(3)">←</button>
-            <button type="button" class="ret-btn-next" onclick="goNext(3)">Continuer →</button>
-          </div>
+          <div class="r-step-nav"><button type="button" class="r-btn-back" onclick="goPrev(3)">←</button><button type="button" class="r-btn-next" onclick="goNext(3)">Continuer →</button></div>
         </div>
 
-        <!-- ÉTAPE 5 — Ambition -->
-        <div class="ret-step" data-step="4">
-          <div class="ret-step-header">Étape 5 · Ambition</div>
-          <div class="ret-field">
-            <label class="ret-field-label">Qu'est-ce que tu veux accomplir dans les 3 prochains mois ?</label>
-            <textarea class="ret-textarea" id="f-objectifs" placeholder="Sois concret et ambitieux…"></textarea>
+        <!-- Étape 5 — Ambition -->
+        <div class="r-step" data-step="4">
+          <div class="r-step-header">Étape 5 · Ambition</div>
+          <div class="r-field"><label class="r-label">Qu'est-ce que tu veux accomplir dans les 3 prochains mois ?</label><textarea class="r-textarea" id="f-objectifs" placeholder="Sois concret et ambitieux…"></textarea></div>
+          <div class="r-field">
+            <label class="r-label">Sur une échelle de 1 à 10, t'es prêt à changer tes habitudes ?</label>
+            <span class="r-hint">En dessous de 7, on te demandera de reconsidérer.</span>
+            <input type="range" min="1" max="10" value="5" class="r-slider" id="f-slider" oninput="document.getElementById('sliderVal').textContent=this.value" />
+            <div class="r-slider-labels"><span>1 — Pas vraiment</span><span>10 — Totalement</span></div>
+            <div class="r-slider-value"><span id="sliderVal">5</span> / 10</div>
           </div>
-          <div class="ret-field">
-            <label class="ret-field-label">Sur une échelle de 1 à 10, t'es prêt à changer tes habitudes ?</label>
-            <span class="ret-field-hint">En dessous de 7, on te demandera de reconsidérer.</span>
-            <div class="ret-slider-wrap">
-              <input type="range" min="1" max="10" value="5" class="ret-slider" id="f-slider" oninput="document.getElementById('sliderVal').textContent=this.value" />
-              <div class="ret-slider-labels"><span>1 — Pas vraiment</span><span>10 — Totalement</span></div>
-              <div class="ret-slider-value"><span id="sliderVal">5</span> / 10</div>
-            </div>
-          </div>
-          <div class="ret-field">
-            <label class="ret-field-label">Pourquoi cette retraite et pas une formation en ligne ?</label>
-            <textarea class="ret-textarea" id="f-pourquoi-retraite" placeholder="Explique ce que tu cherches vraiment…"></textarea>
-          </div>
-          <div class="ret-step-nav">
-            <button type="button" class="ret-btn-back" onclick="goPrev(4)">←</button>
-            <button type="button" class="ret-btn-next" onclick="goNext(4)">Continuer →</button>
-          </div>
+          <div class="r-field"><label class="r-label">Pourquoi cette retraite et pas une formation en ligne ?</label><textarea class="r-textarea" id="f-pourquoi-retraite" placeholder="Explique ce que tu cherches vraiment…"></textarea></div>
+          <div class="r-step-nav"><button type="button" class="r-btn-back" onclick="goPrev(4)">←</button><button type="button" class="r-btn-next" onclick="goNext(4)">Continuer →</button></div>
         </div>
 
-        <!-- ÉTAPE 6 — Logistique -->
-        <div class="ret-step" data-step="5">
-          <div class="ret-step-header">Étape 6 · Logistique</div>
-          <div class="ret-field">
-            <label class="ret-field-label">Quelles sont tes disponibilités ?</label>
-            <input type="text" class="ret-input" id="f-dispos" placeholder="Ex : juillet, fin août, pas avant octobre…" />
-          </div>
-          <div class="ret-field">
-            <label class="ret-field-label">Contraintes alimentaires ?</label>
-            <select class="ret-select" id="f-alimentaire" onchange="toggleOther('f-alimentaire','f-alimentaire-autre')">
+        <!-- Étape 6 — Logistique -->
+        <div class="r-step" data-step="5">
+          <div class="r-step-header">Étape 6 · Logistique</div>
+          <div class="r-field"><label class="r-label">Quelles sont tes disponibilités ?</label><input type="text" class="r-input" id="f-dispos" placeholder="Ex : juillet, fin août, pas avant octobre…" /></div>
+          <div class="r-field">
+            <label class="r-label">Contraintes alimentaires ?</label>
+            <select class="r-select" id="f-alimentaire" onchange="toggleOther('f-alimentaire','f-alimentaire-autre')">
               <option value="" disabled selected>Sélectionne</option>
               <option value="Aucune">Aucune</option>
               <option value="Végétarien">Végétarien</option>
@@ -485,28 +705,25 @@
               <option value="Halal">Halal</option>
               <option value="Autre">Autre</option>
             </select>
-            <input type="text" class="ret-input ret-optional" id="f-alimentaire-autre" placeholder="Précise tes contraintes" />
+            <input type="text" class="r-input r-optional" id="f-alimentaire-autre" placeholder="Précise tes contraintes" />
           </div>
-          <div class="ret-field">
-            <label class="ret-field-label">T'as le permis et un véhicule ?</label>
-            <select class="ret-select" id="f-vehicule">
+          <div class="r-field">
+            <label class="r-label">T'as le permis et un véhicule ?</label>
+            <select class="r-select" id="f-vehicule">
               <option value="" disabled selected>Sélectionne</option>
               <option value="Oui">Oui</option>
               <option value="Non">Non</option>
             </select>
           </div>
-          <div class="ret-step-nav">
-            <button type="button" class="ret-btn-back" onclick="goPrev(5)">←</button>
-            <button type="button" class="ret-btn-next" onclick="goNext(5)">Continuer →</button>
-          </div>
+          <div class="r-step-nav"><button type="button" class="r-btn-back" onclick="goPrev(5)">←</button><button type="button" class="r-btn-next" onclick="goNext(5)">Continuer →</button></div>
         </div>
 
-        <!-- ÉTAPE 7 — Budget & engagement -->
-        <div class="ret-step" data-step="6">
-          <div class="ret-step-header">Étape 7 · Budget & engagement</div>
-          <div class="ret-field">
-            <label class="ret-field-label">Quel est ton budget pour cette retraite ?</label>
-            <select class="ret-select" id="f-budget">
+        <!-- Étape 7 — Budget & engagement -->
+        <div class="r-step" data-step="6">
+          <div class="r-step-header">Étape 7 · Budget & engagement</div>
+          <div class="r-field">
+            <label class="r-label">Quel est ton budget pour cette retraite ?</label>
+            <select class="r-select" id="f-budget">
               <option value="" disabled selected>Sélectionne une tranche</option>
               <option value="reject">Moins de 1 000€</option>
               <option value="1 000€ – 1 500€">1 000€ – 1 500€</option>
@@ -514,69 +731,80 @@
               <option value="Plus de 2 000€">Plus de 2 000€</option>
             </select>
           </div>
-          <div class="ret-field">
-            <label class="ret-field-label">Comment t'as connu cette retraite ?</label>
-            <select class="ret-select" id="f-source" onchange="toggleOther('f-source','f-source-autre')">
+          <div class="r-field">
+            <label class="r-label">Comment t'as connu cette retraite ?</label>
+            <select class="r-select" id="f-source" onchange="toggleOther('f-source','f-source-autre')">
               <option value="" disabled selected>Sélectionne</option>
               <option value="Instagram">Instagram</option>
               <option value="Bouche à oreille">Bouche à oreille</option>
               <option value="LinkedIn">LinkedIn</option>
               <option value="Autre">Autre</option>
             </select>
-            <input type="text" class="ret-input ret-optional" id="f-source-autre" placeholder="Précise" />
+            <input type="text" class="r-input r-optional" id="f-source-autre" placeholder="Précise" />
           </div>
-          <div class="ret-step-nav">
-            <button type="button" class="ret-btn-back" onclick="goPrev(6)">←</button>
-            <button type="button" class="ret-btn-next" onclick="goNext(6)">Continuer →</button>
-          </div>
+          <div class="r-step-nav"><button type="button" class="r-btn-back" onclick="goPrev(6)">←</button><button type="button" class="r-btn-next" onclick="goNext(6)">Continuer →</button></div>
         </div>
 
-        <!-- ÉTAPE 8 — Dernière question -->
-        <div class="ret-step" data-step="7">
-          <div class="ret-step-header">Étape 8 · Dernière question</div>
-          <div class="ret-field">
-            <label class="ret-field-label">Convaincs-nous en 3 phrases pourquoi ta place doit être pour toi.</label>
-            <span class="ret-field-hint">C'est là qu'on voit vraiment qui est sérieux.</span>
-            <textarea class="ret-textarea" style="min-height:120px" id="f-conviction" placeholder="Écris 3 phrases qui font la différence…"></textarea>
+        <!-- Étape 8 — Conviction -->
+        <div class="r-step" data-step="7">
+          <div class="r-step-header">Étape 8 · Dernière question</div>
+          <div class="r-field">
+            <label class="r-label">Convaincs-nous en 3 phrases pourquoi ta place doit être pour toi.</label>
+            <span class="r-hint">C'est là qu'on voit vraiment qui est sérieux.</span>
+            <textarea class="r-textarea" style="min-height:120px" id="f-conviction" placeholder="Écris 3 phrases qui font la différence…"></textarea>
           </div>
-          <div class="ret-step-nav">
-            <button type="button" class="ret-btn-back" onclick="goPrev(7)">←</button>
-          </div>
-          <button type="submit" class="ret-btn-submit" id="submitBtn">Envoyer ma candidature →</button>
-          <p class="ret-form-note">Seulement les profils qualifiés passent à l'appel. On te répond sous 48h.</p>
+          <div class="r-step-nav"><button type="button" class="r-btn-back" onclick="goPrev(7)">←</button></div>
+          <button type="submit" class="r-btn-submit" id="submitBtn">Envoyer ma candidature →</button>
+          <p class="r-form-note">Le tarif est communiqué personnellement à chaque candidat retenu, adapté à l'édition.</p>
         </div>
 
       </form>
 
       <!-- Success -->
-      <div class="ret-success" id="retSuccess">
-        <div class="ret-success-icon">✅</div>
-        <div class="ret-success-title">Candidature envoyée !</div>
-        <div class="ret-success-sub">On a bien reçu ta candidature.<br>Tu seras contacté sur WhatsApp sous 48h si ton profil est retenu.</div>
+      <div class="r-success" id="rSuccess">
+        <div class="r-success-icon">✦</div>
+        <div class="r-success-title">Candidature reçue.</div>
+        <div class="r-success-sub">Si ton profil est retenu, tu seras contacté sur WhatsApp sous 48h.</div>
       </div>
 
     </div>
+  </section>
 
-    <footer class="footer">
-      <div class="container">
-        <div class="footer-inner">
-          <div class="footer-left">
-            <a href="/mentions-legales">Mentions légales</a><span>·</span>
-            <a href="/confidentialite">Confidentialité</a><span>·</span>
-            <a href="/cgu">CGU</a><span>·</span>
-            <a href="mailto:jeremy.pereirapires@gmail.com">jeremy.pereirapires@gmail.com</a>
-          </div>
-          <div class="footer-copy">© Qyraze · Jérémy Pereira Pires · 2026</div>
+  <footer class="footer">
+    <div class="container">
+      <div class="footer-inner">
+        <div class="footer-left">
+          <a href="/mentions-legales">Mentions légales</a><span>·</span>
+          <a href="/confidentialite">Confidentialité</a><span>·</span>
+          <a href="/cgu">CGU</a><span>·</span>
+          <a href="mailto:jeremy.pereirapires@gmail.com">jeremy.pereirapires@gmail.com</a>
         </div>
+        <div class="footer-copy">© Qyraze · Jérémy Pereira Pires · 2026</div>
       </div>
-    </footer>
-  </main>
+    </div>
+  </footer>
 
   <script>
+    /* ── Scroll animations ── */
+    var observer = new IntersectionObserver(function(entries) {
+      entries.forEach(function(e) {
+        if (e.isIntersecting) { e.target.classList.add('visible'); observer.unobserve(e.target); }
+      });
+    }, { threshold: 0.08 });
+    document.querySelectorAll('.fade-up').forEach(function(el) { observer.observe(el); });
+
+    /* ── FAQ accordion ── */
+    function toggleFaq(btn) {
+      var item = btn.parentElement;
+      var isOpen = item.classList.contains('open');
+      document.querySelectorAll('.r-faq-item.open').forEach(function(i) { i.classList.remove('open'); });
+      if (!isOpen) item.classList.add('open');
+    }
+
+    /* ── Form logic ── */
     var currentStep = 0;
     var pendingNextStep = null;
 
-    /* ── Dots ── */
     function updateDots(step) {
       for (var i = 0; i < 8; i++) {
         var d = document.getElementById('dot-' + i);
@@ -586,30 +814,24 @@
       }
     }
 
-    /* ── Show step ── */
     function showStep(step) {
-      document.querySelectorAll('.ret-step').forEach(function(el){ el.classList.remove('active'); });
+      document.querySelectorAll('.r-step').forEach(function(el) { el.classList.remove('active'); });
       document.querySelector('[data-step="'+step+'"]').classList.add('active');
       updateDots(step);
       currentStep = step;
-      window.scrollTo({ top: document.getElementById('retForm').offsetTop - 80, behavior:'smooth' });
+      window.scrollTo({ top: document.getElementById('rForm').offsetTop - 80, behavior: 'smooth' });
     }
 
-    /* ── Toggle "Autre" text inputs ── */
     function toggleOther(selectId, inputId) {
-      var val = document.getElementById(selectId).value;
-      var el  = document.getElementById(inputId);
-      el.classList.toggle('visible', val === 'Autre');
+      var el = document.getElementById(inputId);
+      el.classList.toggle('visible', document.getElementById(selectId).value === 'Autre');
     }
 
-    /* ── Highlight invalid field ── */
     function flashError(el) {
-      el.focus();
-      el.style.borderColor = '#EF4444';
-      setTimeout(function(){ el.style.borderColor = ''; }, 1500);
+      el.focus(); el.style.borderColor = '#c0392b';
+      setTimeout(function() { el.style.borderColor = ''; }, 1500);
     }
 
-    /* ── Validate all required fields for a step ── */
     function validateStep(step) {
       var required = {
         0: ['f-prenom','f-nom','f-age','f-sexe','f-ville','f-tel'],
@@ -629,79 +851,58 @@
       return true;
     }
 
-    /* ── Show/hide warning ── */
     function showWarning(title, text, nextStep) {
       pendingNextStep = nextStep;
-      document.getElementById('retWarningTitle').textContent = title;
-      document.getElementById('retWarningText').textContent  = text;
-      document.getElementById('retWarning').style.display    = 'block';
+      document.getElementById('rWarnTitle').textContent = title;
+      document.getElementById('rWarnText').textContent  = text;
+      document.getElementById('rWarning').style.display = 'block';
       document.querySelector('[data-step="'+currentStep+'"]').style.display = 'none';
-      window.scrollTo({ top: document.getElementById('retWarning').offsetTop - 80, behavior:'smooth' });
+      window.scrollTo({ top: document.getElementById('rWarning').offsetTop - 80, behavior: 'smooth' });
     }
     function warnBack() {
-      document.getElementById('retWarning').style.display = 'none';
+      document.getElementById('rWarning').style.display = 'none';
       document.querySelector('[data-step="'+currentStep+'"]').style.display = 'block';
       pendingNextStep = null;
     }
     function warnContinue() {
-      document.getElementById('retWarning').style.display = 'none';
+      document.getElementById('rWarning').style.display = 'none';
       showStep(pendingNextStep);
       pendingNextStep = null;
     }
 
-    /* ── Show rejection ── */
     function showRejection(text) {
-      document.getElementById('retForm').style.display    = 'none';
-      document.querySelector('.ret-progress').style.display = 'none';
-      document.getElementById('retWarning').style.display = 'none';
-      document.getElementById('retRejectedText').textContent = text;
-      document.getElementById('retRejected').style.display = 'block';
-      window.scrollTo({ top: 0, behavior:'smooth' });
+      document.getElementById('rForm').style.display     = 'none';
+      document.querySelector('.r-progress').style.display = 'none';
+      document.getElementById('rWarning').style.display  = 'none';
+      document.getElementById('rRejectedText').textContent = text;
+      document.getElementById('rRejected').style.display = 'block';
+      window.scrollTo({ top: 0, behavior: 'smooth' });
     }
 
-    /* ── Go next with filters ── */
     function goNext(step) {
       if (!validateStep(step)) return;
 
-      /* Step 2 — Revenus filters */
       if (step === 2) {
-        var rev = document.getElementById('f-revenus').value;
-        var sta = document.getElementById('f-stabilite').value;
-        if (rev === 'reject') {
-          showRejection("Nous sélectionnons des entrepreneurs avec un minimum de 2 000€ de revenus mensuels. Cette édition n'est pas faite pour toi pour le moment — mais continue à construire et reviens quand tu y seras.");
+        if (document.getElementById('f-revenus').value === 'reject') {
+          showRejection("Nous sélectionnons des entrepreneurs avec un minimum de 2 000€ de revenus mensuels. Cette édition n'est pas faite pour toi pour le moment — continue à construire et reviens quand tu y seras.");
           return;
         }
-        if (sta === 'warn') {
-          showWarning('Revenus irréguliers et stagnants', "Des revenus irréguliers qui ne progressent pas signalent souvent un problème de fond à résoudre en priorité. La retraite peut t'aider, mais assure-toi d'être prêt à mettre en œuvre ce que tu vas apprendre.", 3);
-          return;
-        }
-      }
-
-      /* Step 3 — Investissement filter */
-      if (step === 3) {
-        var inv = document.getElementById('f-invest').value;
-        if (inv === 'warn') {
-          showWarning("Tu n'as jamais investi dans ta formation", "N'avoir jamais investi dans sa formation ou son business est un signal fort. Les profils qui avancent vite sont ceux qui ont déjà montré qu'ils sont prêts à mettre des ressources sur la table.", 4);
+        if (document.getElementById('f-stabilite').value === 'warn') {
+          showWarning('Revenus irréguliers et stagnants', "Des revenus irréguliers qui ne progressent pas signalent souvent un problème de fond. La retraite peut t'aider, mais assure-toi d'être prêt à mettre en œuvre ce que tu vas apprendre.", 3);
           return;
         }
       }
-
-      /* Step 4 — Slider filter */
-      if (step === 4) {
-        var sliderVal = parseInt(document.getElementById('f-slider').value, 10);
-        if (sliderVal < 7) {
-          showWarning("Niveau de motivation : " + sliderVal + "/10", "Un score en dessous de 7 nous interroge sur ta capacité à vraiment changer de cap pendant la retraite. Ce n'est pas un refus, mais demande-toi si c'est le bon moment.", 5);
-          return;
-        }
+      if (step === 3 && document.getElementById('f-invest').value === 'warn') {
+        showWarning("Tu n'as jamais investi dans ta formation", "Les profils qui avancent vite sont ceux qui ont déjà montré qu'ils sont prêts à mettre des ressources sur la table. Ce n'est pas un refus — mais une question à te poser.", 4);
+        return;
       }
-
-      /* Step 6 — Budget filter */
-      if (step === 6) {
-        var bud = document.getElementById('f-budget').value;
-        if (bud === 'reject') {
-          showRejection("Le budget minimum pour cette retraite est de 1 000€. Ce n'est pas le bon moment — mais si tu travailles sur tes revenus, cette édition ou la suivante pourrait être pour toi.");
-          return;
-        }
+      if (step === 4 && parseInt(document.getElementById('f-slider').value, 10) < 7) {
+        showWarning('Niveau de motivation : ' + document.getElementById('f-slider').value + '/10', "Un score en dessous de 7 nous interroge sur ta capacité à vraiment changer de cap pendant la retraite. Ce n'est pas un refus — demande-toi si c'est le bon moment.", 5);
+        return;
+      }
+      if (step === 6 && document.getElementById('f-budget').value === 'reject') {
+        showRejection("Le budget minimum pour cette retraite est de 1 000€. Ce n'est pas le bon moment — mais si tu travailles sur tes revenus, cette édition ou la suivante pourrait être pour toi.");
+        return;
       }
 
       showStep(step + 1);
@@ -710,7 +911,7 @@
     function goPrev(step) { showStep(step - 1); }
 
     /* ── Submit ── */
-    document.getElementById('retForm').addEventListener('submit', function(e) {
+    document.getElementById('rForm').addEventListener('submit', function(e) {
       e.preventDefault();
       if (!validateStep(7)) return;
 
@@ -718,41 +919,39 @@
       btn.disabled = true;
       btn.textContent = 'Envoi en cours…';
 
-      /* Resolve "Autre" fields */
-      function resolveField(selectId, otherInputId) {
+      function resolveField(selectId, otherId) {
         var v = document.getElementById(selectId).value;
-        if (v === 'Autre' || v === 'reject' || v === 'warn') {
-          var other = document.getElementById(otherInputId);
-          return other ? (other.value.trim() || v) : v;
-        }
+        if (v === 'Autre') { var o = document.getElementById(otherId); return o ? (o.value.trim() || 'Autre') : 'Autre'; }
+        if (v === 'reject') return 'Moins de seuil minimum';
+        if (v === 'warn') return document.getElementById(selectId).options[document.getElementById(selectId).selectedIndex].text;
         return v;
       }
 
       var data = {
-        prenom:           document.getElementById('f-prenom').value.trim(),
-        nom:              document.getElementById('f-nom').value.trim(),
-        age:              document.getElementById('f-age').value,
-        sexe:             resolveField('f-sexe','f-sexe-autre'),
-        ville:            document.getElementById('f-ville').value.trim(),
-        tel:              document.getElementById('f-tel').value.trim(),
-        activite:         document.getElementById('f-activite').value.trim(),
-        anciennete:       document.getElementById('f-anciennete').value,
-        statut:           resolveField('f-statut','f-statut-autre'),
-        reseaux:          document.getElementById('f-reseaux').value.trim(),
-        revenus:          document.getElementById('f-revenus').value,
-        stabilite:        document.getElementById('f-stabilite').value,
-        blocage:          document.getElementById('f-blocage').value.trim(),
-        reseau_ent:       document.getElementById('f-reseau-ent').value,
-        investissement:   document.getElementById('f-invest').value,
-        objectifs:        document.getElementById('f-objectifs').value.trim(),
+        prenom: document.getElementById('f-prenom').value.trim(),
+        nom: document.getElementById('f-nom').value.trim(),
+        age: document.getElementById('f-age').value,
+        sexe: resolveField('f-sexe','f-sexe-autre'),
+        ville: document.getElementById('f-ville').value.trim(),
+        tel: document.getElementById('f-tel').value.trim(),
+        activite: document.getElementById('f-activite').value.trim(),
+        anciennete: document.getElementById('f-anciennete').value,
+        statut: resolveField('f-statut','f-statut-autre'),
+        reseaux: document.getElementById('f-reseaux').value.trim(),
+        revenus: document.getElementById('f-revenus').value,
+        stabilite: document.getElementById('f-stabilite').value,
+        blocage: document.getElementById('f-blocage').value.trim(),
+        reseau_ent: document.getElementById('f-reseau-ent').value,
+        investissement: document.getElementById('f-invest').value,
+        objectifs: document.getElementById('f-objectifs').value.trim(),
         motivation_score: document.getElementById('f-slider').value,
-        pourquoi_retraite:document.getElementById('f-pourquoi-retraite').value.trim(),
-        dispos:           document.getElementById('f-dispos').value.trim(),
-        alimentaire:      resolveField('f-alimentaire','f-alimentaire-autre'),
-        vehicule:         document.getElementById('f-vehicule').value,
-        budget:           document.getElementById('f-budget').value,
-        source:           resolveField('f-source','f-source-autre'),
-        conviction:       document.getElementById('f-conviction').value.trim()
+        pourquoi_retraite: document.getElementById('f-pourquoi-retraite').value.trim(),
+        dispos: document.getElementById('f-dispos').value.trim(),
+        alimentaire: resolveField('f-alimentaire','f-alimentaire-autre'),
+        vehicule: document.getElementById('f-vehicule').value,
+        budget: document.getElementById('f-budget').value,
+        source: resolveField('f-source','f-source-autre'),
+        conviction: document.getElementById('f-conviction').value.trim()
       };
 
       fetch('/api/retraite-candidature', {
@@ -760,12 +959,12 @@
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(data)
       })
-      .then(function(r){ return r.json(); })
+      .then(function(r) { return r.json(); })
       .then(function() {
-        document.getElementById('retForm').style.display      = 'none';
-        document.querySelector('.ret-progress').style.display = 'none';
-        document.getElementById('retSuccess').style.display   = 'block';
-        window.scrollTo({ top: 0, behavior:'smooth' });
+        document.getElementById('rForm').style.display      = 'none';
+        document.querySelector('.r-progress').style.display = 'none';
+        document.getElementById('rSuccess').style.display   = 'block';
+        window.scrollTo({ top: 0, behavior: 'smooth' });
       })
       .catch(function() {
         btn.disabled = false;
