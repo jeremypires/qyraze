@@ -51,7 +51,13 @@ export default async function handler(req, res) {
     const waLink = `https://wa.me/${cleanPhone(tel)}`;
     const fullName = `${prenom} ${nom}`.trim();
 
-    await resend.emails.send({
+    await Promise.all([
+      fetch('https://hook.eu2.make.com/e63fdbdhbzy484abuabclbuzwi9u3tds', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(req.body)
+      }),
+      resend.emails.send({
       from: process.env.EMAIL_FROM,
       to: notifyEmail,
       subject: `🏕️ Candidature retraite — ${escapeHtml(fullName)}`,
@@ -120,7 +126,8 @@ export default async function handler(req, res) {
           </div>
         </div>
       `,
-    });
+      })
+    ]);
 
     return res.status(200).json({ success: true });
   } catch (error) {
