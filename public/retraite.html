@@ -31,16 +31,51 @@
   <style>
     /* ── Base ── */
     :root {
-      --gold:     #c9a84c;
-      --gold-h:   #d9bc6e;
-      --bg:       #0a0a0a;
-      --bg2:      #111111;
-      --bg3:      #161616;
-      --text:     #f5f0eb;
-      --muted:    #888;
-      --hint:     #555;
-      --border:   rgba(255,255,255,.07);
-      --surface:  rgba(255,255,255,.04);
+      --gold:          #c9a84c;
+      --gold-h:        #d9bc6e;
+      --gold-border:   rgba(201,168,76,.3);
+      --bg:            #0a0a0a;
+      --bg2:           #111111;
+      --bg3:           #161616;
+      --text:          #f5f0eb;
+      --text-sec:      #ccc;
+      --text-ter:      #aaa;
+      --text-day:      #b0a898;
+      --muted:         #888;
+      --hint:          #555;
+      --border:        rgba(255,255,255,.07);
+      --border-hard:   #2a2a2a;
+      --surface:       rgba(255,255,255,.04);
+      --surface-card:  #161616;
+      --gold-cta-text: #0a0a0a;
+      --nav-brd:       transparent;
+      --input-bg:      rgba(255,255,255,.04);
+      --select-opt:    #1a1a1a;
+    }
+
+    @media (prefers-color-scheme: light) {
+      :root {
+        --gold:          #b8922e;
+        --gold-h:        #a07828;
+        --gold-border:   rgba(184,146,46,.25);
+        --bg:            #faf8f4;
+        --bg2:           #f0ece3;
+        --bg3:           #e8e2d6;
+        --text:          #1a1a1a;
+        --text-sec:      #3a3530;
+        --text-ter:      #4a4540;
+        --text-day:      #5a5450;
+        --muted:         #6b6560;
+        --hint:          #8a8480;
+        --border:        rgba(0,0,0,.08);
+        --border-hard:   #ddd5c8;
+        --surface:       rgba(0,0,0,.03);
+        --surface-card:  #ffffff;
+        --gold-cta-text: #ffffff;
+        --nav-brd:       #e8e0d0;
+        --input-bg:      #ffffff;
+        --select-opt:    #ffffff;
+      }
     }
 
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
@@ -64,6 +99,11 @@
     .r-sub { font-size: 15px; color: var(--muted); line-height: 1.8; margin-top: .75rem; }
     .r-section-label { font-size: 11px; letter-spacing: 3px; text-transform: uppercase; color: var(--hint); margin-bottom: 1.5rem; display: block; }
 
+    /* ── NAV OVERRIDE ── */
+    .nav { border-bottom: 1px solid var(--nav-brd); }
+    .nav .nav-cta { background: var(--gold) !important; color: var(--gold-cta-text) !important; border: none !important; }
+    .nav .nav-cta:hover { background: var(--gold-h) !important; }
+
     /* ── HERO ── */
     .r-hero {
       min-height: 92vh;
@@ -73,7 +113,7 @@
       /* Hero image — décommenter quand le visuel est envoyé :
          background: linear-gradient(rgba(0,0,0,0.58), rgba(0,0,0,0.58)), url('/retraite-hero.jpg') center/cover no-repeat; */
       position: relative;
-      padding: 7rem 0 5rem;
+      padding: 4rem 0 4rem;
       border-bottom: 1px solid var(--border);
     }
     .r-hero-tag {
@@ -100,7 +140,7 @@
     }
     .r-hero-sub {
       font-size: 17px;
-      color: #bbb;
+      color: var(--text-sec);
       line-height: 1.7;
       margin-bottom: .5rem;
     }
@@ -111,25 +151,9 @@
       font-style: italic;
     }
 
-    /* Places badge */
-    .r-places-badge {
-      display: inline-flex;
-      align-items: center;
-      gap: 8px;
-      background: rgba(201,168,76,.08);
-      border: 1px solid rgba(201,168,76,.2);
-      color: var(--gold);
-      font-size: 13px;
-      font-weight: 500;
-      padding: 7px 16px;
-      border-radius: 8px;
-      margin-bottom: 2rem;
-    }
-    .r-places-dot { width: 7px; height: 7px; background: var(--gold); border-radius: 50%; display: inline-block; }
-
     /* Metrics */
     .r-metrics { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; margin-bottom: 2.5rem; }
-    .r-metric { background: var(--surface); border: 1px solid var(--border); border-radius: 14px; padding: 1.1rem 1rem; text-align: center; }
+    .r-metric { background: var(--surface); border: 1px solid var(--gold-border); border-radius: 14px; padding: 1.1rem 1rem; text-align: center; }
     .r-metric-num { font-family: 'Playfair Display', Georgia, serif; font-size: 32px; font-weight: 500; color: var(--text); line-height: 1; }
     .r-metric-label { font-size: 11px; color: var(--muted); margin-top: 5px; line-height: 1.4; }
 
@@ -138,7 +162,7 @@
       display: inline-block;
       padding: 15px 32px;
       background: var(--gold);
-      color: #0a0a0a;
+      color: var(--gold-cta-text);
       font-size: 15px;
       font-weight: 600;
       font-family: 'DM Sans', sans-serif;
@@ -153,37 +177,53 @@
 
     /* ── INCLUS ── */
     .r-includes { display: flex; flex-direction: column; border: 1px solid var(--border); border-radius: 16px; overflow: hidden; }
-    .r-include-item { display: flex; align-items: center; gap: 14px; padding: 15px 1.5rem; border-bottom: 1px solid var(--border); font-size: 14px; color: #ccc; line-height: 1.5; }
+    .r-include-item { display: flex; align-items: center; gap: 14px; padding: 15px 1.5rem; border-bottom: 1px solid var(--border); font-size: 14px; color: var(--text-sec); line-height: 1.5; }
     .r-include-item:last-child { border-bottom: none; }
-    .r-include-icon { width: 34px; height: 34px; background: rgba(201,168,76,.1); border: 1px solid rgba(201,168,76,.2); border-radius: 9px; display: flex; align-items: center; justify-content: center; flex-shrink: 0; font-size: 16px; }
+    .r-include-icon { width: 34px; height: 34px; background: rgba(201,168,76,.1); border: 1px solid rgba(201,168,76,.2); border-radius: 9px; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+    .r-include-icon svg { width: 16px; height: 16px; stroke: var(--gold); fill: none; stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; }
 
     /* ── POUR QUI ── */
-    .r-pourqui-text { font-size: 18px; line-height: 2; color: #ccc; }
+    .r-pourqui-text { font-size: 18px; line-height: 2; color: var(--text-sec); }
     .r-pourqui-text strong { color: var(--text); font-weight: 500; }
 
     /* ── JOURS ── */
     .r-days-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 16px; margin: 3rem 0 2rem; }
-    .r-day-card { background: var(--bg3); border: 1px solid #2a2a2a; border-radius: 12px; padding: 1.5rem; display: flex; gap: 1.25rem; align-items: flex-start; }
+    .r-day-card { background: var(--surface-card); border: 1px solid var(--border-hard); border-radius: 12px; padding: 1.5rem; display: flex; gap: 1.25rem; align-items: flex-start; }
     .r-day-num { font-family: 'Playfair Display', serif; font-size: 2.8rem; font-weight: 600; color: var(--gold); line-height: 1; flex-shrink: 0; }
     .r-day-content { flex: 1; }
     .r-day-title { font-family: 'Playfair Display', serif; font-size: 16px; font-weight: 500; color: var(--text); margin-bottom: 8px; }
-    .r-day-text { font-size: 13px; color: #b0a898; line-height: 1.75; }
-    .r-days-fixed { display: flex; flex-direction: column; gap: 12px; margin-bottom: 2.5rem; }
+    .r-day-text { font-size: 13px; color: var(--text-day); line-height: 1.75; }
+    .r-days-fixed { display: flex; flex-direction: column; gap: 12px; margin-bottom: 0; }
     .r-days-fixed-card { display: flex; align-items: flex-start; gap: 1rem; background: rgba(201,168,76,.06); border: 1px solid rgba(201,168,76,.18); border-radius: 12px; padding: 1.1rem 1.4rem; }
-    .r-days-fixed-icon { font-size: 22px; flex-shrink: 0; margin-top: 2px; }
+    .r-days-fixed-icon { flex-shrink: 0; margin-top: 2px; }
+    .r-days-fixed-icon svg { width: 22px; height: 22px; stroke: var(--gold); fill: none; stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; }
     .r-days-fixed-card strong { display: block; font-size: 14px; color: var(--text); margin-bottom: 4px; }
-    .r-days-fixed-card p { font-size: 13px; color: #b0a898; line-height: 1.7; margin: 0; }
-    .r-days-quote { text-align: center; font-family: 'Playfair Display', serif; font-size: 1.5rem; font-style: italic; color: var(--gold); margin-top: 1rem; }
-    @media (max-width: 700px) {
-      .r-days-grid { grid-template-columns: 1fr; }
-      .r-day-num { font-size: 2.2rem; }
-      .r-days-quote { font-size: 1.2rem; }
+    .r-days-fixed-card p { font-size: 13px; color: var(--text-day); line-height: 1.7; margin: 0; }
+    .r-days-quote {
+      text-align: center;
+      font-family: 'Playfair Display', serif;
+      font-size: 1.5rem;
+      font-style: italic;
+      color: var(--gold);
+      padding: 80px 0;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 24px;
+    }
+    .r-days-quote::before, .r-days-quote::after {
+      content: '';
+      display: block;
+      width: 60px;
+      height: 1px;
+      background: var(--gold);
     }
 
     /* ── PROGRAMME ── */
     .r-prog-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 12px; }
     .r-prog-card { background: var(--surface); border: 1px solid var(--border); border-radius: 14px; padding: 1.25rem 1.5rem; }
-    .r-prog-icon { font-size: 22px; margin-bottom: 10px; }
+    .r-prog-icon { margin-bottom: 10px; }
+    .r-prog-icon svg { width: 22px; height: 22px; stroke: var(--gold); fill: none; stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; }
     .r-prog-title { font-size: 14px; font-weight: 600; color: var(--text); margin-bottom: 5px; }
     .r-prog-desc { font-size: 13px; color: var(--muted); line-height: 1.7; }
 
@@ -193,7 +233,7 @@
     .r-about-photo-placeholder { width: 100%; aspect-ratio: 4/5; border-radius: 14px; background: var(--surface); border: 1px solid var(--border); display: flex; align-items: center; justify-content: center; color: var(--hint); font-size: 13px; }
     .r-about-role { font-size: 11px; letter-spacing: 2px; text-transform: uppercase; color: var(--gold); margin-bottom: .5rem; }
     .r-about-name { font-family: 'Playfair Display', Georgia, serif; font-size: 22px; font-weight: 500; color: var(--text); margin-bottom: 1rem; }
-    .r-about-text { font-size: 14px; color: #aaa; line-height: 1.9; }
+    .r-about-text { font-size: 14px; color: var(--text-ter); line-height: 1.9; }
 
     /* ── FAQ ── */
     .r-faq { display: flex; flex-direction: column; gap: 0; border: 1px solid var(--border); border-radius: 16px; overflow: hidden; }
@@ -227,14 +267,14 @@
 
     .r-field { margin-bottom: 1rem; }
     .r-field-row { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
-    .r-label { display: block; font-size: 13px; color: #bbb; font-weight: 500; margin-bottom: 5px; }
+    .r-label { display: block; font-size: 13px; color: var(--text-sec); font-weight: 500; margin-bottom: 5px; }
     .r-hint { font-size: 11px; color: var(--hint); margin-bottom: 7px; display: block; }
     .r-opt-label { font-size: 11px; color: var(--muted); font-weight: 400; }
 
     .r-input, .r-select, .r-textarea {
       width: 100%; padding: 12px 14px; border: 1px solid var(--border); border-radius: 10px;
       font-size: 14px; font-family: 'DM Sans', sans-serif; color: var(--text);
-      background: rgba(255,255,255,.04); outline: none;
+      background: var(--input-bg); outline: none;
       transition: border-color .2s, box-shadow .2s; box-sizing: border-box;
     }
     .r-input:focus, .r-select:focus, .r-textarea:focus {
@@ -246,9 +286,9 @@
       appearance: none;
       background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%23888' stroke-width='2'%3E%3Cpolyline points='6 9 12 15 18 9'/%3E%3C/svg%3E");
       background-repeat: no-repeat; background-position: right 14px center;
-      padding-right: 36px;
+      padding-right: 36px; background-color: var(--input-bg);
     }
-    .r-select option { background: #1a1a1a; color: var(--text); }
+    .r-select option { background: var(--select-opt); color: var(--text); }
     .r-optional { display: none; margin-top: 8px; }
     .r-optional.visible { display: block; }
 
@@ -267,13 +307,13 @@
     .r-btn-back:hover { background: var(--surface); }
     .r-btn-next {
       flex: 1; padding: 13px 20px; border: none; border-radius: 8px;
-      background: var(--gold); color: #0a0a0a; font-size: 14px; font-weight: 600;
+      background: var(--gold); color: var(--gold-cta-text); font-size: 14px; font-weight: 600;
       font-family: 'DM Sans', sans-serif; cursor: pointer; transition: background .2s;
     }
     .r-btn-next:hover { background: var(--gold-h); }
     .r-btn-submit {
       width: 100%; padding: 15px 20px; border: none; border-radius: 8px;
-      background: var(--gold); color: #0a0a0a; font-size: 15px; font-weight: 600;
+      background: var(--gold); color: var(--gold-cta-text); font-size: 15px; font-weight: 600;
       font-family: 'DM Sans', sans-serif; cursor: pointer; transition: background .2s, opacity .2s;
       margin-top: 1.25rem;
     }
@@ -285,7 +325,7 @@
     .r-warning { display: none; background: rgba(201,168,76,.06); border: 1px solid rgba(201,168,76,.2); border-radius: 14px; padding: 1.25rem 1.5rem; margin-bottom: 1rem; }
     .r-warning-icon { font-size: 20px; margin-bottom: 8px; }
     .r-warning-title { font-size: 15px; font-weight: 600; color: var(--gold); margin-bottom: 6px; }
-    .r-warning-text { font-size: 13px; color: #aaa; line-height: 1.7; margin-bottom: 1rem; }
+    .r-warning-text { font-size: 13px; color: var(--text-ter); line-height: 1.7; margin-bottom: 1rem; }
     .r-warning-nav { display: flex; gap: 8px; }
     .r-warn-back { padding: 10px 16px; border: 1px solid var(--border); border-radius: 8px; background: transparent; font-size: 13px; font-family: 'DM Sans', sans-serif; color: var(--muted); cursor: pointer; }
     .r-warn-continue { flex: 1; padding: 10px 16px; border: none; border-radius: 8px; background: rgba(201,168,76,.15); font-size: 13px; font-weight: 500; font-family: 'DM Sans', sans-serif; color: var(--gold); cursor: pointer; }
@@ -297,6 +337,12 @@
     .r-rejected-text, .r-success-sub { font-size: 14px; color: var(--muted); line-height: 1.8; }
 
     /* ── Mobile ── */
+    @media (max-width: 700px) {
+      .r-days-grid { grid-template-columns: 1fr; }
+      .r-day-card { flex-direction: column; gap: .75rem; }
+      .r-day-num { font-size: 2.2rem; }
+      .r-days-quote { font-size: 1.2rem; padding: 56px 0; }
+    }
     @media (max-width: 560px) {
       .r-prog-grid { grid-template-columns: 1fr; }
       .r-about-grid { grid-template-columns: 1fr; }
@@ -393,27 +439,27 @@
       <h2 class="r-title" style="margin-bottom:2rem;">Tout est pris en charge.</h2>
       <div class="r-includes">
         <div class="r-include-item">
-          <div class="r-include-icon">🏠</div>
+          <div class="r-include-icon"><svg viewBox="0 0 24 24"><path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg></div>
           <span>Maison avec piscine et salle de sport — sélectionnée selon le groupe retenu, partout en France.</span>
         </div>
         <div class="r-include-item">
-          <div class="r-include-icon">🍽️</div>
+          <div class="r-include-icon"><svg viewBox="0 0 24 24"><path d="M3 2v7c0 1.1.9 2 2 2h4a2 2 0 002-2V2"/><path d="M7 2v20"/><path d="M21 15V2a5 5 0 00-5 5v6c0 1.1.9 2 2 2h3zm0 0v7"/></svg></div>
           <span>Tous les repas préparés — petit-déjeuner, déjeuner, dîner inclus.</span>
         </div>
         <div class="r-include-item">
-          <div class="r-include-icon">🎯</div>
+          <div class="r-include-icon"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="6"/><circle cx="12" cy="12" r="2"/></svg></div>
           <span>2 experts choisis selon les profils retenus — vente, marketing, mindset ou scaling.</span>
         </div>
         <div class="r-include-item">
-          <div class="r-include-icon">⚡</div>
+          <div class="r-include-icon"><svg viewBox="0 0 24 24"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg></div>
           <span>Sport quotidien — séances matinales pour maintenir l'énergie et la clarté.</span>
         </div>
         <div class="r-include-item">
-          <div class="r-include-icon">🤝</div>
+          <div class="r-include-icon"><svg viewBox="0 0 24 24"><path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 00-3-3.87"/><path d="M16 3.13a4 4 0 010 7.75"/></svg></div>
           <span>Réseau privé — groupe WhatsApp des participants post-retraite.</span>
         </div>
         <div class="r-include-item">
-          <div class="r-include-icon">🎬</div>
+          <div class="r-include-icon"><svg viewBox="0 0 24 24"><polygon points="23 7 16 12 23 17 23 7"/><rect x="1" y="5" width="15" height="14" rx="2" ry="2"/></svg></div>
           <span>Contenu filmé — les sessions clés sont enregistrées et partagées aux participants.</span>
         </div>
       </div>
@@ -490,14 +536,14 @@
 
       <div class="r-days-fixed fade-up">
         <div class="r-days-fixed-card">
-          <span class="r-days-fixed-icon">☀️</span>
+          <span class="r-days-fixed-icon"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg></span>
           <div>
             <strong>Chaque matin sans exception</strong>
             <p>Sport collectif : running, musculation, mobilité. Pas optionnel. C'est ce qui maintient l'énergie et la discipline toute la semaine.</p>
           </div>
         </div>
         <div class="r-days-fixed-card">
-          <span class="r-days-fixed-icon">🧘</span>
+          <span class="r-days-fixed-icon"><svg viewBox="0 0 24 24"><path d="M9.59 4.59A2 2 0 1 1 11 8H2m10.59 11.41A2 2 0 1 0 14 16H2m15.73-8.27A2.5 2.5 0 1 1 19.5 12H2"/></svg></span>
           <div>
             <strong>En fil rouge toute la semaine</strong>
             <p>Méditation, visualisation, respiration. Pas pour faire bien-être — pour maintenir le focus, gérer la pression et construire une énergie durable sur 7 jours.</p>
@@ -532,22 +578,22 @@
       <h2 class="r-title" style="margin-bottom:2rem;">7 jours structurés.</h2>
       <div class="r-prog-grid">
         <div class="r-prog-card">
-          <div class="r-prog-icon">🌅</div>
+          <div class="r-prog-icon"><svg viewBox="0 0 24 24"><path d="M17 18a5 5 0 00-10 0"/><line x1="12" y1="2" x2="12" y2="9"/><line x1="4.22" y1="10.22" x2="5.64" y2="11.64"/><line x1="1" y1="18" x2="3" y2="18"/><line x1="21" y1="18" x2="23" y2="18"/><line x1="18.36" y1="11.64" x2="19.78" y2="10.22"/></svg></div>
           <div class="r-prog-title">Matin</div>
           <div class="r-prog-desc">Sport collectif, petit-déjeuner, session stratégique avec un expert.</div>
         </div>
         <div class="r-prog-card">
-          <div class="r-prog-icon">☀️</div>
+          <div class="r-prog-icon"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg></div>
           <div class="r-prog-title">Après-midi</div>
           <div class="r-prog-desc">Travail en solo ou en binôme, implémentation, feedback en groupe.</div>
         </div>
         <div class="r-prog-card">
-          <div class="r-prog-icon">🌙</div>
+          <div class="r-prog-icon"><svg viewBox="0 0 24 24"><path d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z"/></svg></div>
           <div class="r-prog-title">Soirée</div>
           <div class="r-prog-desc">Repas partagé, discussions informelles, connexions entre participants.</div>
         </div>
         <div class="r-prog-card">
-          <div class="r-prog-icon">📅</div>
+          <div class="r-prog-icon"><svg viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg></div>
           <div class="r-prog-title">Dates</div>
           <div class="r-prog-desc">Édition 2026 — lieu et dates communiqués aux candidats retenus.</div>
         </div>
