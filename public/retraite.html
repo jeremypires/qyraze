@@ -43,9 +43,62 @@
   <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet" />
 
   <style>
-    /* ── Retraite page — light theme ── */
+    /* ── CSS variables — light mode (default) ── */
+    :root {
+      --r-bg:           #F8F9FA;
+      --r-surface:      #ffffff;
+      --r-border:       #E5E7EB;
+      --r-text:         #111827;
+      --r-muted:        #6B7280;
+      --r-hint:         #9CA3AF;
+      --r-metric-bg:    #F3F4F6;
+      --r-badge-bg:     #F3F4F6;
+      --r-badge-text:   #374151;
+      --r-item-text:    #374151;
+      --r-icon-bg:      #EFF6FF;
+      --r-input-bg:     #ffffff;
+      --r-back-bg:      #ffffff;
+      --r-back-border:  #E5E7EB;
+      --r-back-text:    #6B7280;
+      --r-back-hover:   #F9FAFB;
+      --r-note:         #9CA3AF;
+      --r-dot-off:      #E5E7EB;
+      --r-dot-done:     #BFDBFE;
+      --r-divider:      #E5E7EB;
+      --r-tag-bg:       #EFF6FF;
+      --r-tag-text:     #2563EB;
+    }
+
+    /* ── dark mode — automatic via OS ── */
+    @media (prefers-color-scheme: dark) {
+      :root {
+        --r-bg:           #09090f;
+        --r-surface:      #131320;
+        --r-border:       rgba(255,255,255,.08);
+        --r-text:         #f0f0f8;
+        --r-muted:        #7a7a96;
+        --r-hint:         #5a5a78;
+        --r-metric-bg:    rgba(255,255,255,.05);
+        --r-badge-bg:     rgba(255,255,255,.07);
+        --r-badge-text:   #c8c8e0;
+        --r-item-text:    #c8c8e0;
+        --r-icon-bg:      rgba(37,99,235,.18);
+        --r-input-bg:     #1a1a2a;
+        --r-back-bg:      rgba(255,255,255,.05);
+        --r-back-border:  rgba(255,255,255,.1);
+        --r-back-text:    #7a7a96;
+        --r-back-hover:   rgba(255,255,255,.09);
+        --r-note:         #5a5a78;
+        --r-dot-off:      rgba(255,255,255,.12);
+        --r-dot-done:     rgba(37,99,235,.45);
+        --r-divider:      rgba(255,255,255,.07);
+        --r-tag-bg:       rgba(37,99,235,.15);
+        --r-tag-text:     #7fb3ff;
+      }
+    }
+
     .ret-bg {
-      background: #F8F9FA;
+      background: var(--r-bg);
       min-height: 100vh;
     }
     .ret-wrap {
@@ -53,48 +106,45 @@
       margin: 0 auto;
       padding: 2.5rem 1.5rem 5rem;
       font-family: 'DM Sans', system-ui, sans-serif;
-      color: #111827;
+      color: var(--r-text);
     }
 
-    /* divider */
-    .ret-divider { border: none; border-top: 1px solid #E5E7EB; margin: 2rem 0; }
+    .ret-divider { border: none; border-top: 1px solid var(--r-divider); margin: 2rem 0; }
 
     /* ── HERO ── */
     .ret-tag {
       display: inline-flex;
       align-items: center;
       gap: 6px;
-      background: #EFF6FF;
-      color: #2563EB;
+      background: var(--r-tag-bg);
+      color: var(--r-tag-text);
       font-size: 13px;
       font-weight: 500;
       padding: 5px 12px;
       border-radius: 100px;
       margin-bottom: 1.25rem;
     }
-    .ret-tag svg { width: 14px; height: 14px; }
-
+    .ret-tag svg { width: 14px; height: 14px; flex-shrink: 0; }
     .ret-hero-title {
       font-size: 26px;
       font-weight: 500;
       line-height: 1.35;
-      color: #111827;
+      color: var(--r-text);
       margin: 0 0 .75rem;
     }
     .ret-hero-sub {
       font-size: 15px;
       line-height: 1.7;
-      color: #6B7280;
+      color: var(--r-muted);
       margin: 0 0 1.5rem;
     }
-
     .ret-metrics {
       display: grid;
       grid-template-columns: repeat(3, 1fr);
       gap: 10px;
     }
     .ret-metric {
-      background: #F3F4F6;
+      background: var(--r-metric-bg);
       border-radius: 12px;
       padding: 1rem .75rem;
       text-align: center;
@@ -102,34 +152,20 @@
     .ret-metric-num {
       font-size: 24px;
       font-weight: 600;
-      color: #111827;
+      color: var(--r-text);
       line-height: 1;
       margin-bottom: 4px;
     }
-    .ret-metric-label {
-      font-size: 12px;
-      color: #6B7280;
-      line-height: 1.4;
-    }
+    .ret-metric-label { font-size: 12px; color: var(--r-muted); line-height: 1.4; }
 
     /* ── SECTION TITLES ── */
-    .ret-section-title {
-      font-size: 18px;
-      font-weight: 500;
-      color: #111827;
-      margin: 0 0 1rem;
-    }
-    .ret-section-sub {
-      font-size: 14px;
-      color: #6B7280;
-      margin: -.5rem 0 1rem;
-      line-height: 1.6;
-    }
+    .ret-section-title { font-size: 18px; font-weight: 500; color: var(--r-text); margin: 0 0 1rem; }
+    .ret-section-sub { font-size: 14px; color: var(--r-muted); margin: -.5rem 0 1rem; line-height: 1.6; }
 
     /* ── INCLUDES CARD ── */
     .ret-card {
-      background: #fff;
-      border: 1px solid #E5E7EB;
+      background: var(--r-surface);
+      border: 1px solid var(--r-border);
       border-radius: 14px;
       overflow: hidden;
     }
@@ -138,16 +174,16 @@
       align-items: center;
       gap: 12px;
       padding: 13px 1.25rem;
-      border-bottom: 1px solid #F3F4F6;
+      border-bottom: 1px solid var(--r-border);
       font-size: 14px;
-      color: #374151;
+      color: var(--r-item-text);
       line-height: 1.5;
     }
     .ret-include-item:last-child { border-bottom: none; }
     .ret-include-icon {
       width: 30px;
       height: 30px;
-      background: #EFF6FF;
+      background: var(--r-icon-bg);
       border-radius: 8px;
       display: flex;
       align-items: center;
@@ -156,45 +192,30 @@
       font-size: 15px;
     }
 
-    /* ── POUR QUI — badges ── */
-    .ret-badges {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 8px;
-    }
+    /* ── POUR QUI ── */
+    .ret-badges { display: flex; flex-wrap: wrap; gap: 8px; }
     .ret-badge {
       display: inline-flex;
       align-items: center;
       gap: 6px;
-      background: #F3F4F6;
-      color: #374151;
+      background: var(--r-badge-bg);
+      color: var(--r-badge-text);
       font-size: 13px;
-      font-weight: 400;
       padding: 7px 13px;
       border-radius: 100px;
     }
-    .ret-badge span { font-size: 14px; }
 
-    /* ── PROGRAMME GRILLE ── */
-    .ret-prog-grid {
-      display: grid;
-      grid-template-columns: repeat(2, 1fr);
-      gap: 10px;
-    }
+    /* ── PROGRAMME ── */
+    .ret-prog-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px; }
     .ret-prog-card {
-      background: #fff;
-      border: 1px solid #E5E7EB;
+      background: var(--r-surface);
+      border: 1px solid var(--r-border);
       border-radius: 14px;
       padding: 1rem 1.25rem;
     }
     .ret-prog-icon { font-size: 20px; margin-bottom: 8px; }
-    .ret-prog-title {
-      font-size: 14px;
-      font-weight: 500;
-      color: #111827;
-      margin-bottom: 4px;
-    }
-    .ret-prog-desc { font-size: 13px; color: #6B7280; line-height: 1.6; }
+    .ret-prog-title { font-size: 14px; font-weight: 500; color: var(--r-text); margin-bottom: 4px; }
+    .ret-prog-desc { font-size: 13px; color: var(--r-muted); line-height: 1.6; }
 
     /* ── QUESTIONNAIRE ── */
     .ret-candidature-sep {
@@ -204,112 +225,76 @@
       margin-bottom: 1.5rem;
     }
     .ret-candidature-sep::before,
-    .ret-candidature-sep::after {
-      content: '';
-      flex: 1;
-      border-top: 1px solid #E5E7EB;
-    }
+    .ret-candidature-sep::after { content: ''; flex: 1; border-top: 1px solid var(--r-divider); }
     .ret-candidature-label {
-      font-size: 12px;
+      font-size: 11px;
       font-weight: 500;
-      color: #9CA3AF;
+      color: var(--r-hint);
       letter-spacing: 2px;
       text-transform: uppercase;
       white-space: nowrap;
     }
-
-    .ret-form-title {
-      font-size: 20px;
-      font-weight: 500;
-      color: #111827;
-      margin: 0 0 .4rem;
-    }
-    .ret-form-sub {
-      font-size: 14px;
-      color: #6B7280;
-      margin: 0 0 1.5rem;
-      line-height: 1.6;
-    }
+    .ret-form-title { font-size: 20px; font-weight: 500; color: var(--r-text); margin: 0 0 .4rem; }
+    .ret-form-sub { font-size: 14px; color: var(--r-muted); margin: 0 0 1.5rem; line-height: 1.6; }
 
     /* Progress dots */
-    .ret-progress {
-      display: flex;
-      align-items: center;
-      gap: 6px;
-      margin-bottom: 1.75rem;
-    }
+    .ret-progress { display: flex; align-items: center; gap: 6px; margin-bottom: 1.75rem; }
     .ret-dot {
       width: 8px;
       height: 8px;
       border-radius: 50%;
-      background: #E5E7EB;
+      background: var(--r-dot-off);
       transition: background .25s, transform .25s;
     }
-    .ret-dot.active {
-      background: #2563EB;
-      transform: scale(1.25);
-    }
-    .ret-dot.done { background: #BFDBFE; }
+    .ret-dot.active { background: #2563EB; transform: scale(1.25); }
+    .ret-dot.done   { background: var(--r-dot-done); }
 
     /* Form steps */
     .ret-step { display: none; }
     .ret-step.active { display: block; }
 
-    .ret-field-label {
-      display: block;
-      font-size: 14px;
-      color: #374151;
-      font-weight: 500;
-      margin-bottom: 6px;
-    }
-    .ret-field-hint {
-      font-size: 12px;
-      color: #9CA3AF;
-      margin-bottom: 8px;
-      display: block;
-    }
-    .ret-input,
-    .ret-select,
-    .ret-textarea {
+    .ret-field-label { display: block; font-size: 14px; color: var(--r-text); font-weight: 500; margin-bottom: 6px; }
+    .ret-field-hint  { font-size: 12px; color: var(--r-hint); margin-bottom: 8px; display: block; }
+
+    .ret-input, .ret-select, .ret-textarea {
       width: 100%;
       padding: 11px 14px;
-      border: 1px solid #E5E7EB;
+      border: 1px solid var(--r-border);
       border-radius: 10px;
       font-size: 14px;
       font-family: 'DM Sans', system-ui, sans-serif;
-      color: #111827;
-      background: #fff;
+      color: var(--r-text);
+      background: var(--r-input-bg);
       outline: none;
       transition: border-color .2s, box-shadow .2s;
       box-sizing: border-box;
     }
-    .ret-input:focus,
-    .ret-select:focus,
-    .ret-textarea:focus {
+    .ret-input:focus, .ret-select:focus, .ret-textarea:focus {
       border-color: #2563EB;
-      box-shadow: 0 0 0 3px rgba(37,99,235,.08);
+      box-shadow: 0 0 0 3px rgba(37,99,235,.1);
     }
     .ret-textarea { resize: vertical; min-height: 100px; line-height: 1.6; }
-    .ret-select { appearance: none; background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%236B7280' stroke-width='2'%3E%3Cpolyline points='6 9 12 15 18 9'/%3E%3C/svg%3E"); background-repeat: no-repeat; background-position: right 14px center; padding-right: 36px; }
-
-    /* Step nav buttons */
-    .ret-step-nav {
-      display: flex;
-      gap: 8px;
-      margin-top: 1.25rem;
+    .ret-select {
+      appearance: none;
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%236B7280' stroke-width='2'%3E%3Cpolyline points='6 9 12 15 18 9'/%3E%3C/svg%3E");
+      background-repeat: no-repeat;
+      background-position: right 14px center;
+      padding-right: 36px;
     }
+
+    .ret-step-nav { display: flex; gap: 8px; margin-top: 1.25rem; }
     .ret-btn-back {
       padding: 11px 20px;
-      border: 1px solid #E5E7EB;
+      border: 1px solid var(--r-back-border);
       border-radius: 10px;
-      background: #fff;
+      background: var(--r-back-bg);
       font-size: 14px;
       font-family: 'DM Sans', system-ui, sans-serif;
-      color: #6B7280;
+      color: var(--r-back-text);
       cursor: pointer;
       transition: background .2s;
     }
-    .ret-btn-back:hover { background: #F9FAFB; }
+    .ret-btn-back:hover { background: var(--r-back-hover); }
     .ret-btn-next {
       flex: 1;
       padding: 12px 20px;
@@ -336,23 +321,27 @@
       font-weight: 500;
       font-family: 'DM Sans', system-ui, sans-serif;
       cursor: pointer;
-      transition: background .2s;
+      transition: background .2s, opacity .2s;
       margin-top: 1.25rem;
     }
-    .ret-btn-submit:hover { background: #1D4ED8; }
+    .ret-btn-submit:hover  { background: #1D4ED8; }
+    .ret-btn-submit:disabled { opacity: .6; cursor: default; }
 
-    .ret-form-note {
+    .ret-form-note { text-align: center; font-size: 12px; color: var(--r-note); margin-top: .75rem; line-height: 1.6; }
+
+    /* Success state */
+    .ret-success {
+      display: none;
       text-align: center;
-      font-size: 12px;
-      color: #9CA3AF;
-      margin-top: .75rem;
-      line-height: 1.6;
+      padding: 2rem 1rem;
     }
+    .ret-success-icon { font-size: 40px; margin-bottom: 12px; }
+    .ret-success-title { font-size: 18px; font-weight: 500; color: var(--r-text); margin-bottom: 8px; }
+    .ret-success-sub   { font-size: 14px; color: var(--r-muted); line-height: 1.7; }
 
     /* ── MOBILE ── */
     @media (max-width: 520px) {
-      .ret-prog-grid { grid-template-columns: 1fr; }
-      .ret-metrics { grid-template-columns: repeat(3, 1fr); }
+      .ret-prog-grid  { grid-template-columns: 1fr; }
       .ret-hero-title { font-size: 22px; }
     }
   </style>
@@ -388,6 +377,7 @@
     })();
   </script>
 
+  <!-- Nav — sans "Réserver un appel" -->
   <nav class="nav">
     <div class="nav-inner">
       <div class="brand">
@@ -396,7 +386,6 @@
       </div>
       <div class="nav-links">
         <a href="/">Accueil</a>
-        <a class="nav-cta" href="https://calendar.app.google/Tr3jnHzo7oHt8Ehd7" target="_blank" rel="noopener">Réserver un appel</a>
       </div>
     </div>
   </nav>
@@ -404,7 +393,7 @@
   <main class="ret-bg">
     <div class="ret-wrap">
 
-      <!-- ── SECTION 1 : HERO ── -->
+      <!-- ── HERO ── -->
       <div class="ret-tag">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
         10 places — édition privée
@@ -428,7 +417,7 @@
 
       <hr class="ret-divider" />
 
-      <!-- ── SECTION 2 : CE QUI EST INCLUS ── -->
+      <!-- ── CE QUI EST INCLUS ── -->
       <h2 class="ret-section-title">Ce qui est inclus</h2>
       <div class="ret-card">
         <div class="ret-include-item">
@@ -449,7 +438,7 @@
         </div>
         <div class="ret-include-item">
           <div class="ret-include-icon">🤝</div>
-          <span>Réseau privé — accès à un groupe WhatsApp des participants post-retraite</span>
+          <span>Réseau privé — groupe WhatsApp des participants post-retraite</span>
         </div>
         <div class="ret-include-item">
           <div class="ret-include-icon">🎬</div>
@@ -459,7 +448,7 @@
 
       <hr class="ret-divider" />
 
-      <!-- ── SECTION 3 : POUR QUI ── -->
+      <!-- ── POUR QUI ── -->
       <h2 class="ret-section-title">Pour qui</h2>
       <p class="ret-section-sub">Cette retraite est sélective. Tu dois cocher ces cases pour candidater.</p>
       <div class="ret-badges">
@@ -473,7 +462,7 @@
 
       <hr class="ret-divider" />
 
-      <!-- ── SECTION 4 : PROGRAMME TYPE ── -->
+      <!-- ── PROGRAMME TYPE ── -->
       <h2 class="ret-section-title">Programme type</h2>
       <div class="ret-prog-grid">
         <div class="ret-prog-card">
@@ -500,7 +489,7 @@
 
       <hr class="ret-divider" />
 
-      <!-- ── SECTION 5 : QUESTIONNAIRE ── -->
+      <!-- ── QUESTIONNAIRE ── -->
       <div class="ret-candidature-sep">
         <span class="ret-candidature-label">Candidature</span>
       </div>
@@ -508,7 +497,7 @@
       <h2 class="ret-form-title">Postule pour une place</h2>
       <p class="ret-form-sub">7 questions courtes. Réponds honnêtement — on cherche des profils sérieux, pas des réponses parfaites.</p>
 
-      <div class="ret-progress" id="retProgress">
+      <div class="ret-progress">
         <div class="ret-dot active" id="dot-0"></div>
         <div class="ret-dot" id="dot-1"></div>
         <div class="ret-dot" id="dot-2"></div>
@@ -524,7 +513,7 @@
         <div class="ret-step active" data-step="0">
           <label class="ret-field-label">Quelle est ton activité ?</label>
           <span class="ret-field-hint">Décris ce que tu fais en quelques mots.</span>
-          <input type="text" class="ret-input" id="field-activite" placeholder="Ex : coaching business, e-commerce, formation en ligne…" />
+          <input type="text" class="ret-input" id="f-activite" placeholder="Ex : coaching business, e-commerce, formation en ligne…" />
           <div class="ret-step-nav">
             <button type="button" class="ret-btn-next" onclick="nextStep(0)">Continuer →</button>
           </div>
@@ -534,13 +523,13 @@
         <div class="ret-step" data-step="1">
           <label class="ret-field-label">Quels sont tes revenus mensuels actuels ?</label>
           <span class="ret-field-hint">Sois honnête, ça reste confidentiel.</span>
-          <select class="ret-select" id="field-revenus">
+          <select class="ret-select" id="f-revenus">
             <option value="" disabled selected>Sélectionne une tranche</option>
-            <option value="moins-2k">Moins de 2 000€/mois</option>
-            <option value="2k-5k">2 000€ – 5 000€/mois</option>
-            <option value="5k-10k">5 000€ – 10 000€/mois</option>
-            <option value="10k-20k">10 000€ – 20 000€/mois</option>
-            <option value="plus-20k">Plus de 20 000€/mois</option>
+            <option value="Moins de 2 000€/mois">Moins de 2 000€/mois</option>
+            <option value="2 000€ – 5 000€/mois">2 000€ – 5 000€/mois</option>
+            <option value="5 000€ – 10 000€/mois">5 000€ – 10 000€/mois</option>
+            <option value="10 000€ – 20 000€/mois">10 000€ – 20 000€/mois</option>
+            <option value="Plus de 20 000€/mois">Plus de 20 000€/mois</option>
           </select>
           <div class="ret-step-nav">
             <button type="button" class="ret-btn-back" onclick="prevStep(1)">←</button>
@@ -552,7 +541,7 @@
         <div class="ret-step" data-step="2">
           <label class="ret-field-label">Qu'est-ce qui bloque ta croissance en ce moment ?</label>
           <span class="ret-field-hint">Sois précis — c'est là que tout commence.</span>
-          <textarea class="ret-textarea" id="field-blocage" placeholder="Ex : je n'arrive pas à déléguer, mon acquisition est irrégulière, je tourne en rond…"></textarea>
+          <textarea class="ret-textarea" id="f-blocage" placeholder="Ex : je n'arrive pas à déléguer, mon acquisition est irrégulière…"></textarea>
           <div class="ret-step-nav">
             <button type="button" class="ret-btn-back" onclick="prevStep(2)">←</button>
             <button type="button" class="ret-btn-next" onclick="nextStep(2)">Continuer →</button>
@@ -563,7 +552,7 @@
         <div class="ret-step" data-step="3">
           <label class="ret-field-label">Quelles sont tes disponibilités ?</label>
           <span class="ret-field-hint">Donne-nous une idée de quand tu pourrais te libérer une semaine.</span>
-          <input type="text" class="ret-input" id="field-dispos" placeholder="Ex : juillet, septembre, pas avant octobre…" />
+          <input type="text" class="ret-input" id="f-dispos" placeholder="Ex : juillet, septembre, pas avant octobre…" />
           <div class="ret-step-nav">
             <button type="button" class="ret-btn-back" onclick="prevStep(3)">←</button>
             <button type="button" class="ret-btn-next" onclick="nextStep(3)">Continuer →</button>
@@ -574,7 +563,7 @@
         <div class="ret-step" data-step="4">
           <label class="ret-field-label">Pourquoi mérites-tu une place ?</label>
           <span class="ret-field-hint">Convaincs-nous en quelques lignes.</span>
-          <textarea class="ret-textarea" id="field-motivation" placeholder="Ex : je suis sérieux, j'ai déjà X résultats, je veux apporter autant que je reçois…"></textarea>
+          <textarea class="ret-textarea" id="f-motivation" placeholder="Ex : j'ai déjà X résultats, je veux apporter autant que je reçois…"></textarea>
           <div class="ret-step-nav">
             <button type="button" class="ret-btn-back" onclick="prevStep(4)">←</button>
             <button type="button" class="ret-btn-next" onclick="nextStep(4)">Continuer →</button>
@@ -585,12 +574,12 @@
         <div class="ret-step" data-step="5">
           <label class="ret-field-label">Quel est ton budget pour cette retraite ?</label>
           <span class="ret-field-hint">Le tarif exact est communiqué aux candidats retenus.</span>
-          <select class="ret-select" id="field-budget">
+          <select class="ret-select" id="f-budget">
             <option value="" disabled selected>Sélectionne une tranche</option>
-            <option value="moins-1k">Moins de 1 000€</option>
-            <option value="1k-2k">1 000€ – 2 000€</option>
-            <option value="2k-3k">2 000€ – 3 000€</option>
-            <option value="plus-3k">Plus de 3 000€</option>
+            <option value="Moins de 1 000€">Moins de 1 000€</option>
+            <option value="1 000€ – 2 000€">1 000€ – 2 000€</option>
+            <option value="2 000€ – 3 000€">2 000€ – 3 000€</option>
+            <option value="Plus de 3 000€">Plus de 3 000€</option>
           </select>
           <div class="ret-step-nav">
             <button type="button" class="ret-btn-back" onclick="prevStep(5)">←</button>
@@ -598,19 +587,26 @@
           </div>
         </div>
 
-        <!-- Étape 7 — Confirmation -->
+        <!-- Étape 7 -->
         <div class="ret-step" data-step="6">
-          <label class="ret-field-label">Ton numéro de téléphone</label>
+          <label class="ret-field-label">Ton numéro WhatsApp</label>
           <span class="ret-field-hint">Pour te recontacter rapidement si ton profil est retenu.</span>
-          <input type="tel" class="ret-input" id="field-tel" placeholder="Ex : +33 6 00 00 00 00" />
+          <input type="tel" class="ret-input" id="f-tel" placeholder="Ex : +33 6 00 00 00 00" />
           <div class="ret-step-nav">
             <button type="button" class="ret-btn-back" onclick="prevStep(6)">←</button>
           </div>
-          <button type="submit" class="ret-btn-submit">Envoyer ma candidature → Réserver un appel</button>
+          <button type="submit" class="ret-btn-submit" id="submitBtn">Envoyer ma candidature →</button>
           <p class="ret-form-note">Seulement les profils qualifiés passent à l'appel. On te répond sous 48h.</p>
         </div>
 
       </form>
+
+      <!-- Message de confirmation -->
+      <div class="ret-success" id="retSuccess">
+        <div class="ret-success-icon">✅</div>
+        <div class="ret-success-title">Candidature envoyée !</div>
+        <div class="ret-success-sub">On a bien reçu ta candidature.<br>Tu seras contacté sur WhatsApp sous 48h si ton profil est retenu.</div>
+      </div>
 
     </div>
 
@@ -625,8 +621,6 @@
             <a href="/cgu">CGU</a>
             <span>·</span>
             <a href="mailto:jeremy.pereirapires@gmail.com">jeremy.pereirapires@gmail.com</a>
-            <span>·</span>
-            <a href="https://calendar.app.google/Tr3jnHzo7oHt8Ehd7" target="_blank" rel="noopener">Réserver un appel</a>
           </div>
           <div class="footer-copy">© Qyraze · Jérémy Pereira Pires · 2026</div>
         </div>
@@ -636,10 +630,9 @@
 
   <script>
     var currentStep = 0;
-    var totalSteps = 7;
 
     function updateDots(step) {
-      for (var i = 0; i < totalSteps; i++) {
+      for (var i = 0; i < 7; i++) {
         var dot = document.getElementById('dot-' + i);
         dot.classList.remove('active', 'done');
         if (i < step) dot.classList.add('done');
@@ -648,51 +641,71 @@
     }
 
     function showStep(step) {
-      document.querySelectorAll('.ret-step').forEach(function(el) {
-        el.classList.remove('active');
-      });
+      document.querySelectorAll('.ret-step').forEach(function(el) { el.classList.remove('active'); });
       document.querySelector('[data-step="' + step + '"]').classList.add('active');
       updateDots(step);
       currentStep = step;
+      window.scrollTo({ top: document.getElementById('retForm').offsetTop - 80, behavior: 'smooth' });
     }
 
     function nextStep(from) {
-      var fields = {
-        0: 'field-activite',
-        1: 'field-revenus',
-        2: 'field-blocage',
-        3: 'field-dispos',
-        4: 'field-motivation',
-        5: 'field-budget'
-      };
-      var fieldId = fields[from];
-      var el = document.getElementById(fieldId);
-      if (!el.value.trim()) {
-        el.focus();
-        el.style.borderColor = '#EF4444';
-        setTimeout(function() { el.style.borderColor = ''; }, 1500);
+      var ids = { 0:'f-activite', 1:'f-revenus', 2:'f-blocage', 3:'f-dispos', 4:'f-motivation', 5:'f-budget' };
+      var el = document.getElementById(ids[from]);
+      if (!el || !el.value.trim()) {
+        if (el) { el.focus(); el.style.borderColor = '#EF4444'; setTimeout(function(){ el.style.borderColor = ''; }, 1500); }
         return;
       }
       showStep(from + 1);
-      window.scrollTo({ top: document.getElementById('retForm').offsetTop - 80, behavior: 'smooth' });
     }
 
-    function prevStep(from) {
-      showStep(from - 1);
-      window.scrollTo({ top: document.getElementById('retForm').offsetTop - 80, behavior: 'smooth' });
-    }
+    function prevStep(from) { showStep(from - 1); }
 
     document.getElementById('retForm').addEventListener('submit', function(e) {
       e.preventDefault();
-      var tel = document.getElementById('field-tel').value.trim();
+      var tel = document.getElementById('f-tel').value.trim();
       if (!tel) {
-        var el = document.getElementById('field-tel');
-        el.focus();
-        el.style.borderColor = '#EF4444';
-        setTimeout(function() { el.style.borderColor = ''; }, 1500);
+        var el = document.getElementById('f-tel');
+        el.focus(); el.style.borderColor = '#EF4444';
+        setTimeout(function(){ el.style.borderColor = ''; }, 1500);
         return;
       }
-      window.open('https://calendar.app.google/Tr3jnHzo7oHt8Ehd7', '_blank');
+
+      var btn = document.getElementById('submitBtn');
+      btn.disabled = true;
+      btn.textContent = 'Envoi en cours…';
+
+      var data = {
+        activite:   document.getElementById('f-activite').value.trim(),
+        revenus:    document.getElementById('f-revenus').value,
+        blocage:    document.getElementById('f-blocage').value.trim(),
+        dispos:     document.getElementById('f-dispos').value.trim(),
+        motivation: document.getElementById('f-motivation').value.trim(),
+        budget:     document.getElementById('f-budget').value,
+        tel:        tel
+      };
+
+      fetch('/api/retraite-candidature', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(data)
+      })
+      .then(function(r) { return r.json(); })
+      .then(function() {
+        // Affiche le message de succès
+        document.getElementById('retForm').style.display = 'none';
+        document.querySelector('.ret-progress').style.display = 'none';
+        document.getElementById('retSuccess').style.display = 'block';
+
+        // Ouvre WhatsApp avec le numéro du candidat
+        var cleanTel = tel.replace(/[\s\-().+]/g, '');
+        var msg = encodeURIComponent('Bonjour, je viens de postuler pour la retraite Qyraze.');
+        window.open('https://wa.me/' + cleanTel + '?text=' + msg, '_blank');
+      })
+      .catch(function() {
+        btn.disabled = false;
+        btn.textContent = 'Envoyer ma candidature →';
+        alert('Une erreur est survenue. Réessaie dans quelques instants.');
+      });
     });
   </script>
 </body>
