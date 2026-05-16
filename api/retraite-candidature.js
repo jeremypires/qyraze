@@ -52,7 +52,7 @@ export default async function handler(req, res) {
     const fullName = `${prenom} ${nom}`.trim();
 
     await Promise.all([
-      fetch('https://hook.eu2.make.com/e63fdbdhbzy484abuabclbuzwi9u3tds', {
+      fetch('https://hook.eu2.make.com/yt61c14ht88b8m6bofpwlcs8ibxkjjat', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(req.body)
