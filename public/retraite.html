@@ -18,6 +18,35 @@
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Retraite Entrepreneurs — Qyraze</title>
   <meta name="description" content="7 jours pour casser ton plafond avec 10 entrepreneurs comme toi. Sport, travail, experts. Tu repars avec un plan clair et un cercle solide." />
+  <link rel="canonical" href="https://qyraze.com/retraite" />
+
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "Event",
+    "name": "Retraite Entrepreneurs — Qyraze",
+    "description": "7 jours en immersion avec 10 entrepreneurs sérieux. Sport, travail, experts. Tu repars avec un plan clair et un cercle solide.",
+    "organizer": {
+      "@type": "Person",
+      "name": "Jérémy Pereira Pires",
+      "url": "https://qyraze.com"
+    },
+    "eventAttendanceMode": "https://schema.org/OfflineEventAttendanceMode",
+    "eventStatus": "https://schema.org/EventScheduled",
+    "location": {
+      "@type": "Place",
+      "name": "France",
+      "address": { "@type": "PostalAddress", "addressCountry": "FR" }
+    },
+    "url": "https://qyraze.com/retraite",
+    "maximumAttendeeCapacity": 10,
+    "offers": {
+      "@type": "Offer",
+      "url": "https://qyraze.com/retraite",
+      "availability": "https://schema.org/LimitedAvailability"
+    }
+  }
+  </script>
 
   <!-- Open Graph -->
   <meta property="og:type" content="website" />
@@ -274,7 +303,7 @@
 
     /* ── QUI JE SUIS ── */
     .r-about-grid { display: grid; grid-template-columns: 180px 1fr; gap: 2.5rem; align-items: start; }
-    .r-about-photo { width: 100%; border-radius: 14px; object-fit: cover; aspect-ratio: 4/5; filter: grayscale(15%); }
+    .r-about-photo { width: 100%; border-radius: 14px; object-fit: cover; aspect-ratio: 1/1; filter: grayscale(15%); }
     .r-about-photo-placeholder { width: 100%; aspect-ratio: 4/5; border-radius: 14px; background: var(--surface); border: 1px solid var(--border); display: flex; align-items: center; justify-content: center; color: var(--hint); font-size: 13px; }
     .r-about-role { font-size: 11px; letter-spacing: 2px; text-transform: uppercase; color: var(--gold); margin-bottom: .5rem; }
     .r-about-name { font-family: 'Playfair Display', Georgia, serif; font-size: 22px; font-weight: 500; color: var(--text); margin-bottom: 1rem; }
@@ -381,6 +410,21 @@
     .r-rejected-title, .r-success-title { font-family: 'Playfair Display', Georgia, serif; font-size: 22px; font-weight: 500; color: var(--text); margin-bottom: 10px; }
     .r-rejected-text, .r-success-sub { font-size: 14px; color: var(--muted); line-height: 1.8; }
 
+    /* ── Back to top ── */
+    .r-backtop {
+      position: fixed; bottom: 24px; right: 24px; z-index: 90;
+      width: 42px; height: 42px; border-radius: 50%;
+      background: var(--gold); color: var(--gold-cta-text);
+      border: none; cursor: pointer; display: none; align-items: center; justify-content: center;
+      box-shadow: 0 4px 16px rgba(0,0,0,.3); transition: background .2s, transform .2s;
+    }
+    .r-backtop:hover { background: var(--gold-h); transform: translateY(-2px); }
+    .r-backtop.visible { display: flex; }
+    .r-backtop svg { width: 18px; height: 18px; stroke: currentColor; fill: none; stroke-width: 2.5; stroke-linecap: round; stroke-linejoin: round; }
+
+    /* ── Footer mobile ── */
+    .footer-left { flex-wrap: wrap !important; gap: 6px 0 !important; }
+
     /* ── Mobile ── */
     @media (max-width: 700px) {
       .r-days-grid { grid-template-columns: 1fr; }
@@ -389,6 +433,8 @@
       .r-days-quote { font-size: 1.2rem; padding: 56px 0; }
     }
     @media (max-width: 560px) {
+      .r-hero { padding: 2rem 0 2.5rem; min-height: auto; }
+      .r-hero-title { font-size: clamp(22px, 7vw, 32px); }
       .r-about-grid { grid-template-columns: 1fr; }
       .r-about-photo, .r-about-photo-placeholder { width: 140px; margin: 0 auto 1.5rem; display: block; }
       .r-field-row { grid-template-columns: 1fr; }
@@ -469,7 +515,7 @@
       </div>
 
       <div class="fade-up">
-        <a href="#candidature" class="r-cta">Candidater pour une place</a>
+        <a href="#candidature" class="r-cta">Candidater pour une place →</a>
       </div>
     </div>
   </section>
@@ -675,7 +721,7 @@
         </div>
         <div>
           <div class="r-about-role">Créateur de la retraite</div>
-          <h3 class="r-about-name">Jérémy</h3>
+          <h2 class="r-about-name">Jérémy</h2>
           <p class="r-about-text">
             Un seul cerveau a ses limites. Dix cerveaux qui ne sont pas dans le même secteur, qui ne partagent pas les mêmes angles morts — c'est un levier que la plupart des entrepreneurs n'ont jamais activé.
           </p>
@@ -783,19 +829,19 @@
         <div class="r-rejected-text" id="rRejectedText"></div>
       </div>
 
-      <form id="rForm" novalidate>
+      <form id="rForm" method="post" novalidate>
 
         <!-- Étape 1 — Identité -->
         <div class="r-step active" data-step="0">
           <div class="r-step-header">Étape 1 · Identité</div>
           <div class="r-field-row">
-            <div class="r-field"><label class="r-label">Prénom</label><input type="text" class="r-input" id="f-prenom" placeholder="Ton prénom" /></div>
-            <div class="r-field"><label class="r-label">Nom</label><input type="text" class="r-input" id="f-nom" placeholder="Ton nom" /></div>
+            <div class="r-field"><label class="r-label" for="f-prenom">Prénom</label><input type="text" class="r-input" id="f-prenom" placeholder="Ton prénom" /></div>
+            <div class="r-field"><label class="r-label" for="f-nom">Nom</label><input type="text" class="r-input" id="f-nom" placeholder="Ton nom" /></div>
           </div>
           <div class="r-field-row">
-            <div class="r-field"><label class="r-label">Âge</label><input type="number" class="r-input" id="f-age" placeholder="Ex : 28" min="18" max="80" /></div>
+            <div class="r-field"><label class="r-label" for="f-age">Âge</label><input type="number" class="r-input" id="f-age" placeholder="Ex : 28" min="18" max="80" /></div>
             <div class="r-field">
-              <label class="r-label">Sexe</label>
+              <label class="r-label" for="f-sexe">Sexe</label>
               <select class="r-select" id="f-sexe" onchange="toggleOther('f-sexe','f-sexe-autre')">
                 <option value="" disabled selected>Sélectionne</option>
                 <option value="Homme">Homme</option>
@@ -805,17 +851,17 @@
               <input type="text" class="r-input r-optional" id="f-sexe-autre" placeholder="Précise" />
             </div>
           </div>
-          <div class="r-field"><label class="r-label">Ville / Pays</label><input type="text" class="r-input" id="f-ville" placeholder="Ex : Paris, France" /></div>
-          <div class="r-field"><label class="r-label">Numéro WhatsApp</label><input type="tel" class="r-input" id="f-tel" placeholder="+33 6 00 00 00 00" /></div>
+          <div class="r-field"><label class="r-label" for="f-ville">Ville / Pays</label><input type="text" class="r-input" id="f-ville" placeholder="Ex : Paris, France" /></div>
+          <div class="r-field"><label class="r-label" for="f-tel">Numéro WhatsApp</label><input type="tel" class="r-input" id="f-tel" placeholder="+33 6 00 00 00 00" /></div>
           <div class="r-step-nav"><button type="button" class="r-btn-next" onclick="goNext(0)">Continuer →</button></div>
         </div>
 
         <!-- Étape 2 — Activité -->
         <div class="r-step" data-step="1">
           <div class="r-step-header">Étape 2 · Activité</div>
-          <div class="r-field"><label class="r-label">Quelle est ton activité principale ?</label><textarea class="r-textarea" id="f-activite" placeholder="Décris ce que tu fais en quelques mots…"></textarea></div>
+          <div class="r-field"><label class="r-label" for="f-activite">Quelle est ton activité principale ?</label><textarea class="r-textarea" id="f-activite" placeholder="Décris ce que tu fais en quelques mots…"></textarea></div>
           <div class="r-field">
-            <label class="r-label">Depuis combien de temps ?</label>
+            <label class="r-label" for="f-anciennete">Depuis combien de temps ?</label>
             <select class="r-select" id="f-anciennete">
               <option value="" disabled selected>Sélectionne</option>
               <option value="Moins de 6 mois">Moins de 6 mois</option>
@@ -825,7 +871,7 @@
             </select>
           </div>
           <div class="r-field">
-            <label class="r-label">Statut</label>
+            <label class="r-label" for="f-statut">Statut</label>
             <select class="r-select" id="f-statut" onchange="toggleOther('f-statut','f-statut-autre')">
               <option value="" disabled selected>Sélectionne</option>
               <option value="Auto-entrepreneur">Auto-entrepreneur</option>
@@ -835,7 +881,7 @@
             </select>
             <input type="text" class="r-input r-optional" id="f-statut-autre" placeholder="Précise ton statut" />
           </div>
-          <div class="r-field"><label class="r-label">Site ou réseaux ? <span class="r-opt-label">(optionnel)</span></label><input type="text" class="r-input" id="f-reseaux" placeholder="Instagram, LinkedIn, site web…" /></div>
+          <div class="r-field"><label class="r-label" for="f-reseaux">Site ou réseaux ? <span class="r-opt-label">(optionnel)</span></label><input type="text" class="r-input" id="f-reseaux" placeholder="Instagram, LinkedIn, site web…" /></div>
           <div class="r-step-nav"><button type="button" class="r-btn-back" onclick="goPrev(1)">←</button><button type="button" class="r-btn-next" onclick="goNext(1)">Continuer →</button></div>
         </div>
 
@@ -843,7 +889,7 @@
         <div class="r-step" data-step="2">
           <div class="r-step-header">Étape 3 · Revenus</div>
           <div class="r-field">
-            <label class="r-label">Revenus mensuels actuels ?</label>
+            <label class="r-label" for="f-revenus">Revenus mensuels actuels ?</label>
             <span class="r-hint">Sois honnête, ça reste confidentiel.</span>
             <select class="r-select" id="f-revenus">
               <option value="" disabled selected>Sélectionne une tranche</option>
@@ -854,7 +900,7 @@
             </select>
           </div>
           <div class="r-field">
-            <label class="r-label">Tes revenus sont stables ou irréguliers ?</label>
+            <label class="r-label" for="f-stabilite">Tes revenus sont stables ou irréguliers ?</label>
             <select class="r-select" id="f-stabilite">
               <option value="" disabled selected>Sélectionne</option>
               <option value="Stables">Stables</option>
@@ -868,9 +914,9 @@
         <!-- Étape 4 — Situation actuelle -->
         <div class="r-step" data-step="3">
           <div class="r-step-header">Étape 4 · Situation actuelle</div>
-          <div class="r-field"><label class="r-label">Qu'est-ce qui bloque ta croissance en ce moment ?</label><textarea class="r-textarea" id="f-blocage" placeholder="Sois précis…"></textarea></div>
+          <div class="r-field"><label class="r-label" for="f-blocage">Qu'est-ce qui bloque ta croissance en ce moment ?</label><textarea class="r-textarea" id="f-blocage" placeholder="Sois précis…"></textarea></div>
           <div class="r-field">
-            <label class="r-label">T'es entouré d'autres entrepreneurs ?</label>
+            <label class="r-label" for="f-reseau-ent">T'es entouré d'autres entrepreneurs ?</label>
             <select class="r-select" id="f-reseau-ent">
               <option value="" disabled selected>Sélectionne</option>
               <option value="Oui j'ai un réseau solide">Oui, j'ai un réseau solide</option>
@@ -879,7 +925,7 @@
             </select>
           </div>
           <div class="r-field">
-            <label class="r-label">T'as déjà investi dans ta formation ou ton business ?</label>
+            <label class="r-label" for="f-invest">T'as déjà investi dans ta formation ou ton business ?</label>
             <select class="r-select" id="f-invest">
               <option value="" disabled selected>Sélectionne</option>
               <option value="warn">Jamais</option>
@@ -894,24 +940,24 @@
         <!-- Étape 5 — Ambition -->
         <div class="r-step" data-step="4">
           <div class="r-step-header">Étape 5 · Ambition</div>
-          <div class="r-field"><label class="r-label">Qu'est-ce que tu veux accomplir dans les 3 prochains mois ?</label><textarea class="r-textarea" id="f-objectifs" placeholder="Sois concret et ambitieux…"></textarea></div>
+          <div class="r-field"><label class="r-label" for="f-objectifs">Qu'est-ce que tu veux accomplir dans les 3 prochains mois ?</label><textarea class="r-textarea" id="f-objectifs" placeholder="Sois concret et ambitieux…"></textarea></div>
           <div class="r-field">
-            <label class="r-label">Sur une échelle de 1 à 10, t'es prêt à changer tes habitudes ?</label>
+            <label class="r-label" for="f-slider">Sur une échelle de 1 à 10, t'es prêt à changer tes habitudes ?</label>
             <span class="r-hint">En dessous de 7, on te demandera de reconsidérer.</span>
             <input type="range" min="1" max="10" value="5" class="r-slider" id="f-slider" oninput="document.getElementById('sliderVal').textContent=this.value" />
             <div class="r-slider-labels"><span>1 — Pas vraiment</span><span>10 — Totalement</span></div>
             <div class="r-slider-value"><span id="sliderVal">5</span> / 10</div>
           </div>
-          <div class="r-field"><label class="r-label">Pourquoi cette retraite et pas une formation en ligne ?</label><textarea class="r-textarea" id="f-pourquoi-retraite" placeholder="Explique ce que tu cherches vraiment…"></textarea></div>
+          <div class="r-field"><label class="r-label" for="f-pourquoi-retraite">Pourquoi cette retraite et pas une formation en ligne ?</label><textarea class="r-textarea" id="f-pourquoi-retraite" placeholder="Explique ce que tu cherches vraiment…"></textarea></div>
           <div class="r-step-nav"><button type="button" class="r-btn-back" onclick="goPrev(4)">←</button><button type="button" class="r-btn-next" onclick="goNext(4)">Continuer →</button></div>
         </div>
 
         <!-- Étape 6 — Logistique -->
         <div class="r-step" data-step="5">
           <div class="r-step-header">Étape 6 · Logistique</div>
-          <div class="r-field"><label class="r-label">Quelles sont tes disponibilités ?</label><input type="text" class="r-input" id="f-dispos" placeholder="Ex : juillet, fin août, pas avant octobre…" /></div>
+          <div class="r-field"><label class="r-label" for="f-dispos">Quelles sont tes disponibilités ?</label><input type="text" class="r-input" id="f-dispos" placeholder="Ex : juillet, fin août, pas avant octobre…" /></div>
           <div class="r-field">
-            <label class="r-label">Contraintes alimentaires ?</label>
+            <label class="r-label" for="f-alimentaire">Contraintes alimentaires ?</label>
             <select class="r-select" id="f-alimentaire" onchange="toggleOther('f-alimentaire','f-alimentaire-autre')">
               <option value="" disabled selected>Sélectionne</option>
               <option value="Aucune">Aucune</option>
@@ -923,7 +969,7 @@
             <input type="text" class="r-input r-optional" id="f-alimentaire-autre" placeholder="Précise tes contraintes" />
           </div>
           <div class="r-field">
-            <label class="r-label">T'as le permis et un véhicule ?</label>
+            <label class="r-label" for="f-vehicule">T'as le permis et un véhicule ?</label>
             <select class="r-select" id="f-vehicule">
               <option value="" disabled selected>Sélectionne</option>
               <option value="Oui">Oui</option>
@@ -937,7 +983,7 @@
         <div class="r-step" data-step="6">
           <div class="r-step-header">Étape 7 · Budget & engagement</div>
           <div class="r-field">
-            <label class="r-label">Quel est ton budget pour cette retraite ?</label>
+            <label class="r-label" for="f-budget">Quel est ton budget pour cette retraite ?</label>
             <select class="r-select" id="f-budget">
               <option value="" disabled selected>Sélectionne une tranche</option>
               <option value="reject">Moins de 1 000€</option>
@@ -947,7 +993,7 @@
             </select>
           </div>
           <div class="r-field">
-            <label class="r-label">Comment t'as connu cette retraite ?</label>
+            <label class="r-label" for="f-source">Comment t'as connu cette retraite ?</label>
             <select class="r-select" id="f-source" onchange="toggleOther('f-source','f-source-autre')">
               <option value="" disabled selected>Sélectionne</option>
               <option value="Instagram">Instagram</option>
@@ -964,7 +1010,7 @@
         <div class="r-step" data-step="7">
           <div class="r-step-header">Étape 8 · Dernière question</div>
           <div class="r-field">
-            <label class="r-label">Convaincs-nous en 3 phrases pourquoi ta place doit être pour toi.</label>
+            <label class="r-label" for="f-conviction">Convaincs-nous en 3 phrases pourquoi ta place doit être pour toi.</label>
             <span class="r-hint">C'est là qu'on voit vraiment qui est sérieux.</span>
             <textarea class="r-textarea" style="min-height:120px" id="f-conviction" placeholder="Écris 3 phrases qui font la différence…"></textarea>
           </div>
@@ -985,6 +1031,10 @@
     </div>
   </section>
 
+  <button class="r-backtop" id="backTop" aria-label="Retour en haut" onclick="window.scrollTo({top:0,behavior:'smooth'})">
+    <svg viewBox="0 0 24 24"><polyline points="18 15 12 9 6 15"/></svg>
+  </button>
+
   <footer class="footer">
     <div class="container">
       <div class="footer-inner">
@@ -1000,6 +1050,14 @@
   </footer>
 
   <script>
+    /* ── Back to top ── */
+    (function() {
+      var btn = document.getElementById('backTop');
+      window.addEventListener('scroll', function() {
+        btn.classList.toggle('visible', window.scrollY > 300);
+      }, { passive: true });
+    })();
+
     /* ── Scroll animations ── */
     var observer = new IntersectionObserver(function(entries) {
       entries.forEach(function(e) {
