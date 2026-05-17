@@ -121,7 +121,7 @@
 
     /* ── HERO ── */
     .r-hero {
-      min-height: 92vh;
+      min-height: 80vh;
       display: flex;
       align-items: center;
       background: var(--bg);
@@ -201,8 +201,12 @@
     .r-include-photo:hover img { transform: scale(1.03); }
 
     /* ── POUR QUI ── */
-    .r-pourqui-text { font-size: 18px; line-height: 2; color: var(--text-sec); }
-    .r-pourqui-text strong { color: var(--text); font-weight: 500; }
+    .r-pourqui-list { display: flex; flex-direction: column; gap: 0; border: 1px solid var(--border); border-radius: 16px; overflow: hidden; margin-bottom: 1.5rem; }
+    .r-pourqui-item { display: flex; align-items: flex-start; gap: 14px; padding: 15px 1.5rem; border-bottom: 1px solid var(--border); font-size: 15px; color: var(--text-sec); line-height: 1.6; }
+    .r-pourqui-item:last-child { border-bottom: none; }
+    .r-pourqui-item strong { color: var(--text); font-weight: 500; }
+    .r-pourqui-check { color: var(--gold); font-size: 12px; flex-shrink: 0; margin-top: 4px; }
+    .r-pourqui-not { font-size: 13px; color: var(--hint); line-height: 1.7; font-style: italic; padding: 0 .25rem; }
 
     /* ── PHOTO SEMAINE ── */
     .r-week-photo { position: relative; margin: 3rem 0 0; overflow: hidden; max-height: 420px; }
@@ -495,9 +499,6 @@
           <div class="r-include-icon"><svg viewBox="0 0 24 24"><path d="M3 2v7c0 1.1.9 2 2 2h4a2 2 0 002-2V2"/><path d="M7 2v20"/><path d="M21 15V2a5 5 0 00-5 5v6c0 1.1.9 2 2 2h3zm0 0v7"/></svg></div>
           <span>Tous les repas préparés — petit-déjeuner, déjeuner, dîner inclus.</span>
         </div>
-        <div class="r-include-photo">
-          <img src="/pexels-askar-abayev-5638415.jpg" alt="Repas partagés" loading="lazy" decoding="async" />
-        </div>
         <div class="r-include-item">
           <div class="r-include-icon"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="6"/><circle cx="12" cy="12" r="2"/></svg></div>
           <span>2 experts choisis selon les profils retenus — vente, marketing, mindset ou scaling.</span>
@@ -515,6 +516,11 @@
           <span>Contenu filmé — les sessions clés sont enregistrées et partagées aux participants.</span>
         </div>
       </div>
+
+      <div class="r-include-photo fade-up" style="margin-top:1.5rem;border-radius:16px;border:1px solid var(--border);">
+        <img src="/pexels-askar-abayev-5638415.jpg" alt="Repas partagés" loading="lazy" decoding="async" />
+      </div>
+
     </div>
   </section>
 
@@ -630,8 +636,30 @@
     <div class="r-container">
       <span class="r-eyebrow">Pour qui</span>
       <h2 class="r-title" style="margin-bottom:2rem;">C'est fait pour toi si...</h2>
-      <p class="r-pourqui-text">
-        Tu fais déjà entre <strong>2k et 10k€/mois</strong>. Tu bosses, mais tu sens que tu <strong>plafonnes</strong>. Tu es seul, sans vrai cercle pour t'élever. Cette retraite est faite pour <strong>casser ce plafond</strong>.
+      <div class="r-pourqui-list">
+        <div class="r-pourqui-item">
+          <span class="r-pourqui-check">✦</span>
+          <span>Tu fais déjà entre <strong>2k et 10k€/mois</strong> et tu veux passer le cap supérieur.</span>
+        </div>
+        <div class="r-pourqui-item">
+          <span class="r-pourqui-check">✦</span>
+          <span>Tu bosses bien, mais tu <strong>plafonnes</strong> — et tu ne sais plus exactement pourquoi.</span>
+        </div>
+        <div class="r-pourqui-item">
+          <span class="r-pourqui-check">✦</span>
+          <span>Tu es seul dans ton activité, sans vrai <strong>cercle d'entrepreneurs</strong> pour t'élever.</span>
+        </div>
+        <div class="r-pourqui-item">
+          <span class="r-pourqui-check">✦</span>
+          <span>Tu veux sortir de ta routine, te couper de tout, et <strong>vraiment travailler</strong> pendant 7 jours.</span>
+        </div>
+        <div class="r-pourqui-item">
+          <span class="r-pourqui-check">✦</span>
+          <span>Tu es prêt à <strong>investir sérieusement</strong> — en argent, en temps, et en énergie.</span>
+        </div>
+      </div>
+      <p class="r-pourqui-not">
+        Ce n'est pas pour toi si tu débutes à 0, si tu cherches une formation classique, ou si tu n'es pas prêt à t'engager vraiment.
       </p>
     </div>
   </section>
