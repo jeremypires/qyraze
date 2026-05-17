@@ -272,14 +272,6 @@
       background: var(--gold);
     }
 
-    /* ── PROGRAMME ── */
-    .r-prog-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 12px; }
-    .r-prog-card { background: var(--surface); border: 1px solid var(--border); border-radius: 14px; padding: 1.25rem 1.5rem; }
-    .r-prog-icon { margin-bottom: 10px; }
-    .r-prog-icon svg { width: 22px; height: 22px; stroke: var(--gold); fill: none; stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; }
-    .r-prog-title { font-size: 14px; font-weight: 600; color: var(--text); margin-bottom: 5px; }
-    .r-prog-desc { font-size: 13px; color: var(--muted); line-height: 1.7; }
-
     /* ── QUI JE SUIS ── */
     .r-about-grid { display: grid; grid-template-columns: 180px 1fr; gap: 2.5rem; align-items: start; }
     .r-about-photo { width: 100%; border-radius: 14px; object-fit: cover; aspect-ratio: 4/5; filter: grayscale(15%); }
@@ -397,7 +389,6 @@
       .r-days-quote { font-size: 1.2rem; padding: 56px 0; }
     }
     @media (max-width: 560px) {
-      .r-prog-grid { grid-template-columns: 1fr; }
       .r-about-grid { grid-template-columns: 1fr; }
       .r-about-photo, .r-about-photo-placeholder { width: 140px; margin: 0 auto 1.5rem; display: block; }
       .r-field-row { grid-template-columns: 1fr; }
@@ -480,6 +471,46 @@
       <div class="fade-up">
         <a href="#candidature" class="r-cta">Candidater pour une place</a>
       </div>
+    </div>
+  </section>
+
+  <hr class="r-divider" />
+
+  <!-- ── POUR QUI ── -->
+  <section class="r-section fade-up">
+    <div class="r-container">
+      <span class="r-eyebrow">Pour qui</span>
+      <h2 class="r-title" style="margin-bottom:2rem;">C'est fait pour toi si...</h2>
+      <div class="r-pourqui-list">
+        <div class="r-pourqui-item">
+          <span class="r-pourqui-check">✦</span>
+          <span>Tu fais déjà entre <strong>2k et 10k€/mois</strong> et tu veux passer le cap supérieur.</span>
+        </div>
+        <div class="r-pourqui-item">
+          <span class="r-pourqui-check">✦</span>
+          <span>Tu bosses bien, mais tu <strong>plafonnes</strong> — et tu ne sais plus exactement pourquoi.</span>
+        </div>
+        <div class="r-pourqui-item">
+          <span class="r-pourqui-check">✦</span>
+          <span>Tu es seul dans ton activité, sans vrai <strong>cercle d'entrepreneurs</strong> pour t'élever.</span>
+        </div>
+        <div class="r-pourqui-item">
+          <span class="r-pourqui-check">✦</span>
+          <span>Tu veux sortir de ta routine, te couper de tout, et <strong>vraiment travailler</strong> pendant 7 jours.</span>
+        </div>
+        <div class="r-pourqui-item">
+          <span class="r-pourqui-check">✦</span>
+          <span>Tu es prêt à <strong>investir sérieusement</strong> — en argent, en temps, et en énergie.</span>
+        </div>
+      </div>
+
+      <div class="r-pourqui-photo fade-up">
+        <img src="/pexels-cottonbro-4069289.jpg" alt="Entrepreneur au travail" loading="lazy" decoding="async" />
+      </div>
+
+      <p class="r-pourqui-not">
+        Ce n'est pas pour toi si tu débutes à 0, si tu cherches une formation classique, ou si tu n'es pas prêt à t'engager vraiment.
+      </p>
     </div>
   </section>
 
@@ -634,85 +665,12 @@
 
   <hr class="r-divider" />
 
-  <!-- ── POUR QUI ── -->
-  <section class="r-section fade-up">
-    <div class="r-container">
-      <span class="r-eyebrow">Pour qui</span>
-      <h2 class="r-title" style="margin-bottom:2rem;">C'est fait pour toi si...</h2>
-      <div class="r-pourqui-list">
-        <div class="r-pourqui-item">
-          <span class="r-pourqui-check">✦</span>
-          <span>Tu fais déjà entre <strong>2k et 10k€/mois</strong> et tu veux passer le cap supérieur.</span>
-        </div>
-        <div class="r-pourqui-item">
-          <span class="r-pourqui-check">✦</span>
-          <span>Tu bosses bien, mais tu <strong>plafonnes</strong> — et tu ne sais plus exactement pourquoi.</span>
-        </div>
-        <div class="r-pourqui-item">
-          <span class="r-pourqui-check">✦</span>
-          <span>Tu es seul dans ton activité, sans vrai <strong>cercle d'entrepreneurs</strong> pour t'élever.</span>
-        </div>
-        <div class="r-pourqui-item">
-          <span class="r-pourqui-check">✦</span>
-          <span>Tu veux sortir de ta routine, te couper de tout, et <strong>vraiment travailler</strong> pendant 7 jours.</span>
-        </div>
-        <div class="r-pourqui-item">
-          <span class="r-pourqui-check">✦</span>
-          <span>Tu es prêt à <strong>investir sérieusement</strong> — en argent, en temps, et en énergie.</span>
-        </div>
-      </div>
-
-      <div class="r-pourqui-photo fade-up">
-        <img src="/pexels-cottonbro-4069289.jpg" alt="Entrepreneur au travail" loading="lazy" decoding="async" />
-      </div>
-
-      <p class="r-pourqui-not">
-        Ce n'est pas pour toi si tu débutes à 0, si tu cherches une formation classique, ou si tu n'es pas prêt à t'engager vraiment.
-      </p>
-    </div>
-  </section>
-
-  <hr class="r-divider" />
-
-  <!-- ── PROGRAMME TYPE ── -->
-  <section class="r-section alt fade-up">
-    <div class="r-container">
-      <span class="r-eyebrow">Programme type</span>
-      <h2 class="r-title" style="margin-bottom:2rem;">7 jours structurés.</h2>
-      <div class="r-prog-grid">
-        <div class="r-prog-card">
-          <div class="r-prog-icon"><svg viewBox="0 0 24 24"><path d="M17 18a5 5 0 00-10 0"/><line x1="12" y1="2" x2="12" y2="9"/><line x1="4.22" y1="10.22" x2="5.64" y2="11.64"/><line x1="1" y1="18" x2="3" y2="18"/><line x1="21" y1="18" x2="23" y2="18"/><line x1="18.36" y1="11.64" x2="19.78" y2="10.22"/></svg></div>
-          <div class="r-prog-title">Matin</div>
-          <div class="r-prog-desc">Sport collectif, petit-déjeuner, session stratégique avec un expert.</div>
-        </div>
-        <div class="r-prog-card">
-          <div class="r-prog-icon"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg></div>
-          <div class="r-prog-title">Après-midi</div>
-          <div class="r-prog-desc">Travail en solo ou en binôme, implémentation, feedback en groupe.</div>
-        </div>
-        <div class="r-prog-card">
-          <div class="r-prog-icon"><svg viewBox="0 0 24 24"><path d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z"/></svg></div>
-          <div class="r-prog-title">Soirée</div>
-          <div class="r-prog-desc">Repas partagé, discussions informelles, connexions entre participants.</div>
-        </div>
-        <div class="r-prog-card">
-          <div class="r-prog-icon"><svg viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg></div>
-          <div class="r-prog-title">Dates</div>
-          <div class="r-prog-desc">Édition 2026 — lieu et dates communiqués aux candidats retenus.</div>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <hr class="r-divider" />
-
   <!-- ── QUI JE SUIS ── -->
   <section class="r-section alt2 fade-up">
     <div class="r-container">
       <span class="r-eyebrow">Qui je suis</span>
       <div class="r-about-grid">
         <div>
-          <!-- Remplacer par la vraie photo quand elle est envoyée -->
           <img src="/jeremy.webp" alt="Jérémy" class="r-about-photo" loading="lazy" decoding="async" />
         </div>
         <div>
