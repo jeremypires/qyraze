@@ -206,6 +206,9 @@
     .r-pourqui-item:last-child { border-bottom: none; }
     .r-pourqui-item strong { color: var(--text); font-weight: 500; }
     .r-pourqui-check { color: var(--gold); font-size: 12px; flex-shrink: 0; margin-top: 4px; }
+    .r-pourqui-photo { margin: 1.5rem 0; border-radius: 16px; overflow: hidden; border: 1px solid var(--border); }
+    .r-pourqui-photo img { width: 100%; height: 260px; object-fit: cover; object-position: center 35%; display: block; filter: brightness(.78); transition: transform .6s ease; }
+    .r-pourqui-photo:hover img { transform: scale(1.03); }
     .r-pourqui-not { font-size: 13px; color: var(--hint); line-height: 1.7; font-style: italic; padding: 0 .25rem; }
 
     /* ── PHOTO SEMAINE ── */
@@ -658,6 +661,11 @@
           <span>Tu es prêt à <strong>investir sérieusement</strong> — en argent, en temps, et en énergie.</span>
         </div>
       </div>
+
+      <div class="r-pourqui-photo fade-up">
+        <img src="/pexels-cottonbro-4069289.jpg" alt="Entrepreneur au travail" loading="lazy" decoding="async" />
+      </div>
+
       <p class="r-pourqui-not">
         Ce n'est pas pour toi si tu débutes à 0, si tu cherches une formation classique, ou si tu n'es pas prêt à t'engager vraiment.
       </p>
