@@ -235,6 +235,10 @@
     .r-day-content { flex: 1; }
     .r-day-title { font-family: 'Playfair Display', serif; font-size: 16px; font-weight: 500; color: var(--text); margin-bottom: 8px; }
     .r-day-text { font-size: 13px; color: var(--text-day); line-height: 1.75; }
+    .r-day-photo { grid-column: 1 / -1; border-radius: 12px; overflow: hidden; border: 1px solid var(--border-hard); }
+    .r-day-photo img { width: 100%; height: 280px; object-fit: cover; object-position: center 30%; display: block; filter: brightness(.75); transition: transform .6s ease; }
+    .r-day-photo:hover img { transform: scale(1.03); }
+
     .r-days-fixed { display: flex; flex-direction: column; gap: 12px; margin-bottom: 0; }
     .r-days-fixed-card { display: flex; align-items: flex-start; gap: 1rem; background: rgba(201,168,76,.06); border: 1px solid rgba(201,168,76,.18); border-radius: 12px; padding: 1.1rem 1.4rem; }
     .r-days-fixed-icon { flex-shrink: 0; margin-top: 2px; }
@@ -562,6 +566,10 @@
             <h3 class="r-day-title">Implémentation & dépassement</h3>
             <p class="r-day-text">Journée de travail pur sous pression collective. Pas de réseau social, pas de distraction. Le groupe maintient l'énergie de chacun. Sport du matin plus intense ce jour-là — on pousse les limites physiques pour pousser les limites mentales.</p>
           </div>
+        </div>
+
+        <div class="r-day-photo fade-up">
+          <img src="/pexels-ozanyavuzphoto-31238506.jpg" alt="Sport collectif — Jour 4" loading="lazy" decoding="async" />
         </div>
 
         <div class="r-day-card fade-up">
