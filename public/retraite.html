@@ -201,6 +201,30 @@
     .r-pourqui-text { font-size: 18px; line-height: 2; color: var(--text-sec); }
     .r-pourqui-text strong { color: var(--text); font-weight: 500; }
 
+    /* ── PHOTO SEMAINE ── */
+    .r-week-photo { position: relative; margin: 3rem 0 0; overflow: hidden; max-height: 420px; }
+    .r-week-img { width: 100%; height: 420px; object-fit: cover; object-position: center 40%; display: block; filter: brightness(.72); }
+    .r-week-overlay {
+      position: absolute; inset: 0;
+      display: flex; align-items: flex-end;
+      padding: 2.5rem 2rem;
+      background: linear-gradient(to top, rgba(10,10,10,.75) 0%, transparent 55%);
+    }
+    .r-week-caption {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(18px, 2.8vw, 28px);
+      font-style: italic;
+      color: #f5f0eb;
+      line-height: 1.4;
+      max-width: 680px;
+      margin: 0 auto;
+      width: 100%;
+      text-align: center;
+    }
+    @media (prefers-color-scheme: light) {
+      .r-week-img { filter: brightness(.65); }
+    }
+
     /* ── JOURS ── */
     .r-days-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 16px; margin: 3rem 0 2rem; }
     .r-day-card { background: var(--surface-card); border: 1px solid var(--border-hard); border-radius: 12px; padding: 1.5rem; display: flex; gap: 1.25rem; align-items: flex-start; }
@@ -489,6 +513,17 @@
       <span class="r-eyebrow fade-up">Le programme</span>
       <h2 class="r-title fade-up">La semaine — jour par jour</h2>
 
+    </div>
+
+    <!-- Photo pleine largeur -->
+    <div class="r-week-photo fade-up">
+      <img src="/annie-spratt-MChSQHxGZrQ-unsplash.jpg" alt="Retraite entrepreneurs" class="r-week-img" loading="lazy" decoding="async" />
+      <div class="r-week-overlay">
+        <p class="r-week-caption">7 jours. Une maison. 10 entrepreneurs qui bossent vraiment.</p>
+      </div>
+    </div>
+
+    <div class="r-container">
       <div class="r-days-grid">
 
         <div class="r-day-card fade-up">
