@@ -157,7 +157,7 @@ export default async function handler(req, res) {
 
     const tokenHash = crypto.createHash('sha256').update(token).digest('hex');
     const { data: lead, error } = await supabase
-      .from('leads')
+      .from('waitlist_leads')
       .select('id, email, verified_at, verification_expires_at')
       .eq('verification_token_hash', tokenHash)
       .maybeSingle();
@@ -179,7 +179,7 @@ export default async function handler(req, res) {
 
     if (!lead.verification_expires_at || new Date(lead.verification_expires_at) < now) {
       await supabase
-        .from('leads')
+        .from('waitlist_leads')
         .update({
           verification_token_hash: null,
           verification_expires_at: null,
@@ -193,7 +193,7 @@ export default async function handler(req, res) {
     const unsubscribeTokenHash = crypto.createHash('sha256').update(unsubscribeToken).digest('hex');
 
     const { error: updateError } = await supabase
-      .from('leads')
+      .from('waitlist_leads')
       .update({
         verified_at: now.toISOString(),
         consent: true,

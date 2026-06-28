@@ -215,7 +215,7 @@ export default async function handler(req, res) {
 
   if (type === 'all') {
     const { data, error } = await supabase
-      .from('leads')
+      .from('waitlist_leads')
       .select('email,name')
       .eq('subscribed', true)
       .eq('consent', true)
@@ -246,7 +246,7 @@ export default async function handler(req, res) {
     const unsubscribeUrl = `https://qyraze.com/api/unsubscribe?token=${token}`;
 
     const { error: tokenUpdateError } = await supabase
-      .from('leads')
+      .from('waitlist_leads')
       .update({ unsubscribe_token_hash: hash })
       .eq('email', recipient);
 
@@ -265,7 +265,7 @@ export default async function handler(req, res) {
     }
 
     const { data: lead } = await supabase
-      .from('leads')
+      .from('waitlist_leads')
       .select('name')
       .eq('email', recipient)
       .maybeSingle();

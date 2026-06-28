@@ -29,7 +29,7 @@ export default async function handler(req, res) {
   const tokenHash = crypto.createHash('sha256').update(token).digest('hex');
 
   const { data: existing, error: fetchError } = await supabase
-    .from('leads')
+    .from('waitlist_leads')
     .select('id, email, subscribed, consent, deleted')
     .eq('unsubscribe_token_hash', tokenHash)
     .maybeSingle();
@@ -47,7 +47,7 @@ export default async function handler(req, res) {
   }
 
   const { error: updateError } = await supabase
-    .from('leads')
+    .from('waitlist_leads')
     .update({
       subscribed: false,
       consent: false,

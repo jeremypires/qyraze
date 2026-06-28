@@ -1,0 +1,9 @@
+User-agent: *
+Allow: /
+Disallow: /retraite
+Disallow: /programme
+Disallow: /app
+Disallow: /connexion
+Disallow: /admin
+
+Sitemap: https://qyraze.com/sitemap.xml

@@ -241,7 +241,7 @@ export default async function handler(req, res) {
     }
 
     const { data: existing, error: checkError } = await supabase
-      .from('leads')
+      .from('waitlist_leads')
       .select('id, verified_at')
       .eq('email', normalizedEmail)
       .maybeSingle();
@@ -261,7 +261,7 @@ export default async function handler(req, res) {
     if (existing) {
       // Récupérer le token actuel
       const { data: existingData, error: fetchError } = await supabase
-        .from('leads')
+        .from('waitlist_leads')
         .select('verification_token_hash, verification_expires_at, unsubscribe_token_hash')
         .eq('id', existing.id)
         .single();
@@ -290,7 +290,7 @@ export default async function handler(req, res) {
         const unsubscribeTokenHash = crypto.createHash('sha256').update(unsubscribeToken).digest('hex');
 
         const { error: updateError } = await supabase
-          .from('leads')
+          .from('waitlist_leads')
           .update({
             name: name || null,
             instagram: instagram || null,
@@ -325,7 +325,7 @@ export default async function handler(req, res) {
         const unsubscribeTokenHash = crypto.createHash('sha256').update(unsubscribeToken).digest('hex');
 
         const { error: updateError } = await supabase
-          .from('leads')
+          .from('waitlist_leads')
           .update({
             name: name || null,
             instagram: instagram || null,
@@ -373,7 +373,7 @@ export default async function handler(req, res) {
     const verifyUrl = `https://qyraze.com/api/verify?token=${token}`;
 
     const { error: insertError } = await supabase
-      .from('leads')
+      .from('waitlist_leads')
       .insert([
         {
           email: normalizedEmail,

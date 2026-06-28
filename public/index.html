@@ -1,31 +1,27 @@
 <!DOCTYPE html>
-<html lang="fr">
+<html lang="en">
 <head>
-  <!-- Google Consent Mode v2 + GTM -->
+  <script>
+    try { document.documentElement.lang = localStorage.getItem('qyraze_lang') === 'fr' ? 'fr' : 'en'; } catch (e) {}
+  </script>
   <script>
     window.dataLayer = window.dataLayer || [];
     function gtag(){dataLayer.push(arguments);}
-
-    // Consent Mode v2 — refus par défaut avant tout chargement
     gtag('consent', 'default', {
-      'ad_storage':        'denied',
+      'ad_storage': 'denied',
       'analytics_storage': 'denied',
-      'ad_user_data':      'denied',
-      'ad_personalization':'denied',
-      'wait_for_update':   500
+      'ad_user_data': 'denied',
+      'ad_personalization': 'denied',
+      'wait_for_update': 500
     });
-
-    // Si l'utilisateur avait déjà accepté, on restaure le consentement
     if (localStorage.getItem('qyraze_cookie_consent') === 'accepted') {
       gtag('consent', 'update', {
-        'ad_storage':        'granted',
+        'ad_storage': 'granted',
         'analytics_storage': 'granted',
-        'ad_user_data':      'granted',
-        'ad_personalization':'granted'
+        'ad_user_data': 'granted',
+        'ad_personalization': 'granted'
       });
     }
-
-    // GTM se charge toujours — Consent Mode contrôle ce qui s'exécute
     (function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':new Date().getTime(),event:'gtm.js'});
     var f=d.getElementsByTagName(s)[0],j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';
     j.async=true;j.src='https://www.googletagmanager.com/gtm.js?id='+i+dl;
@@ -34,36 +30,32 @@
   </script>
 
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-
-  <title>Qyraze — Setter & Closer High Ticket</title>
-  <meta name="description" content="Je qualifie vos leads, structure vos appels et close vos prospects pour augmenter votre chiffre d'affaires — rémunération à la commission." />
-
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <title>Qyraze | Your personal partner for business growth</title>
+  <meta name="description" content="We help entrepreneurs save time, get organized, and grow with tailored solutions and long-term human support." />
   <meta name="robots" content="index, follow" />
-  <meta name="author" content="Qyraze" />
   <link rel="canonical" href="https://qyraze.com/" />
 
-  <!-- Open Graph -->
   <meta property="og:type" content="website" />
   <meta property="og:site_name" content="Qyraze" />
-  <meta property="og:title" content="Qyraze — Setter & Closer High Ticket" />
-  <meta property="og:description" content="Je qualifie vos leads, structure vos appels et close vos prospects pour augmenter votre chiffre d'affaires." />
+  <meta property="og:locale" content="en_US" />
+  <meta property="og:locale:alternate" content="fr_FR" />
+  <meta property="og:title" content="Qyraze — Votre partenaire d'optimisation" />
+  <meta property="og:description" content="Des solutions adaptées à votre activité, avec un accompagnement humain sur le long terme." />
   <meta property="og:url" content="https://qyraze.com/" />
-  <meta property="og:image" content="https://qyraze.com/logo.png" />
+  <meta property="og:image" content="https://qyraze.com/api/og" />
+  <meta property="og:image:width" content="1200" />
+  <meta property="og:image:height" content="630" />
+  <meta property="og:image:alt" content="Qyraze — Your personal partner for business growth" />
 
-  <!-- Twitter -->
   <meta name="twitter:card" content="summary_large_image" />
-  <meta name="twitter:title" content="Qyraze — Setter & Closer High Ticket" />
-  <meta name="twitter:description" content="Je qualifie vos leads, structure vos appels et close vos prospects pour augmenter votre chiffre d'affaires." />
-  <meta name="twitter:image" content="https://qyraze.com/logo.png" />
+  <meta name="twitter:title" content="Qyraze | Your personal partner for business growth" />
+  <meta name="twitter:description" content="We help entrepreneurs save time, get organized, and grow with tailored solutions and long-term human support." />
+  <meta name="twitter:image" content="https://qyraze.com/api/og" />
 
-  <!-- Icons -->
-  <link rel="icon" type="image/png" sizes="512x512" href="https://qyraze.com/logo.png" />
-  <link rel="shortcut icon" type="image/png" href="https://qyraze.com/logo.png" />
+  <link rel="icon" type="image/png" href="https://qyraze.com/logo.png" />
   <link rel="apple-touch-icon" href="https://qyraze.com/logo.png" />
-  <link rel="preload" href="/logo.png" as="image" type="image/png" />
 
-  <!-- Schema.org -->
   <script type="application/ld+json">
   {
     "@context": "https://schema.org",
@@ -71,35 +63,25 @@
     "name": "Qyraze",
     "url": "https://qyraze.com",
     "logo": "https://qyraze.com/logo.png",
-    "sameAs": []
+    "founder": { "@type": "Person", "name": "Jeremy Pereira Pires" },
+    "description": "We help entrepreneurs save time, get organized, and grow with tailored solutions and long-term human support."
   }
   </script>
 
-  <script type="application/ld+json">
-  {
-    "@context": "https://schema.org",
-    "@type": "WebSite",
-    "name": "Qyraze",
-    "url": "https://qyraze.com",
-    "description": "Setter & closer high ticket. Qualification, closing et relances à la commission."
-  }
-  </script>
-
-  <link rel="preload" href="/style.css" as="style" />
   <link rel="stylesheet" href="/style.css" />
+  <script src="/i18n.js" defer></script>
   <script type="module" src="/app.js" defer></script>
 </head>
 <body>
-  <!-- Bandeau consentement cookies -->
   <div id="cookieBanner" class="cookie-banner" style="display:none">
     <div class="cookie-banner-inner">
       <div class="cookie-banner-text">
-        <strong>Ce site utilise des cookies</strong>
-        <p>Nous utilisons Google Analytics pour mesurer l'audience du site. Ces cookies sont activés uniquement avec votre consentement. <a href="/confidentialite">En savoir plus</a></p>
+        <strong id="cookie-title">This site uses cookies</strong>
+        <p id="cookie-text">We use Google Analytics to measure traffic. Enabled only with your consent. <a href="/confidentialite">Learn more</a></p>
       </div>
       <div class="cookie-banner-actions">
-        <button id="cookieRefuse" class="cookie-btn cookie-btn-refuse">Refuser</button>
-        <button id="cookieAccept" class="cookie-btn cookie-btn-accept">Accepter</button>
+        <button id="cookieRefuse" class="cookie-btn"><span id="cookie-refuse">Decline</span></button>
+        <button id="cookieAccept" class="cookie-btn cookie-btn-accept"><span id="cookie-accept">Accept</span></button>
       </div>
     </div>
   </div>
@@ -107,450 +89,330 @@
   <script>
     (function() {
       var consent = localStorage.getItem('qyraze_cookie_consent');
-      if (!consent) {
-        document.getElementById('cookieBanner').style.display = 'block';
-      }
+      if (!consent) document.getElementById('cookieBanner').style.display = 'block';
       document.getElementById('cookieAccept').addEventListener('click', function() {
         localStorage.setItem('qyraze_cookie_consent', 'accepted');
         document.getElementById('cookieBanner').style.display = 'none';
         gtag('consent', 'update', {
-          'ad_storage':        'granted',
-          'analytics_storage': 'granted',
-          'ad_user_data':      'granted',
-          'ad_personalization':'granted'
+          'ad_storage': 'granted', 'analytics_storage': 'granted',
+          'ad_user_data': 'granted', 'ad_personalization': 'granted'
         });
       });
       document.getElementById('cookieRefuse').addEventListener('click', function() {
         localStorage.setItem('qyraze_cookie_consent', 'refused');
         document.getElementById('cookieBanner').style.display = 'none';
-        gtag('consent', 'update', {
-          'ad_storage':        'denied',
-          'analytics_storage': 'denied',
-          'ad_user_data':      'denied',
-          'ad_personalization':'denied'
-        });
       });
     })();
   </script>
 
   <nav class="nav">
     <div class="nav-inner">
-      <div class="brand">
-        <img class="brand-mark" src="/logo.png" alt="Qyraze" width="40" height="40" fetchpriority="high" decoding="async" />
-        <span class="brand-name">Qyraze</span>
-      </div>
+      <a class="brand" href="/">Qyraze</a>
       <div class="nav-links">
-        <a href="#about">À propos</a>
-        <a href="#problems">Problèmes</a>
-        <a href="#process">Process</a>
-        <a href="#offer">Offre</a>
-        <a href="#faq">FAQ</a>
-        <a href="/retraite">Retraite</a>
-        <a class="nav-cta" href="https://calendar.app.google/Tr3jnHzo7oHt8Ehd7" target="_blank" rel="noopener">Réserver un appel</a>
+        <a href="#accueil" id="nav-home">Home</a>
+        <a href="#solutions" id="nav-solutions">Solutions</a>
+        <a href="#methode" id="nav-method">How it works</a>
+        <a href="#realisations" id="nav-work">Examples</a>
+        <a href="#apropos" id="nav-about">About</a>
+        <a class="nav-cta" href="#contact" id="nav-contact">Contact</a>
       </div>
+    </div>
+    <div class="lang-switch" role="group" aria-label="Language">
+      <button type="button" class="lang-btn lang-btn--active" data-lang="en" aria-pressed="true">EN</button>
+      <button type="button" class="lang-btn" data-lang="fr" aria-pressed="false">FR</button>
     </div>
   </nav>
 
-  <main class="marketing-page" id="marketingPage">
+  <main class="marketing-page active" id="marketingPage">
 
-    <!-- ── HERO ── -->
-    <section class="hero container fade-in-section">
-      <div class="hero-kicker">Setter & Closer High Ticket · Commission</div>
-
-      <h1 class="hero-title">Transformez vos leads en clients sans recruter de closer.</h1>
-
-      <p class="hero-copy">
-        Qyraze qualifie vos prospects, prend les rendez-vous, réalise les appels de vente et relance les indécis pour les offres à plus de 1 000€ — rémunération uniquement à la performance.
-      </p>
-
-      <div class="hero-actions">
-        <a class="btn-primary" href="https://calendar.app.google/Tr3jnHzo7oHt8Ehd7" target="_blank" rel="noopener">Réserver un appel</a>
-      </div>
-
-      <p class="hero-microcopy">2 places disponibles en juin · Sélection des profils avant collaboration</p>
-
-      <div class="hero-proof">
-        <span class="hero-proof-pill">Appel uniquement pour les offres à +1 000€ avec leads existants</span>
-      </div>
-    </section>
-
-    <div class="section-divider"></div>
-
-    <!-- ── PROBLÈMES ── -->
-    <section class="section fade-in-section" id="problems">
-      <div class="container">
-        <div class="section-head">
-          <div class="section-kicker">Le vrai problème</div>
-          <h2 class="section-title">Vous perdez de l'argent chaque semaine.</h2>
-          <p class="section-sub">Le problème n'est pas le volume de leads. C'est ce qui se passe après le premier contact.</p>
-        </div>
-
-        <div class="positioning-grid problems-4">
-          <div class="pos-card">
-            <div class="pos-badge">01</div>
-            <div class="pos-name">Appels qui ne signent pas</div>
-            <div class="pos-desc">Des prospects intéressés arrivent en appel, mais la structure de vente ne transforme pas. Le taux de closing stagne.</div>
+    <section class="hero container" id="accueil">
+      <div class="hero-grid">
+        <div class="hero-content">
+          <span class="hero-eyebrow" id="hero-eyebrow">Your personal partner · Small businesses</span>
+          <h1 class="hero-title" id="hero-title">Less admin. More growth.</h1>
+          <p class="hero-audience" id="hero-audience">Shop owners · Freelancers · SMBs · Consultants</p>
+          <p class="hero-copy" id="hero-copy">We help freelancers, shop owners, and small businesses save time with simple tools, better organization, and human support.</p>
+          <div class="hero-actions">
+            <a class="btn-primary" id="hero-cta" href="https://calendar.app.google/Tr3jnHzo7oHt8Ehd7" target="_blank" rel="noopener">Free diagnostic</a>
           </div>
-          <div class="pos-card featured">
-            <div class="pos-badge">02</div>
-            <div class="pos-name">Leads mal qualifiés</div>
-            <div class="pos-desc">Vous perdez du temps avec des personnes sans budget, sans urgence, sans capacité de décision. Chaque appel perdu coûte.</div>
-          </div>
-          <div class="pos-card">
-            <div class="pos-badge">03</div>
-            <div class="pos-name">Suivi inexistant</div>
-            <div class="pos-desc">Les prospects indécis ne sont pas relancés. Chaque oubli est une vente qui part chez un concurrent.</div>
-          </div>
-          <div class="pos-card">
-            <div class="pos-badge">04</div>
-            <div class="pos-name">CA qui stagne</div>
-            <div class="pos-desc">Sans système commercial, votre chiffre d'affaires dépend de votre disponibilité. Vous ne pouvez pas scaler.</div>
+          <ul class="hero-trust" id="hero-trust">
+            <li id="trust-0">🇫🇷 France</li>
+            <li id="trust-1">🇲🇾 Malaysia</li>
+            <li id="trust-2">🤝 Human support</li>
+            <li id="trust-3">✦ Tailored solutions</li>
+          </ul>
+          <ul class="hero-proof" id="hero-proof" aria-label="Track record">
+            <li id="proof-0">10+ projects completed</li>
+            <li id="proof-1">France &amp; Malaysia</li>
+            <li id="proof-2">Long-term support</li>
+          </ul>
+          <div class="hero-mission">
+            <p id="hero-mission">We don't sell tools. We help entrepreneurs build a business that is simpler, more efficient, and more enjoyable to run.</p>
           </div>
         </div>
-
-        <div class="problem-result">
-          <div>
-            <div class="problem-result-label">Résultat</div>
-            <div class="problem-result-title">Du chiffre d'affaires disparaît chaque semaine.</div>
-          </div>
-          <div class="problem-result-desc">Pas parce que votre offre est mauvaise — mais parce que votre système commercial manque de structure.</div>
-        </div>
-      </div>
-    </section>
-
-    <div class="section-divider"></div>
-
-    <!-- ── SOLUTION ── -->
-    <section class="section fade-in-section" id="solution">
-      <div class="container">
-        <div class="section-head">
-          <div class="section-kicker">Solution Qyraze</div>
-          <h2 class="section-title">Je gère votre pipeline de vente.</h2>
-          <p class="section-sub">J'interviens sur tous les points qui bloquent votre conversion : qualification, rendez-vous, closing et relances systématiques.</p>
-        </div>
-
-        <div class="build-grid">
-          <div class="build-card">
-            <div class="build-status in-progress">Qualification</div>
-            <div class="build-title">Filtrer les bons prospects</div>
-            <div class="build-desc">Identifier les leads avec budget, besoin réel, urgence et capacité de décision. Seuls les profils sérieux avancent.</div>
-          </div>
-          <div class="build-card">
-            <div class="build-status in-progress">Closing</div>
-            <div class="build-title">Convertir avec structure</div>
-            <div class="build-desc">Traiter les objections, guider la décision, signer. Chaque appel suit un cadre précis orienté résultat.</div>
-          </div>
-          <div class="build-card">
-            <div class="build-status beta">Relances</div>
-            <div class="build-title">Aucune opportunité perdue</div>
-            <div class="build-desc">Les indécis sont relancés au bon moment, avec le bon message. Le suivi CRM est systématique.</div>
+        <div class="hero-photo-wrap">
+          <div class="hero-photo-accent" aria-hidden="true"></div>
+          <div class="hero-photo-frame">
+            <img class="hero-photo" id="hero-photo" src="/jeremy-hero.webp" alt="Jeremy Pereira Pires — Founder of Qyraze" width="500" height="625" fetchpriority="high" decoding="async" />
           </div>
         </div>
       </div>
     </section>
 
-    <div class="section-divider"></div>
-
-    <!-- ── PROCESS ── -->
-    <section class="section fade-in-section" id="process">
+    <section class="section positioning-section">
       <div class="container">
-        <div class="section-head">
-          <div class="section-kicker">Process</div>
-          <h2 class="section-title">Comment ça fonctionne</h2>
-          <p class="section-sub">Un process en 4 étapes, orienté résultat, qui s'intègre à votre activité sans la complexifier.</p>
-        </div>
-
-        <div class="how-grid how-grid-4">
-          <div class="how-step-card">
-            <div class="how-step-num">01</div>
-            <div class="how-step-title">Audit</div>
-            <div class="how-step-desc">Analyse de votre offre, de votre funnel et de vos points de fuite commerciaux.</div>
-          </div>
-          <div class="how-arrow">→</div>
-          <div class="how-step-card featured">
-            <div class="how-step-num">02</div>
-            <div class="how-step-title">Qualification</div>
-            <div class="how-step-desc">Filtrage des prospects pour ne garder que les opportunités à fort potentiel.</div>
-          </div>
-          <div class="how-arrow">→</div>
-          <div class="how-step-card">
-            <div class="how-step-num">03</div>
-            <div class="how-step-title">RDV</div>
-            <div class="how-step-desc">Prise de rendez-vous structurée avec les prospects qualifiés, au bon moment.</div>
-          </div>
-          <div class="how-arrow">→</div>
-          <div class="how-step-card">
-            <div class="how-step-num">04</div>
-            <div class="how-step-title">Closing & Suivi</div>
-            <div class="how-step-desc">Conversion des prospects et relances systématiques. Zéro opportunité abandonnée.</div>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <div class="section-divider"></div>
-
-    <!-- ── OFFRE ── -->
-    <section class="section fade-in-section" id="offer">
-      <div class="container">
-        <div class="section-head">
-          <div class="section-kicker">Collaboration</div>
-          <h2 class="section-title">Simple. Alignée. À la performance.</h2>
-          <p class="section-sub">Mon intérêt est directement aligné avec vos résultats. Vous ne payez pas pour du bruit.</p>
-        </div>
-
         <div class="positioning-grid">
-          <div class="pos-card featured">
-            <div class="pos-badge">Modèle</div>
-            <div class="pos-name">Commission sur les ventes</div>
-            <div class="pos-desc">Rémunération uniquement sur les ventes générées. Pas de résultat, pas de coût. L'alignement est total.</div>
-            <div class="pos-brands">Performance · Résultat · Commission</div>
-          </div>
-          <div class="pos-card">
-            <div class="pos-badge">Avantage</div>
-            <div class="pos-name">Risque zéro côté client</div>
-            <div class="pos-desc">Aucun coût fixe, aucune structure lourde. Le système s'intègre à votre activité existante.</div>
-            <div class="pos-brands">Simple · Rapide · Sans friction</div>
-          </div>
-          <div class="pos-card">
-            <div class="pos-badge">Objectif</div>
-            <div class="pos-name">Mieux convertir vos leads</div>
-            <div class="pos-desc">Pas besoin de générer plus de trafic. L'enjeu est de mieux exploiter ce que vous avez déjà.</div>
-            <div class="pos-brands">Conversion · CA · Scaling</div>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <div class="section-divider"></div>
-
-    <!-- ── POUR QUI ── -->
-    <section class="section fade-in-section" id="fit">
-      <div class="container">
-        <div class="section-head">
-          <div class="section-kicker">Pour qui</div>
-          <h2 class="section-title">Ce service est fait pour vous si...</h2>
-          <p class="section-sub">Je travaille exclusivement avec des offres qui ont déjà une base sérieuse. Voici comment savoir si vous correspondez.</p>
-        </div>
-
-        <div class="fit-split">
-          <div class="fit-col fit-yes-col">
-            <div class="fit-col-head">
-              <span class="fit-badge fit-badge-yes">Pour vous</span>
-            </div>
-            <ul class="fit-list">
-              <li class="fit-item fit-item-yes">
-                <span class="fit-icon">✓</span>
-                <span>Vous êtes coach, formateur, consultant ou infopreneur</span>
-              </li>
-              <li class="fit-item fit-item-yes">
-                <span class="fit-icon">✓</span>
-                <span>Votre offre est à <strong>+1 000€</strong></span>
-              </li>
-              <li class="fit-item fit-item-yes">
-                <span class="fit-icon">✓</span>
-                <span>Vous avez déjà des <strong>leads entrants</strong></span>
-              </li>
-              <li class="fit-item fit-item-yes">
-                <span class="fit-icon">✓</span>
-                <span>Vous faites déjà des <strong>appels de vente</strong></span>
-              </li>
-              <li class="fit-item fit-item-yes">
-                <span class="fit-icon">✓</span>
-                <span>Vous voulez améliorer votre taux de conversion</span>
-              </li>
+          <div class="positioning-col positioning-no">
+            <div class="section-kicker" id="pos-not-title">What Qyraze is not</div>
+            <ul class="positioning-list" id="pos-not-list">
+              <li>Web agency</li>
+              <li>Tech agency</li>
+              <li>SaaS vendor</li>
+              <li>Freelancer</li>
             </ul>
           </div>
-
-          <div class="fit-col fit-no-col">
-            <div class="fit-col-head">
-              <span class="fit-badge fit-badge-no">Pas pour vous</span>
-            </div>
-            <ul class="fit-list">
-              <li class="fit-item fit-item-no">
-                <span class="fit-icon">✗</span>
-                <span>Vous débutez sans offre ni leads</span>
-              </li>
-              <li class="fit-item fit-item-no">
-                <span class="fit-icon">✗</span>
-                <span>Votre offre est en dessous de 1 000€</span>
-              </li>
-              <li class="fit-item fit-item-no">
-                <span class="fit-icon">✗</span>
-                <span>Vous n'avez pas encore de flux de leads régulier</span>
-              </li>
-              <li class="fit-item fit-item-no">
-                <span class="fit-icon">✗</span>
-                <span>Vous cherchez à générer du trafic ou de la notoriété</span>
-              </li>
+          <div class="positioning-col positioning-yes">
+            <div class="section-kicker" id="pos-yes-title">What Qyraze is</div>
+            <ul class="positioning-list positioning-list-yes" id="pos-yes-list">
+              <li>Optimization partner</li>
+              <li>Tailored solutions</li>
+              <li>Human support</li>
+              <li>Time saved</li>
+              <li>Growth</li>
+              <li>Simplicity</li>
             </ul>
           </div>
         </div>
       </div>
     </section>
 
-    <div class="section-divider"></div>
-
-    <!-- ── À PROPOS ── -->
-    <section class="section fade-in-section" id="about">
+    <section class="section" style="background: var(--bg-soft);">
       <div class="container">
-        <div class="section-head">
-          <div class="section-kicker">À propos</div>
-          <h2 class="section-title">Qui est derrière Qyraze ?</h2>
-          <p class="section-sub">Un closing structuré demande quelqu'un de fiable. Voici qui vous accompagne.</p>
+        <div class="section-head center">
+          <div class="section-kicker" id="problem-kicker">The reality</div>
+          <h2 class="section-title" id="problem-title">You spend your days managing instead of growing.</h2>
         </div>
+        <ul class="problem-list" id="problem-list">
+          <li class="problem-item"><span>Too many tools</span></li>
+          <li class="problem-item"><span>Too many repetitive tasks</span></li>
+          <li class="problem-item"><span>Scattered information</span></li>
+          <li class="problem-item"><span>Lack of follow-up</span></li>
+          <li class="problem-item"><span>Wasted time</span></li>
+        </ul>
+      </div>
+    </section>
 
-        <div class="about-split">
-          <div class="about-photo-wrap">
-            <img src="/jeremy.webp" class="about-photo" alt="Jérémy Pereira Pires — Closer & Setter High Ticket" width="500" height="500" loading="lazy" decoding="async" />
+    <section class="section" id="solutions">
+      <div class="container">
+        <div class="section-head center">
+          <div class="section-kicker" id="solutions-kicker">Solutions</div>
+          <h2 class="section-title" id="solutions-title">We help simplify your day-to-day.</h2>
+        </div>
+        <div class="cards-grid">
+          <article class="card">
+            <div class="card-icon">01</div>
+            <h3 class="card-title" id="solution-title-0">Websites</h3>
+            <p class="card-desc" id="solution-desc-0">We help you present your business with clarity and confidence.</p>
+          </article>
+          <article class="card">
+            <div class="card-icon">02</div>
+            <h3 class="card-title" id="solution-title-1">Custom tools</h3>
+            <p class="card-desc" id="solution-desc-1">We work with you to shape tools that fit how you operate.</p>
+          </article>
+          <article class="card">
+            <div class="card-icon">03</div>
+            <h3 class="card-title" id="solution-title-2">Automation</h3>
+            <p class="card-desc" id="solution-desc-2">Fewer repetitive tasks, more time for your clients.</p>
+          </article>
+          <article class="card">
+            <div class="card-icon">04</div>
+            <h3 class="card-title" id="solution-title-3">Ongoing support</h3>
+            <p class="card-desc" id="solution-desc-3">We stay by your side to improve results over time.</p>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" id="methode" style="background: var(--bg-soft);">
+      <div class="container">
+        <div class="section-head center">
+          <div class="section-kicker" id="method-kicker">How it works</div>
+          <h2 class="section-title" id="method-title">From first call to ongoing support</h2>
+        </div>
+        <div class="funnel-grid">
+          <div class="step-card">
+            <div class="step-num">1</div>
+            <h3 class="step-title" id="step-title-0">Free diagnostic</h3>
+            <p class="step-desc" id="step-desc-0">30 minutes</p>
           </div>
-          <div class="about-bio">
-            <div class="about-bio-role">Setter & Closer High Ticket</div>
-            <h3 class="about-bio-name">Jérémy Pereira Pires</h3>
-            <p class="about-bio-text">Je m'appelle Jérémy Pereira Pires, closer et setter indépendant basé en France. Après plusieurs années dans le domaine commercial et la vente à distance, j'ai développé une méthode structurée pour qualifier, closer et relancer des prospects sur des offres high ticket. Je travaille uniquement avec des coachs, consultants et formateurs ayant déjà une offre validée et un flux de leads existant. Mon intérêt est directement aligné avec le vôtre — je ne suis payé que sur les ventes générées.</p>
+          <div class="funnel-arrow" aria-hidden="true"></div>
+          <div class="step-card">
+            <div class="step-num">2</div>
+            <h3 class="step-title" id="step-title-1">Action plan</h3>
+            <p class="step-desc" id="step-desc-1">Full audit</p>
+          </div>
+          <div class="funnel-arrow" aria-hidden="true"></div>
+          <div class="step-card">
+            <div class="step-num">3</div>
+            <h3 class="step-title" id="step-title-2">Implementation</h3>
+            <p class="step-desc" id="step-desc-2">Website, tools, organization</p>
+          </div>
+          <div class="funnel-arrow" aria-hidden="true"></div>
+          <div class="step-card">
+            <div class="step-num">4</div>
+            <h3 class="step-title" id="step-title-3">Ongoing support</h3>
+            <p class="step-desc" id="step-desc-3">Monthly follow-up</p>
+          </div>
+        </div>
+        <div class="method-cta">
+          <a class="btn-primary" id="method-cta" href="https://calendar.app.google/Tr3jnHzo7oHt8Ehd7" target="_blank" rel="noopener">Book your free diagnostic</a>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" id="apropos">
+      <div class="container">
+        <div class="jeremy-grid">
+          <figure class="about-work">
+            <img
+              class="about-work-photo is-hidden"
+              id="about-work-photo"
+              src="/jeremy-work.webp"
+              alt="Jeremy Pereira Pires working on a client project"
+              width="640"
+              height="480"
+              loading="lazy"
+              decoding="async"
+            />
+            <div class="about-work-scene" id="about-work-scene">
+              <div class="about-work-laptop">
+                <div class="about-work-screen">
+                  <div class="about-work-toolbar">
+                    <span></span><span></span><span></span>
+                  </div>
+                  <div class="about-work-panels">
+                    <div class="about-work-panel about-work-panel--wide"></div>
+                    <div class="about-work-panel"></div>
+                    <div class="about-work-panel"></div>
+                  </div>
+                </div>
+                <div class="about-work-keyboard"></div>
+              </div>
+              <div class="about-work-call">
+                <div class="about-work-call-dots"><span></span><span></span><span></span></div>
+                <div class="about-work-call-bar"></div>
+              </div>
+              <div class="about-work-note"></div>
+            </div>
+          </figure>
+          <div>
+            <div class="section-kicker" id="about-kicker">About</div>
+            <h2 class="section-title" id="about-title">Why I created Qyraze</h2>
+            <div class="jeremy-text">
+              <p id="about-p1">After working with dozens of small businesses, I kept seeing the same thing: companies don't need more tools.</p>
+              <p id="about-p2">They need simple solutions, adapted to their reality — and a partner who supports them over time.</p>
+              <p id="about-p3">Qyraze was born from that belief.</p>
+            </div>
           </div>
         </div>
       </div>
     </section>
 
-    <div class="section-divider"></div>
-
-    <!-- ── TÉMOIGNAGES ── -->
-    <section class="section fade-in-section" id="testimonials">
+    <section class="section" id="realisations" style="background: var(--bg-soft);">
       <div class="container">
-        <div class="section-head">
-          <div class="section-kicker">Résultats clients</div>
-          <h2 class="section-title">Ce que disent nos clients.</h2>
-          <p class="section-sub">Les premiers résultats arrivent. Les témoignages seront publiés ici dès disponibilité.</p>
+        <div class="section-head center">
+          <div class="section-kicker" id="work-kicker">Examples</div>
+          <h2 class="section-title" id="work-title">Real work with real businesses.</h2>
         </div>
+        <div class="projects-grid">
+          <article class="project-card">
+            <h3 class="project-name" id="project-name-0">Sandjo Pizza</h3>
+            <ul class="project-list" id="project-list-0">
+              <li>Online ordering website</li>
+              <li>Simplified order management</li>
+              <li>Daily sales tracking</li>
+            </ul>
+          </article>
+          <article class="project-card">
+            <h3 class="project-name" id="project-name-1">Jiwa Voyage</h3>
+            <ul class="project-list" id="project-list-1">
+              <li>Digital guide sales</li>
+              <li>Automated client journey</li>
+              <li>Appointment booking</li>
+            </ul>
+          </article>
+          <article class="project-card">
+            <h3 class="project-name" id="project-name-2">Local business</h3>
+            <ul class="project-list" id="project-list-2">
+              <li>Centralized CRM</li>
+              <li>Automated follow-ups</li>
+              <li>Connected calendar</li>
+            </ul>
+          </article>
+        </div>
+      </div>
+    </section>
 
-        <div class="testimonials-grid">
-          <div class="testimonial-card testimonial-placeholder">
-            <span>Témoignage à venir</span>
-            <span>— Premier client</span>
+    <section class="section" id="before-after">
+      <div class="container">
+        <div class="section-head center">
+          <div class="section-kicker" id="ba-kicker">Before / After</div>
+          <h2 class="section-title" id="ba-title">What changes when we work together</h2>
+        </div>
+        <div class="before-after-grid">
+          <div class="ba-card ba-before">
+            <h3 class="ba-label" id="ba-before-label">Before Qyraze</h3>
+            <ul class="ba-list" id="ba-before-list">
+              <li>15 tools</li>
+              <li>No follow-up</li>
+              <li>Manual work</li>
+            </ul>
           </div>
-          <div class="testimonial-card testimonial-placeholder">
-            <span>Témoignage à venir</span>
-            <span>— Deuxième client</span>
-          </div>
-          <div class="testimonial-card testimonial-placeholder">
-            <span>Témoignage à venir</span>
-            <span>— Troisième client</span>
+          <div class="ba-arrow" aria-hidden="true">→</div>
+          <div class="ba-card ba-after">
+            <h3 class="ba-label" id="ba-after-label">After Qyraze</h3>
+            <ul class="ba-list" id="ba-after-list">
+              <li>One workflow</li>
+              <li>Clear process</li>
+              <li>Time saved</li>
+            </ul>
           </div>
         </div>
       </div>
     </section>
 
-    <div class="section-divider"></div>
-
-    <!-- ── CRÉDIBILITÉ ── -->
-    <section class="section fade-in-section" id="method">
-      <div class="container">
-        <div class="section-head">
-          <div class="section-kicker">Crédibilité</div>
-          <h2 class="section-title">Pas de hasard. Un système.</h2>
-          <p class="section-sub">Le closing high ticket repose sur la structure, la précision et la cohérence. Pas sur l'improvisation.</p>
-        </div>
-
-        <div class="build-grid">
-          <div class="build-card">
-            <div class="build-status in-progress">Scripts</div>
-            <div class="build-title">Structure d'appel éprouvée</div>
-            <div class="build-desc">Découverte, qualification, traitement des objections, décision. Chaque étape a un cadre clair et un objectif précis.</div>
-          </div>
-          <div class="build-card">
-            <div class="build-status in-progress">CRM</div>
-            <div class="build-title">Suivi systématique</div>
-            <div class="build-desc">Chaque prospect a un statut, une prochaine action et une date de relance. Rien n'est laissé au hasard.</div>
-          </div>
-          <div class="build-card">
-            <div class="build-status beta">Analyse</div>
-            <div class="build-title">Optimisation continue</div>
-            <div class="build-desc">Analyse des appels, des objections récurrentes et des points de friction. Le taux de closing s'améliore en continu.</div>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <div class="section-divider"></div>
-
-    <!-- ── FAQ ── -->
-    <section class="section fade-in-section" id="faq">
-      <div class="container">
-        <div class="section-head">
-          <div class="section-kicker">FAQ</div>
-          <h2 class="section-title">Questions fréquentes</h2>
-          <p class="section-sub">Tout ce que vous voulez savoir avant de prendre un appel.</p>
-        </div>
-
-        <div class="faq-list">
-          <details class="faq-item">
-            <summary>Comment êtes-vous rémunéré ?</summary>
-            <div class="faq-answer">Uniquement à la commission sur les ventes générées. Aucun coût fixe, aucun abonnement. Si je ne vends pas, je ne coûte rien.</div>
-          </details>
-          <details class="faq-item">
-            <summary>Quels types d'offres acceptez-vous ?</summary>
-            <div class="faq-answer">Uniquement des offres à partir de 1 000€ avec des leads entrants existants. Je ne fais pas de génération de trafic ni d'acquisition.</div>
-          </details>
-          <details class="faq-item">
-            <summary>Est-ce que vous travaillez en exclusivité ?</summary>
-            <div class="faq-answer">Non. Je peux collaborer avec plusieurs clients simultanément dans la limite des places disponibles.</div>
-          </details>
-          <details class="faq-item">
-            <summary>Quels outils utilisez-vous ?</summary>
-            <div class="faq-answer">Je m'adapte aux outils déjà en place chez le client — CRM, agenda, outils de visioconférence. Aucune contrainte technique de votre côté.</div>
-          </details>
-          <details class="faq-item">
-            <summary>Comment se passe le premier appel ?</summary>
-            <div class="faq-answer">Le premier appel est un audit gratuit de votre offre, de vos leads et de votre process commercial. L'objectif est de voir si une collaboration a du sens pour les deux parties.</div>
-          </details>
-          <details class="faq-item">
-            <summary>Quel délai pour commencer ?</summary>
-            <div class="faq-answer">Après validation du profil, la collaboration peut démarrer sous 48 à 72 heures.</div>
-          </details>
-        </div>
-      </div>
-    </section>
-
-    <div class="section-divider"></div>
-
-    <!-- ── CTA FINAL ── -->
-    <section class="section cta-final fade-in-section" id="booking">
-      <div class="container">
-        <div class="section-head">
-          <div class="section-kicker">Prêt à avancer ?</div>
-          <h2 class="section-title">Voyons si on peut générer plus de ventes avec vos leads actuels.</h2>
-          <p class="section-sub">On analyse votre offre, vos leads et vos appels pour identifier les opportunités manquées et voir si une collaboration a du sens.</p>
-        </div>
-
-        <div class="cta-final-inner">
-          <a class="btn-primary btn-cta-large" href="https://calendar.app.google/Tr3jnHzo7oHt8Ehd7" target="_blank" rel="noopener">
-            Réserver un appel maintenant
-          </a>
-          <p class="cta-qualifier">Appel uniquement pour offres à +1 000€ avec leads existants</p>
-        </div>
-
-        <div class="booking-frame-wrap">
-          <iframe src="https://calendar.google.com/calendar/appointments/schedules/AcZssZ3JHaeqyl2Gr0QblsCXrsoO6gJVuiPeP67BU9U5RBrjtZG6oLu6xfdaatH6b3Xq0jZHO1zJz3nw?gv=true" style="border: 0" width="100%" height="600" frameborder="0" title="Réserver un appel avec Qyraze"></iframe>
-        </div>
+    <section class="section" id="contact" style="padding-bottom: 0;">
+      <div class="cta-section">
+        <div class="section-kicker" style="color: var(--secondary);" id="contact-kicker">Contact</div>
+        <h2 class="section-title" id="contact-title">Let's talk about your business.</h2>
+        <p class="section-sub" id="contact-sub">A 30-minute conversation is often enough to spot several ways to improve.</p>
+        <a class="btn-primary" id="contact-cta" href="https://calendar.app.google/Tr3jnHzo7oHt8Ehd7" target="_blank" rel="noopener">Let's talk</a>
       </div>
     </section>
 
     <footer class="footer">
       <div class="container">
-        <div class="footer-inner">
-          <div class="footer-left">
-            <a href="/mentions-legales">Mentions légales</a>
-            <span>·</span>
-            <a href="/confidentialite">Confidentialité</a>
-            <span>·</span>
-            <a href="/cgu">CGU</a>
-            <span>·</span>
-            <a href="mailto:jeremy.pereirapires@gmail.com">jeremy.pereirapires@gmail.com</a>
-            <span>·</span>
-            <a href="https://calendar.app.google/Tr3jnHzo7oHt8Ehd7" target="_blank" rel="noopener">Réserver un appel</a>
+        <div class="footer-top">
+          <div class="footer-brand-block">
+            <div class="footer-brand">Qyraze</div>
+            <p class="footer-tagline" id="footer-tagline">Your personal partner — not another agency.</p>
+            <p class="footer-location" id="footer-location">France & Malaysia</p>
           </div>
-          <div class="footer-copy">© Qyraze · Jérémy Pereira Pires · 2026</div>
+          <div class="footer-contact">
+            <a href="mailto:hello@qyraze.com" id="footer-email">hello@qyraze.com</a>
+            <div class="footer-social">
+              <a href="https://www.linkedin.com/in/jeremypereirapires" target="_blank" rel="noopener" id="footer-linkedin">LinkedIn</a>
+              <a href="https://www.instagram.com/qyraze" target="_blank" rel="noopener" id="footer-instagram">Instagram</a>
+            </div>
+          </div>
+        </div>
+        <div class="footer-inner">
+          <div class="footer-links">
+            <a href="/mentions-legales" id="footer-legal">Legal notice</a>
+            <a href="/confidentialite" id="footer-privacy">Privacy</a>
+            <a href="/cgu" id="footer-terms">Terms</a>
+          </div>
+          <div>© Qyraze · Jeremy Pereira Pires · 2026</div>
         </div>
       </div>
     </footer>

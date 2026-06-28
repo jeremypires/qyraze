@@ -14,7 +14,7 @@ export default async function handler(req, res) {
   console.log('Cleanup triggered at', new Date().toISOString());
 
   const { data, error } = await supabase
-    .from('leads')
+    .from('waitlist_leads')
     .delete()
     .is('verified_at', null)
     .lt('verification_expires_at', new Date().toISOString())

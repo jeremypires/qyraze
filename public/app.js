@@ -97,7 +97,9 @@ async function bootRoutes() {
     return;
   }
 
-  document.title = 'Qyraze — Setter & Closer High Ticket';
+  document.title = window.QyrazeI18n?.getLang?.() === 'fr'
+    ? 'Qyraze | Votre partenaire personnel pour la croissance'
+    : 'Qyraze | Your personal partner for business growth';
   setVisible(marketingPage, true);
   setVisible(loginRoute, false);
   setVisible(appRoute, false);

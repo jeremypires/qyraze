@@ -117,7 +117,7 @@ export default async function handler(req, res) {
     }
 
     const { data, error } = await supabase
-      .from('leads')
+      .from('waitlist_leads')
       .select('id,name,email,created_at,verified_at,consent,subscribed,deleted,unsubscribed_at')
       .not('verified_at', 'is', null)
       .eq('consent', true)

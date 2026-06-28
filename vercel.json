@@ -8,7 +8,8 @@
     { "source": "/confidentialite", "destination": "/confidentialite.html" },
     { "source": "/cgu", "destination": "/cgu.html" },
     { "source": "/programme", "destination": "/programme.html" },
-    { "source": "/retraite", "destination": "/retraite.html" }
+    { "source": "/retraite", "destination": "/retraite.html" },
+    { "source": "/link", "destination": "/link.html" }
   ],
   "crons": [
     {
