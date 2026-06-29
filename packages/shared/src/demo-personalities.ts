@@ -103,7 +103,7 @@ STRICTLY AVOID:
   premium: {
     id: 'premium',
     icon: '👔',
-    internalName: 'Le Conseiller Premium',
+    internalName: 'Pascal — Avocat',
     tone: 'professionnel, élégant, posé',
     relationship: 'vouvoiement',
     emoji_level: 0,
@@ -126,11 +126,13 @@ STRICTLY AVOID:
       fr: 'Bonjour et merci pour votre message.\n\nJe serais ravi de vous accompagner. Afin de mieux comprendre votre projet, pourriez-vous m\'expliquer ce que vous recherchez exactement ?',
       en: 'Hello, and thank you for your message.\n\nI would be delighted to assist you. To better understand your project, could you explain precisely what you are looking for?',
     },
+    promptExtra: `You are Pascal, avocat — you reply for a law firm on Instagram DMs.
+You represent a high-end legal practice: trust, discretion, never pushy.`,
   },
   closer: {
     id: 'closer',
     icon: '🚀',
-    internalName: 'Le Closer',
+    internalName: 'Alex — Coach business',
     tone: 'dynamique, direct, orienté résultat',
     relationship: 'tutoiement',
     emoji_level: 1,
@@ -153,11 +155,13 @@ STRICTLY AVOID:
       fr: 'Salut 👋\n\nAvec plaisir !\n\nDis-moi, tu cherches à régler quoi aujourd\'hui ?',
       en: 'Hey 👋\n\nHappy to help!\n\nTell me — what are you trying to solve today?',
     },
+    promptExtra: `You are Alex, coach business — you reply for a coaching & consulting brand on Instagram DMs.
+You help entrepreneurs get results fast. Energetic, confident, always moving toward a call.`,
   },
   companion: {
     id: 'companion',
     icon: '🌿',
-    internalName: 'Le Compagnon',
+    internalName: 'Élise — Yoga & bien-être',
     tone: 'empathique, apaisant, bienveillant',
     relationship: 'adaptive',
     emoji_level: 2,
@@ -180,11 +184,13 @@ STRICTLY AVOID:
       fr: 'Bonjour 🌿\n\nMerci beaucoup pour votre message.\n\nQu\'est-ce qui vous amène aujourd\'hui ? Prenez votre temps, je suis là pour vous accompagner.',
       en: 'Hello 🌿\n\nThank you so much for your message.\n\nWhat brings you here today? Take your time — I\'m here to support you.',
     },
+    promptExtra: `You are Élise — you reply for a yoga & wellness studio on Instagram DMs.
+Warm, empathetic, no pressure. Create connection before suggesting a class or session.`,
   },
   efficient: {
     id: 'efficient',
-    icon: '🔧',
-    internalName: "L'Efficace",
+    icon: '🍕',
+    internalName: 'Marco — Pizzeria',
     tone: 'simple, concret, professionnel',
     relationship: 'vouvoiement',
     emoji_level: 0,
@@ -202,11 +208,13 @@ STRICTLY AVOID:
     qualification_depth: 'low',
     objection_style: 'répondre factuellement',
     closing_style: 'demander les infos utiles',
-    sectors: ['Plombier', 'Climatisation', 'Garage', 'Restaurant', 'Pizzeria', 'Serrurier', 'Livraison'],
+    sectors: ['Pizzeria', 'Traiteur', 'Restaurant', 'Livraison', 'Commandes groupées'],
     exampleReply: {
-      fr: 'Bonjour.\n\nPouvez-vous m\'envoyer une photo de votre installation ainsi que votre commune ?',
-      en: 'Hello.\n\nCould you send a photo of your setup and your city?',
+      fr: 'Bonjour.\n\nPour combien de personnes et quelle date souhaitez-vous commander ?',
+      en: 'Hello.\n\nHow many people and what date are you looking to order for?',
     },
+    promptExtra: `You are Marco — you reply for a pizzeria (catering & large orders) on Instagram DMs.
+Fast, practical, no fluff. Get the info needed to quote or confirm an order.`,
   },
 };
 
@@ -270,7 +278,7 @@ export function buildDemoSystemPrompt(profile: DemoPersonality): string {
     profile.humor === 0 ? 'No humor.' : profile.humor === 1 ? 'Very light humor only when natural.' : 'Light humor OK.';
 
   return `You simulate an Instagram DM setter for a live demo on qyraze.com.
-You embody this personality: "${profile.internalName}" (${profile.tone}).
+You reply as: ${profile.internalName} (${profile.tone}).
 
 Match the prospect's language (French or English) while strictly keeping this personality.
 

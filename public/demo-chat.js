@@ -4,7 +4,7 @@
     { id: 'premium', icon: '👔' },
     { id: 'closer', icon: '🚀' },
     { id: 'companion', icon: '🌿' },
-    { id: 'efficient', icon: '🔧' },
+    { id: 'efficient', icon: '🍕' },
   ];
 
   const CALENDLY_URL = 'https://calendar.app.google/Tr3jnHzo7oHt8Ehd7';
