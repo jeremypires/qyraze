@@ -516,7 +516,7 @@
       profiles: {
         jeremy: {
           name: 'Jeremy Pereira Pires',
-          tagline: 'Chat with my personal assistant.',
+          tagline: 'Friendly, direct, open — like talking to me.',
           badge: 'My daily assistant',
         },
         premium: {
@@ -587,7 +587,7 @@
       profiles: {
         jeremy: {
           name: 'Jeremy Pereira Pires',
-          tagline: 'Discutez avec mon assistant personnel.',
+          tagline: 'Friendly, direct, ouvert — comme avec moi en vrai.',
           badge: 'Mon assistant au quotidien',
         },
         premium: {
