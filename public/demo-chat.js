@@ -80,6 +80,45 @@
     if (open && !state.closed && inputEl) inputEl.focus();
   }
 
+  function sleep(ms) {
+    return new Promise(function (resolve) {
+      setTimeout(resolve, ms);
+    });
+  }
+
+  /** Hotter lead → faster reply, but never instant. */
+  function computeReplyDelay(score, textLength) {
+    var s = Number(score) || 0;
+    var len = Number(textLength) || 40;
+    var base;
+    var perChar;
+    if (s >= 70) {
+      base = 1800;
+      perChar = 16;
+    } else if (s >= 40) {
+      base = 3600;
+      perChar = 26;
+    } else {
+      base = 5500;
+      perChar = 36;
+    }
+    var jitter = Math.floor(Math.random() * 500);
+    return Math.min(9500, Math.max(1600, base + len * perChar + jitter));
+  }
+
+  function showTypingIndicator() {
+    const wrap = document.createElement('div');
+    wrap.className = 'demo-chat-msg demo-chat-msg--assistant demo-chat-typing';
+    wrap.innerHTML =
+      '<div class="demo-chat-bubble">' +
+      '<span class="demo-chat-typing-label">' + t('typing') + '</span>' +
+      '<span class="demo-chat-typing-dots"><span></span><span></span><span></span></span>' +
+      '</div>';
+    messagesEl.appendChild(wrap);
+    messagesEl.scrollTop = messagesEl.scrollHeight;
+    return wrap;
+  }
+
   function renderMessage(role, content, extraClass) {
     const wrap = document.createElement('div');
     wrap.className = 'demo-chat-msg demo-chat-msg--' + role + (extraClass ? ' ' + extraClass : '');
@@ -124,6 +163,7 @@
         <span class="demo-telegram-time">${t('telegram_now')}</span>
       </div>
       <div class="demo-telegram-bot">${t('telegram_bot')}</div>
+      <div class="demo-telegram-to">${t('telegram_to')}</div>
       <div class="demo-telegram-body">
         <strong>🔥 ${t('telegram_title')}</strong>
         <p>${t('telegram_name')}: ${escapeHtml(name)}<br>
@@ -236,11 +276,8 @@
     state.loading = true;
     if (!isOpener) inputEl.disabled = true;
 
-    const typing = document.createElement('div');
-    typing.className = 'demo-chat-msg demo-chat-msg--assistant demo-chat-typing';
-    typing.innerHTML = '<div class="demo-chat-bubble"><span></span><span></span><span></span></div>';
-    messagesEl.appendChild(typing);
-    messagesEl.scrollTop = messagesEl.scrollHeight;
+    const started = Date.now();
+    const typing = showTypingIndicator();
 
     try {
       const res = await fetch('/api/demo-chat', {
@@ -253,20 +290,22 @@
         }),
       });
 
-      typing.remove();
-
       const data = await res.json().catch(() => ({}));
+
       if (!res.ok) {
+        await sleep(Math.max(0, 1200 - (Date.now() - started)));
+        typing.remove();
         renderMessage('assistant', data.error || t('error'));
         return;
       }
 
-      if (!isOpener) {
-        state.history.push({ role: 'user', content: message });
-      } else {
-        state.history.push({ role: 'user', content: message });
-      }
+      const delay = computeReplyDelay(data.score ?? state.score, data.reply?.length ?? 0);
+      const elapsed = Date.now() - started;
+      await sleep(Math.max(0, delay - elapsed));
 
+      typing.remove();
+
+      state.history.push({ role: 'user', content: message });
       state.history.push({ role: 'assistant', content: data.reply });
       renderMessage('assistant', data.reply);
       updateScoreUI(data.score ?? 0, data.status ?? 'qualifying');
