@@ -1451,6 +1451,17 @@ img {
   transform: translateY(-2px);
 }
 
+.demo-personality-card.is-active {
+  border-color: var(--primary);
+  background: rgba(31, 78, 70, 0.08);
+  box-shadow: 0 0 0 1px rgba(31, 78, 70, 0.15);
+}
+
+.demo-personality-card--featured.is-active {
+  border-color: rgba(201, 169, 110, 0.85);
+  background: rgba(201, 169, 110, 0.12);
+}
+
 .demo-personality-icon {
   font-size: 1.5rem;
   line-height: 1;
@@ -1739,7 +1750,7 @@ img {
   position: absolute;
   right: 0;
   bottom: calc(100% + 12px);
-  width: min(380px, calc(100vw - 32px));
+  width: min(420px, calc(100vw - 32px));
   max-height: min(620px, calc(100dvh - 120px));
   display: flex;
   flex-direction: column;
@@ -1816,28 +1827,40 @@ img {
   line-height: 1.5;
 }
 
+.demo-chat-profiles-label {
+  padding: 8px 12px 0;
+  margin: 0;
+  font-size: 0.68rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: var(--text-muted);
+}
+
 .demo-chat-profiles {
-  display: grid;
-  grid-template-columns: repeat(2, 1fr);
-  gap: 8px;
-  padding: 10px 12px;
+  display: flex;
+  gap: 6px;
+  padding: 8px 12px 10px;
+  overflow-x: auto;
   border-bottom: 1px solid var(--border);
   background: var(--bg-soft);
+  scrollbar-width: thin;
 }
 
 .demo-chat-profile {
-  display: flex;
-  align-items: flex-start;
-  gap: 8px;
-  padding: 10px;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  flex: 0 0 auto;
+  padding: 8px 10px;
   border: 1px solid var(--border);
-  border-radius: 12px;
+  border-radius: 999px;
   background: var(--card);
-  font-size: 0.72rem;
+  font-size: 0.7rem;
   font-weight: 500;
   cursor: pointer;
   color: var(--text);
-  text-align: left;
+  white-space: nowrap;
   transition: border-color 0.15s, background 0.15s;
 }
 
@@ -1848,53 +1871,23 @@ img {
 }
 
 .demo-chat-profile-icon {
-  font-size: 1.1rem;
+  font-size: 1rem;
   line-height: 1;
   flex-shrink: 0;
 }
 
-.demo-chat-profile-text {
-  display: flex;
-  flex-direction: column;
-  gap: 2px;
-  min-width: 0;
-}
-
 .demo-chat-profile-name {
   font-weight: 600;
-  line-height: 1.25;
-}
-
-.demo-chat-profile-tagline {
-  font-size: 0.65rem;
-  font-weight: 400;
-  color: var(--text-muted);
-  line-height: 1.3;
-}
-
-.demo-chat-profile--featured {
-  grid-column: 1 / -1;
-  border-color: rgba(201, 169, 110, 0.45);
-  background: linear-gradient(135deg, rgba(201, 169, 110, 0.08), rgba(31, 78, 70, 0.06));
+  line-height: 1.2;
+  max-width: 9rem;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 .demo-chat-profile--featured.is-active {
   border-color: rgba(201, 169, 110, 0.85);
   background: rgba(201, 169, 110, 0.12);
-}
-
-.demo-chat-profile-badge {
-  display: block;
-  font-size: 0.58rem;
-  font-weight: 600;
-  text-transform: uppercase;
-  letter-spacing: 0.04em;
-  color: #8a6d2f;
-  margin-bottom: 1px;
-}
-
-.demo-chat-profile.is-active .demo-chat-profile-badge {
-  color: #8a6d2f;
+  color: #6b5520;
 }
 
 .demo-chat-scenarios {

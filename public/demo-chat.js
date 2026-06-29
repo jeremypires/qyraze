@@ -47,7 +47,7 @@
   }
 
   const state = {
-    profile: 'jeremy',
+    profile: null,
     history: [],
     score: 0,
     status: 'new',
@@ -61,9 +61,20 @@
 
   function setCompactMode(compact) {
     if (panel) panel.classList.toggle('is-compact', compact);
-    if (profilesEl) profilesEl.hidden = compact;
     if (hintsEl) hintsEl.hidden = compact || state.closed;
     if (hintsLabelEl) hintsLabelEl.hidden = compact;
+  }
+
+  function syncInputState() {
+    if (!inputEl || !formEl) return;
+    const ready = !!state.profile && !state.closed && !state.loading;
+    inputEl.disabled = !ready;
+    formEl.querySelector('button').disabled = !ready;
+    if (!state.profile) {
+      inputEl.placeholder = t('pick_profile_placeholder');
+    } else if (!state.closed) {
+      inputEl.placeholder = t('placeholder');
+    }
   }
 
   function setOpen(open) {
@@ -72,9 +83,14 @@
     if (root) root.classList.toggle('is-open', open);
     if (fabEl) fabEl.hidden = open;
     if (open && messagesEl && messagesEl.childElementCount === 0) {
-      resetConversation(state.profile);
+      if (state.profile) {
+        resetConversation(state.profile);
+      } else {
+        showEmptyPrompt();
+        syncInputState();
+      }
     }
-    if (open && !state.closed && inputEl) inputEl.focus();
+    if (open && !state.closed && state.profile) inputEl.focus();
   }
 
   function sleep(ms) {
@@ -210,13 +226,11 @@
 
   function setConversationClosed() {
     state.closed = true;
-    inputEl.disabled = true;
     inputEl.placeholder = t('closed_placeholder');
-    formEl.querySelector('button').disabled = true;
     if (hintsEl) hintsEl.hidden = true;
     if (hintsLabelEl) hintsLabelEl.hidden = true;
-    if (profilesEl) profilesEl.hidden = true;
     setCompactMode(true);
+    syncInputState();
 
     const banner = document.createElement('div');
     banner.className = 'demo-chat-ended';
@@ -228,13 +242,16 @@
   function clearEndedState() {
     state.closed = false;
     state.lastAction = null;
-    inputEl.disabled = false;
-    inputEl.placeholder = t('placeholder');
-    formEl.querySelector('button').disabled = false;
     if (hintsEl) hintsEl.hidden = false;
     if (hintsLabelEl) hintsLabelEl.hidden = false;
-    if (profilesEl) profilesEl.hidden = false;
-    setCompactMode(false);
+    setCompactMode(state.history.length > 0);
+    syncInputState();
+  }
+
+  function selectProfile(profileId) {
+    if (state.loading || !profileId) return;
+    resetConversation(profileId);
+    if (state.open && inputEl) inputEl.focus();
   }
 
   function handleAction(data) {
@@ -263,7 +280,6 @@
     state.score = 0;
     state.status = 'new';
     clearEndedState();
-    setCompactMode(false);
     messagesEl.innerHTML = '';
     updateScoreUI(0, 'new');
 
@@ -271,12 +287,17 @@
       btn.classList.toggle('is-active', btn.dataset.profile === profileId);
     });
 
+    document.querySelectorAll('.demo-personality-card').forEach((card) => {
+      card.classList.toggle('is-active', card.dataset.profile === profileId);
+    });
+
     showEmptyPrompt();
+    syncInputState();
   }
 
   async function fetchReply(message, historyBefore) {
     state.loading = true;
-    inputEl.disabled = true;
+    syncInputState();
     clearEmptyPrompt();
 
     const started = Date.now();
@@ -322,13 +343,13 @@
       renderMessage('assistant', t('error'));
     } finally {
       state.loading = false;
-      if (!state.closed) inputEl.disabled = false;
+      syncInputState();
     }
   }
 
   async function sendMessage(text) {
     const message = text.trim();
-    if (!message || state.loading || state.closed) return;
+    if (!message || state.loading || state.closed || !state.profile) return;
 
     setCompactMode(true);
 
@@ -373,6 +394,7 @@
           </div>
           <button type="button" class="demo-chat-close" id="demoChatClose" aria-label="Close">×</button>
         </header>
+        <p class="demo-chat-profiles-label" id="demoChatProfilesLabel"></p>
         <div class="demo-chat-profiles" id="demoChatProfiles"></div>
         <div class="demo-chat-score" id="demoChatScoreWrap">
           <div class="demo-chat-score-label">
@@ -415,20 +437,15 @@
       btn.type = 'button';
       btn.className = 'demo-chat-profile' + (p.featured ? ' demo-chat-profile--featured' : '');
       btn.dataset.profile = p.id;
+      btn.title = profileTagline(p.id);
       btn.innerHTML =
         '<span class="demo-chat-profile-icon">' +
         p.icon +
         '</span>' +
-        '<span class="demo-chat-profile-text">' +
-        (p.featured ? '<span class="demo-chat-profile-badge" data-profile="' + p.id + '"></span>' : '') +
-        '<span class="demo-chat-profile-name" data-profile="' +
-        p.id +
-        '"></span>' +
-        '<span class="demo-chat-profile-tagline" data-profile="' +
-        p.id +
-        '"></span>' +
+        '<span class="demo-chat-profile-name">' +
+        profileLabel(p.id) +
         '</span>';
-      btn.addEventListener('click', () => resetConversation(p.id));
+      btn.addEventListener('click', () => selectProfile(p.id));
       profilesEl.appendChild(btn);
     });
 
@@ -455,19 +472,16 @@
     document.getElementById('demoChatFabLabel').textContent = t('fab');
     document.getElementById('demoChatTitle').textContent = t('title');
     document.getElementById('demoChatSub').textContent = t('subtitle');
+    document.getElementById('demoChatProfilesLabel').textContent = t('profiles_label');
     document.getElementById('demoChatScoreLabel').textContent = t('score');
     document.getElementById('demoChatHintsLabel').textContent = t('hints_label');
-    if (!state.closed) inputEl.placeholder = t('placeholder');
     document.getElementById('demoChatSend').textContent = t('send');
     document.getElementById('demoChatNote').textContent = t('note');
-    document.querySelectorAll('.demo-chat-profile-name').forEach((el) => {
-      el.textContent = profileLabel(el.dataset.profile);
-    });
-    document.querySelectorAll('.demo-chat-profile-tagline').forEach((el) => {
-      el.textContent = profileTagline(el.dataset.profile);
-    });
-    document.querySelectorAll('.demo-chat-profile-badge').forEach((el) => {
-      el.textContent = profileBadge(el.dataset.profile);
+    document.querySelectorAll('.demo-chat-profile').forEach((btn) => {
+      btn.classList.toggle('is-active', btn.dataset.profile === state.profile);
+      btn.title = profileTagline(btn.dataset.profile);
+      const nameEl = btn.querySelector('.demo-chat-profile-name');
+      if (nameEl) nameEl.textContent = profileLabel(btn.dataset.profile);
     });
     if (statusEl) statusEl.textContent = statusLabel(state.status);
     const emptyEl = document.getElementById('demoChatEmpty');
@@ -493,6 +507,7 @@
         if (name) name.textContent = profileLabel(id);
         if (tagline) tagline.textContent = profileTagline(id);
         if (badge) badge.textContent = profileBadge(id);
+        card.classList.toggle('is-active', id === state.profile);
       });
     }
 
@@ -509,15 +524,15 @@
 
     const openBtn = document.getElementById('demo-section-cta');
     if (openBtn) openBtn.textContent = t('section_cta');
+    syncInputState();
   }
 
   function bindPersonalityCards() {
     document.querySelectorAll('[data-profile][data-open-demo]').forEach((el) => {
       el.addEventListener('click', () => {
-        const profileId = el.dataset.profile;
         if (!panel) return;
         setOpen(true);
-        resetConversation(profileId);
+        selectProfile(el.dataset.profile);
       });
     });
   }
@@ -540,7 +555,7 @@
     openWithProfile: function (profileId) {
       if (!panel) return;
       setOpen(true);
-      resetConversation(profileId || 'jeremy');
+      selectProfile(profileId || 'jeremy');
     },
   };
 
@@ -559,7 +574,8 @@
 
   document.addEventListener('qyraze:lang', function () {
     applyLabels();
-    if (panel && !panel.hidden && messagesEl.childElementCount > 0 && !state.loading) {
+    syncInputState();
+    if (panel && !panel.hidden && messagesEl.childElementCount > 0 && !state.loading && state.profile) {
       resetConversation(state.profile);
     }
   });
