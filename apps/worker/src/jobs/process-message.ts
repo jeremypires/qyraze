@@ -3,6 +3,8 @@ import {
   QUEUE_NAMES,
   SIGNAL_SCORES,
   computeReplyDelay,
+  getLocalHour,
+  parseReplyDelaySettings,
   type AIResponse,
   type NotifyTelegramJob,
   type ProcessMessageJob,
@@ -28,7 +30,7 @@ export async function handleProcessMessage(job: ProcessMessageJob) {
 
   const { data: client } = await supabase
     .from('clients')
-    .select('id, status, qualification_threshold, telegram_chat_id')
+    .select('id, status, qualification_threshold, telegram_chat_id, settings')
     .eq('id', job.clientId)
     .single();
 
@@ -60,6 +62,18 @@ export async function handleProcessMessage(job: ProcessMessageJob) {
 
   if (!lead) return;
 
+  const { data: inboundMessage } = await supabase
+    .from('messages')
+    .select('created_at')
+    .eq('id', job.messageId)
+    .single();
+
+  const inboundAt = inboundMessage?.created_at
+    ? new Date(inboundMessage.created_at).getTime()
+    : Date.now();
+
+  const delaySettings = parseReplyDelaySettings(client.settings);
+
   const ai: AIResponse = await generateAIResponse({
     systemPrompt: prompt.system_prompt,
     history: (history ?? []).reverse(),
@@ -90,10 +104,14 @@ export async function handleProcessMessage(job: ProcessMessageJob) {
     leadScore: lead.score ?? 0,
     exchangeCount,
     replyLength: ai.reply.length,
+    localHour: getLocalHour(delaySettings.timezone),
+    businessOpenHour: delaySettings.businessOpenHour,
+    businessCloseHour: delaySettings.businessCloseHour,
     signals: ai.signals,
   });
 
-  await sleep(delayMs);
+  const elapsed = Date.now() - inboundAt;
+  await sleep(Math.max(0, delayMs - elapsed));
 
   const delta = scoreSignals(ai.signals);
   const nextScore = Math.min(100, (lead.score ?? 0) + delta);

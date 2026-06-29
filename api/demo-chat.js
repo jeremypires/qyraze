@@ -1,32 +1,10 @@
 const CALENDLY_URL = 'https://calendar.app.google/Tr3jnHzo7oHt8Ehd7';
 
-const SCENARIO_BASE = `You simulate an Instagram DM setter for a demo on qyraze.com.
-Qualify the prospect in 2-4 message exchanges max. Match their language (French or English).
-Keep replies short (1-3 sentences), warm, professional.
-
-Decide the next action:
-- "notify_owner": score >= 70 OR clear hot lead (budget + urgency + wants call). Reply confirms you'll alert the team. Do NOT share calendar link.
-- "send_calendar": score 40-69, interested but not urgent enough for owner alert. Reply warmly and mention booking a slot (calendar card shown separately).
-- "close": score < 40 OR not a fit OR prospect says goodbye / not interested. Polite short farewell, no push.
-- "continue": still qualifying, need more info.
-
-Return JSON only:
-{"reply":"...","score":0-100,"status":"new|qualifying|hot|lost","action":"continue|notify_owner|send_calendar|close","summary":"one line for owner (if notify_owner)","prospect_name":"name or Prospect"}`;
-
-const SCENARIOS = {
-  pizza: {
-    business: 'Sandjo Pizza',
-    system: `${SCENARIO_BASE}\nBusiness: Sandjo Pizza — catering & large orders.`,
-  },
-  travel: {
-    business: 'Jiwa Voyage',
-    system: `${SCENARIO_BASE}\nBusiness: Jiwa Voyage — travel guides & custom trips.`,
-  },
-  local: {
-    business: 'Local business',
-    system: `${SCENARIO_BASE}\nBusiness: local service company — CRM & client follow-up.`,
-  },
-};
+import {
+  buildDemoSystemPrompt,
+  computeProfileDelayMs,
+  getDemoPersonality,
+} from '@qyraze/shared';
 
 const ipAttempts = new Map();
 const RATE_LIMIT_WINDOW_MS = 15 * 60 * 1000;
@@ -71,6 +49,16 @@ function resolveAction(score, rawAction) {
   return 'continue';
 }
 
+function normalizeSignals(raw, score, action) {
+  const s = raw && typeof raw === 'object' ? raw : {};
+  return {
+    budget_confirmed: s.budget_confirmed === true || action === 'notify_owner',
+    urgency: s.urgency === true || (score >= 70 && action === 'notify_owner'),
+    wants_call: s.wants_call === true || action === 'send_calendar' || action === 'notify_owner',
+    interested: s.interested === true || score >= 40,
+  };
+}
+
 function resolveStatus(score, action) {
   if (action === 'close') return 'lost';
   if (action === 'notify_owner' || score >= 70) return 'hot';
@@ -100,12 +88,13 @@ export default async function handler(req, res) {
     return res.status(400).json({ error: 'Invalid JSON' });
   }
 
-  const scenario = SCENARIOS[body?.scenario];
+  const profileId = body?.profile || body?.scenario;
+  const profile = getDemoPersonality(profileId);
   const message = String(body?.message || '').trim().slice(0, 500);
   const history = Array.isArray(body?.history) ? body.history.slice(-8) : [];
 
-  if (!scenario) {
-    return res.status(400).json({ error: 'Invalid scenario' });
+  if (!profile) {
+    return res.status(400).json({ error: 'Invalid personality profile' });
   }
   if (!message) {
     return res.status(400).json({ error: 'Message required' });
@@ -126,7 +115,7 @@ export default async function handler(req, res) {
       body: JSON.stringify({
         model: process.env.ANTHROPIC_MODEL || 'claude-sonnet-4-6',
         max_tokens: 450,
-        system: scenario.system,
+        system: buildDemoSystemPrompt(profile),
         messages: [
           {
             role: 'user',
@@ -153,15 +142,22 @@ export default async function handler(req, res) {
     const score = Math.min(100, Math.max(0, Number(parsed.score) || 0));
     const action = resolveAction(score, parsed.action);
     const status = resolveStatus(score, action);
+    const signals = normalizeSignals(parsed.signals, score, action);
+    const exchangeCount = Math.floor(history.length / 2);
+    const replyText = String(parsed.reply).slice(0, 600);
+    const delayMs = computeProfileDelayMs(profile, exchangeCount);
 
     return res.status(200).json({
-      reply: String(parsed.reply).slice(0, 600),
+      reply: replyText,
       score,
       status,
       action,
+      signals,
+      delayMs,
+      profile: profile.id,
+      intent: profile.internalName,
       summary: String(parsed.summary || '').slice(0, 200),
       prospectName: String(parsed.prospect_name || 'Prospect').slice(0, 80),
-      business: scenario.business,
       calendarUrl: CALENDLY_URL,
     });
   } catch (error) {

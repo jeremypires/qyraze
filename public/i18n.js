@@ -83,7 +83,7 @@
         projects: [
           { name: 'Sandjo Pizza', items: ['Online ordering website', 'Simplified order management', 'Daily sales tracking'] },
           { name: 'Jiwa Voyage', items: ['Digital guide sales', 'Automated client journey', 'Appointment booking'] },
-          { name: 'Local business', items: ['Centralized CRM', 'Automated follow-ups', 'Connected calendar'] },
+          { name: 'Jeremy', items: ['Instagram AI setter', 'Automatic lead qualification', 'Telegram alerts'] },
         ],
       },
       beforeAfter: {
@@ -188,7 +188,7 @@
         projects: [
           { name: 'Sandjo Pizza', items: ['Site de commande en ligne', 'Gestion des commandes simplifiée', 'Suivi quotidien des ventes'] },
           { name: 'Jiwa Voyage', items: ['Vente de guides digitaux', 'Parcours client automatisé', 'Prise de rendez-vous'] },
-          { name: 'Commerce local', items: ['CRM centralisé', 'Relances automatiques', 'Agenda connecté'] },
+          { name: 'Jeremy', items: ['Setter IA Instagram', 'Qualification automatique des leads', 'Alertes Telegram'] },
         ],
       },
       beforeAfter: {
@@ -472,7 +472,7 @@
       subtitle: 'Built by Jeremy Pereira Pires · Qyraze',
       score: 'Lead score',
       typing: 'Typing…',
-      empty_prompt: 'Write a message as a prospect — or tap a suggestion below.',
+      empty_prompt: 'Pick a personality above, then write as a prospect — or tap a suggestion below.',
       hints_label: 'Try a reply to see what happens:',
       hint_hot: 'Hot lead path',
       hint_warm: 'Warm lead path',
@@ -483,9 +483,10 @@
       note: 'Demo only — simulates Instagram DMs + Telegram alert.',
       error: 'Demo temporarily unavailable. Try again shortly.',
       section_kicker: 'Live demo',
-      section_title: 'See what your clients experience',
-      section_sub: 'Chat as a prospect. Watch the AI qualify the lead — then see a Telegram alert, a booking link, or a polite goodbye.',
+      section_title: 'Find the personality that fits you',
+      section_sub: 'Five distinct styles — start with Jeremy\u2019s personal assistant, or pick the tone that fits your brand. Chat as a prospect and watch the AI qualify (Telegram alert, booking link, or polite goodbye).',
       section_cta: 'Open the demo chat',
+      profiles_label: 'Choose your style',
       status_new: 'New',
       status_qualifying: 'Qualifying',
       status_hot: 'Hot lead',
@@ -511,10 +512,28 @@
       outcome_warm_desc: 'Interested but not urgent → calendar link sent',
       outcome_cold_title: 'Not a fit',
       outcome_cold_desc: 'Low interest → polite goodbye, conversation closed',
-      scenarios: {
-        pizza: 'Sandjo Pizza',
-        travel: 'Jiwa Voyage',
-        local: 'Local business',
+      profiles: {
+        jeremy: {
+          name: 'Jeremy Pereira Pires',
+          tagline: 'Chat with my personal assistant.',
+          badge: 'My daily assistant',
+        },
+        premium: {
+          name: 'Professional & Elegant',
+          tagline: 'Premium, reassuring image.',
+        },
+        closer: {
+          name: 'Dynamic & Sales-driven',
+          tagline: 'Qualify fast, book appointments.',
+        },
+        companion: {
+          name: 'Warm & Caring',
+          tagline: 'Build lasting trust.',
+        },
+        efficient: {
+          name: 'Simple & Efficient',
+          tagline: 'Straight to the point, save time.',
+        },
       },
     },
     fr: {
@@ -523,7 +542,7 @@
       subtitle: 'Par Jeremy Pereira Pires · Qyraze',
       score: 'Score lead',
       typing: 'Écriture…',
-      empty_prompt: 'Écrivez un message comme un prospect — ou touchez une suggestion ci-dessous.',
+      empty_prompt: 'Choisissez une personnalité ci-dessus, puis écrivez comme un prospect — ou touchez une suggestion.',
       hints_label: 'Essayez une réponse pour voir le résultat :',
       hint_hot: 'Lead chaud',
       hint_warm: 'Lead tiède',
@@ -534,9 +553,10 @@
       note: 'Démo uniquement — simule les DM Instagram + alerte Telegram.',
       error: 'Démo temporairement indisponible. Réessayez dans un instant.',
       section_kicker: 'Démo live',
-      section_title: 'Voyez ce que vivent vos clients',
-      section_sub: 'Discutez comme un prospect. L\u2019IA qualifie le lead — puis alerte Telegram, lien de RDV ou au revoir poli.',
+      section_title: 'Trouvez la personnalité qui vous ressemble',
+      section_sub: 'Cinq styles distincts — commencez par mon assistant personnel, ou choisissez le ton qui correspond à votre marque. Discutez comme un prospect et voyez l\u2019IA qualifier (alerte Telegram, lien RDV ou au revoir poli).',
       section_cta: 'Ouvrir le chat démo',
+      profiles_label: 'Choisissez votre style',
       status_new: 'Nouveau',
       status_qualifying: 'En cours',
       status_hot: 'Lead chaud',
@@ -562,10 +582,28 @@
       outcome_warm_desc: 'Intéressé mais pas urgent → lien agenda envoyé',
       outcome_cold_title: 'Pas qualifié',
       outcome_cold_desc: 'Peu d\u2019intérêt → au revoir poli, conversation fermée',
-      scenarios: {
-        pizza: 'Sandjo Pizza',
-        travel: 'Jiwa Voyage',
-        local: 'Commerce local',
+      profiles: {
+        jeremy: {
+          name: 'Jeremy Pereira Pires',
+          tagline: 'Discutez avec mon assistant personnel.',
+          badge: 'Mon assistant au quotidien',
+        },
+        premium: {
+          name: 'Professionnel & Élégant',
+          tagline: 'Image haut de gamme et rassurante.',
+        },
+        closer: {
+          name: 'Dynamique & Commercial',
+          tagline: 'Qualifier vite, générer des RDV.',
+        },
+        companion: {
+          name: 'Chaleureux & Bienveillant',
+          tagline: 'Relation de confiance durable.',
+        },
+        efficient: {
+          name: 'Simple & Efficace',
+          tagline: 'Droit au but, gain de temps.',
+        },
       },
     },
   };

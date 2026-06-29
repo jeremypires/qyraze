@@ -1392,6 +1392,90 @@ img {
   color: var(--text-muted);
 }
 
+.demo-profiles-label {
+  text-align: center;
+  font-size: 0.78rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--text-muted);
+  margin: 28px 0 14px;
+}
+
+.demo-personalities {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 12px;
+  max-width: 720px;
+  margin: 0 auto;
+}
+
+.demo-personality-card--featured {
+  grid-column: 1 / -1;
+  border-color: rgba(201, 169, 110, 0.45);
+  background: linear-gradient(135deg, rgba(201, 169, 110, 0.08), rgba(31, 78, 70, 0.06));
+}
+
+.demo-personality-card--featured:hover {
+  border-color: rgba(201, 169, 110, 0.75);
+}
+
+.demo-personality-badge {
+  display: inline-block;
+  font-size: 0.65rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: #8a6d2f;
+  margin-bottom: 2px;
+}
+
+.demo-personality-card {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 6px;
+  padding: 18px 16px;
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  background: var(--card);
+  text-align: left;
+  cursor: pointer;
+  transition: border-color 0.15s, box-shadow 0.15s, transform 0.15s;
+  color: var(--text);
+}
+
+.demo-personality-card:hover {
+  border-color: var(--primary);
+  box-shadow: 0 8px 24px rgba(31, 78, 70, 0.08);
+  transform: translateY(-2px);
+}
+
+.demo-personality-icon {
+  font-size: 1.5rem;
+  line-height: 1;
+}
+
+.demo-personality-name {
+  font-size: 0.95rem;
+  font-weight: 600;
+  margin: 0;
+  line-height: 1.3;
+}
+
+.demo-personality-tagline {
+  font-size: 0.8rem;
+  color: var(--text-muted);
+  margin: 0;
+  line-height: 1.45;
+}
+
+@media (max-width: 540px) {
+  .demo-personalities {
+    grid-template-columns: 1fr;
+  }
+}
+
 .demo-section-cta-wrap {
   text-align: center;
   margin-top: 28px;
@@ -1401,7 +1485,7 @@ img {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
   gap: 20px;
-  margin-top: 40px;
+  margin-top: 32px;
 }
 
 .demo-outcome-card {
@@ -1717,6 +1801,7 @@ img {
   min-height: 260px;
 }
 
+.demo-chat-profiles[hidden],
 .demo-chat-scenarios[hidden],
 .demo-chat-hints[hidden],
 .demo-chat-hints-label[hidden] {
@@ -1729,6 +1814,87 @@ img {
   font-size: 0.82rem;
   color: var(--text-soft);
   line-height: 1.5;
+}
+
+.demo-chat-profiles {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 8px;
+  padding: 10px 12px;
+  border-bottom: 1px solid var(--border);
+  background: var(--bg-soft);
+}
+
+.demo-chat-profile {
+  display: flex;
+  align-items: flex-start;
+  gap: 8px;
+  padding: 10px;
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  background: var(--card);
+  font-size: 0.72rem;
+  font-weight: 500;
+  cursor: pointer;
+  color: var(--text);
+  text-align: left;
+  transition: border-color 0.15s, background 0.15s;
+}
+
+.demo-chat-profile.is-active {
+  border-color: var(--primary);
+  background: rgba(31, 78, 70, 0.08);
+  color: var(--primary);
+}
+
+.demo-chat-profile-icon {
+  font-size: 1.1rem;
+  line-height: 1;
+  flex-shrink: 0;
+}
+
+.demo-chat-profile-text {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  min-width: 0;
+}
+
+.demo-chat-profile-name {
+  font-weight: 600;
+  line-height: 1.25;
+}
+
+.demo-chat-profile-tagline {
+  font-size: 0.65rem;
+  font-weight: 400;
+  color: var(--text-muted);
+  line-height: 1.3;
+}
+
+.demo-chat-profile--featured {
+  grid-column: 1 / -1;
+  border-color: rgba(201, 169, 110, 0.45);
+  background: linear-gradient(135deg, rgba(201, 169, 110, 0.08), rgba(31, 78, 70, 0.06));
+}
+
+.demo-chat-profile--featured.is-active {
+  border-color: rgba(201, 169, 110, 0.85);
+  background: rgba(201, 169, 110, 0.12);
+}
+
+.demo-chat-profile-badge {
+  display: block;
+  font-size: 0.58rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  color: #8a6d2f;
+  margin-bottom: 1px;
+}
+
+.demo-chat-profile.is-active .demo-chat-profile-badge {
+  color: #8a6d2f;
 }
 
 .demo-chat-scenarios {

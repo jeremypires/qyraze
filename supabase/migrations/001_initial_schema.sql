@@ -29,7 +29,7 @@ CREATE TABLE clients (
     CHECK (status IN ('active', 'paused', 'churned')),
   telegram_chat_id        TEXT,
   qualification_threshold INT NOT NULL DEFAULT 70 CHECK (qualification_threshold BETWEEN 0 AND 100),
-  settings                JSONB NOT NULL DEFAULT '{"emojis": true, "max_reply_length": 500}'::jsonb,
+  settings                JSONB NOT NULL DEFAULT '{"emojis": true, "max_reply_length": 500, "business_open_hour": 8, "business_close_hour": 20, "timezone": "Europe/Paris"}'::jsonb,
   created_at              TIMESTAMPTZ NOT NULL DEFAULT now(),
   updated_at              TIMESTAMPTZ NOT NULL DEFAULT now()
 );

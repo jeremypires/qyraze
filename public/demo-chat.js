@@ -1,8 +1,10 @@
 (function () {
-  const SCENARIOS = [
-    { id: 'pizza', icon: '🍕' },
-    { id: 'travel', icon: '✈️' },
-    { id: 'local', icon: '🏪' },
+  const PROFILES = [
+    { id: 'jeremy', icon: '⭐', featured: true },
+    { id: 'premium', icon: '👔' },
+    { id: 'closer', icon: '🚀' },
+    { id: 'companion', icon: '🌿' },
+    { id: 'efficient', icon: '🔧' },
   ];
 
   const CALENDLY_URL = 'https://calendar.app.google/Tr3jnHzo7oHt8Ehd7';
@@ -28,8 +30,16 @@
     return window.QyrazeDemoStrings?.[lang()]?.[key] ?? key;
   }
 
-  function scenarioLabel(id) {
-    return window.QyrazeDemoStrings?.[lang()]?.scenarios?.[id] ?? id;
+  function profileLabel(id) {
+    return window.QyrazeDemoStrings?.[lang()]?.profiles?.[id]?.name ?? id;
+  }
+
+  function profileTagline(id) {
+    return window.QyrazeDemoStrings?.[lang()]?.profiles?.[id]?.tagline ?? '';
+  }
+
+  function profileBadge(id) {
+    return window.QyrazeDemoStrings?.[lang()]?.profiles?.[id]?.badge ?? '';
   }
 
   function statusLabel(status) {
@@ -37,7 +47,7 @@
   }
 
   const state = {
-    scenario: 'pizza',
+    profile: 'jeremy',
     history: [],
     score: 0,
     status: 'new',
@@ -47,11 +57,11 @@
     lastAction: null,
   };
 
-  let root, panel, fabEl, messagesEl, inputEl, formEl, scoreEl, statusEl, hintsEl, hintsLabelEl, scenariosEl, scoreWrapEl, telegramRoot;
+  let root, panel, fabEl, messagesEl, inputEl, formEl, scoreEl, statusEl, hintsEl, hintsLabelEl, profilesEl, scoreWrapEl, telegramRoot;
 
   function setCompactMode(compact) {
     if (panel) panel.classList.toggle('is-compact', compact);
-    if (scenariosEl) scenariosEl.hidden = compact;
+    if (profilesEl) profilesEl.hidden = compact;
     if (hintsEl) hintsEl.hidden = compact || state.closed;
     if (hintsLabelEl) hintsLabelEl.hidden = compact;
   }
@@ -62,7 +72,7 @@
     if (root) root.classList.toggle('is-open', open);
     if (fabEl) fabEl.hidden = open;
     if (open && messagesEl && messagesEl.childElementCount === 0) {
-      resetConversation(state.scenario);
+      resetConversation(state.profile);
     }
     if (open && !state.closed && inputEl) inputEl.focus();
   }
@@ -148,7 +158,7 @@
     const name = data.prospectName || t('default_prospect');
     const summary = data.summary || t('default_summary');
     const score = data.score ?? state.score;
-    const business = scenarioLabel(state.scenario);
+    const personality = profileLabel(state.profile);
 
     const toast = document.createElement('div');
     toast.className = 'demo-telegram-toast';
@@ -163,7 +173,7 @@
       <div class="demo-telegram-body">
         <strong>🔥 ${t('telegram_title')}</strong>
         <p>${t('telegram_name')}: ${escapeHtml(name)}<br>
-        ${t('telegram_platform')}: Instagram · ${escapeHtml(business)}<br>
+        ${t('telegram_platform')}: Instagram · ${escapeHtml(personality)}<br>
         ${t('telegram_score')}: ${score}/100</p>
         <p class="demo-telegram-summary">${t('telegram_summary')}: ${escapeHtml(summary)}</p>
       </div>
@@ -205,7 +215,7 @@
     formEl.querySelector('button').disabled = true;
     if (hintsEl) hintsEl.hidden = true;
     if (hintsLabelEl) hintsLabelEl.hidden = true;
-    if (scenariosEl) scenariosEl.hidden = true;
+    if (profilesEl) profilesEl.hidden = true;
     setCompactMode(true);
 
     const banner = document.createElement('div');
@@ -223,7 +233,7 @@
     formEl.querySelector('button').disabled = false;
     if (hintsEl) hintsEl.hidden = false;
     if (hintsLabelEl) hintsLabelEl.hidden = false;
-    if (scenariosEl) scenariosEl.hidden = false;
+    if (profilesEl) profilesEl.hidden = false;
     setCompactMode(false);
   }
 
@@ -247,8 +257,8 @@
     }
   }
 
-  function resetConversation(scenarioId) {
-    state.scenario = scenarioId;
+  function resetConversation(profileId) {
+    state.profile = profileId;
     state.history = [];
     state.score = 0;
     state.status = 'new';
@@ -257,8 +267,8 @@
     messagesEl.innerHTML = '';
     updateScoreUI(0, 'new');
 
-    document.querySelectorAll('.demo-chat-scenario').forEach((btn) => {
-      btn.classList.toggle('is-active', btn.dataset.scenario === scenarioId);
+    document.querySelectorAll('.demo-chat-profile').forEach((btn) => {
+      btn.classList.toggle('is-active', btn.dataset.profile === profileId);
     });
 
     showEmptyPrompt();
@@ -277,9 +287,10 @@
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
-          scenario: state.scenario,
+          profile: state.profile,
           message,
           history: historyBefore,
+          currentScore: state.score,
         }),
       });
 
@@ -292,7 +303,10 @@
         return;
       }
 
-      const delay = computeReplyDelay(message, data.reply, data.signals);
+      const delay =
+        typeof data.delayMs === 'number'
+          ? data.delayMs
+          : computeReplyDelay(message, data.reply, data.signals);
       const elapsed = Date.now() - started;
       await sleep(Math.max(0, delay - elapsed));
 
@@ -359,7 +373,7 @@
           </div>
           <button type="button" class="demo-chat-close" id="demoChatClose" aria-label="Close">×</button>
         </header>
-        <div class="demo-chat-scenarios" id="demoChatScenarios"></div>
+        <div class="demo-chat-profiles" id="demoChatProfiles"></div>
         <div class="demo-chat-score" id="demoChatScoreWrap">
           <div class="demo-chat-score-label">
             <span id="demoChatScoreLabel"></span>
@@ -394,16 +408,28 @@
     hintsEl = document.getElementById('demoChatHints');
     hintsLabelEl = document.getElementById('demoChatHintsLabel');
     scoreWrapEl = document.getElementById('demoChatScoreWrap');
-    scenariosEl = document.getElementById('demoChatScenarios');
+    profilesEl = document.getElementById('demoChatProfiles');
 
-    SCENARIOS.forEach((s) => {
+    PROFILES.forEach((p) => {
       const btn = document.createElement('button');
       btn.type = 'button';
-      btn.className = 'demo-chat-scenario';
-      btn.dataset.scenario = s.id;
-      btn.innerHTML = `<span>${s.icon}</span><span class="demo-chat-scenario-name" data-scenario="${s.id}"></span>`;
-      btn.addEventListener('click', () => resetConversation(s.id));
-      scenariosEl.appendChild(btn);
+      btn.className = 'demo-chat-profile' + (p.featured ? ' demo-chat-profile--featured' : '');
+      btn.dataset.profile = p.id;
+      btn.innerHTML =
+        '<span class="demo-chat-profile-icon">' +
+        p.icon +
+        '</span>' +
+        '<span class="demo-chat-profile-text">' +
+        (p.featured ? '<span class="demo-chat-profile-badge" data-profile="' + p.id + '"></span>' : '') +
+        '<span class="demo-chat-profile-name" data-profile="' +
+        p.id +
+        '"></span>' +
+        '<span class="demo-chat-profile-tagline" data-profile="' +
+        p.id +
+        '"></span>' +
+        '</span>';
+      btn.addEventListener('click', () => resetConversation(p.id));
+      profilesEl.appendChild(btn);
     });
 
     fabEl.addEventListener('click', () => {
@@ -434,8 +460,14 @@
     if (!state.closed) inputEl.placeholder = t('placeholder');
     document.getElementById('demoChatSend').textContent = t('send');
     document.getElementById('demoChatNote').textContent = t('note');
-    document.querySelectorAll('.demo-chat-scenario-name').forEach((el) => {
-      el.textContent = scenarioLabel(el.dataset.scenario);
+    document.querySelectorAll('.demo-chat-profile-name').forEach((el) => {
+      el.textContent = profileLabel(el.dataset.profile);
+    });
+    document.querySelectorAll('.demo-chat-profile-tagline').forEach((el) => {
+      el.textContent = profileTagline(el.dataset.profile);
+    });
+    document.querySelectorAll('.demo-chat-profile-badge').forEach((el) => {
+      el.textContent = profileBadge(el.dataset.profile);
     });
     if (statusEl) statusEl.textContent = statusLabel(state.status);
     const emptyEl = document.getElementById('demoChatEmpty');
@@ -447,6 +479,22 @@
       const keys = ['section_kicker', 'section_title', 'section_sub'];
       if (el) el.textContent = t(keys[i]);
     });
+
+    const profilesLabel = document.getElementById('demo-profiles-label');
+    if (profilesLabel) profilesLabel.textContent = t('profiles_label');
+
+    const personalityGrid = document.getElementById('demo-personalities');
+    if (personalityGrid) {
+      personalityGrid.querySelectorAll('[data-profile]').forEach((card) => {
+        const id = card.dataset.profile;
+        const name = card.querySelector('.demo-personality-name');
+        const tagline = card.querySelector('.demo-personality-tagline');
+        const badge = card.querySelector('.demo-personality-badge');
+        if (name) name.textContent = profileLabel(id);
+        if (tagline) tagline.textContent = profileTagline(id);
+        if (badge) badge.textContent = profileBadge(id);
+      });
+    }
 
     const outcomes = document.getElementById('demo-outcomes');
     if (outcomes) {
@@ -461,6 +509,17 @@
 
     const openBtn = document.getElementById('demo-section-cta');
     if (openBtn) openBtn.textContent = t('section_cta');
+  }
+
+  function bindPersonalityCards() {
+    document.querySelectorAll('[data-profile][data-open-demo]').forEach((el) => {
+      el.addEventListener('click', () => {
+        const profileId = el.dataset.profile;
+        if (!panel) return;
+        setOpen(true);
+        resetConversation(profileId);
+      });
+    });
   }
 
   function bindSectionCta() {
@@ -478,6 +537,11 @@
       if (!panel) return;
       setOpen(true);
     },
+    openWithProfile: function (profileId) {
+      if (!panel) return;
+      setOpen(true);
+      resetConversation(profileId || 'jeremy');
+    },
   };
 
   if (document.readyState === 'loading') {
@@ -485,16 +549,18 @@
       if (!document.getElementById('marketingPage')) return;
       buildWidget();
       bindSectionCta();
+      bindPersonalityCards();
     });
   } else if (document.getElementById('marketingPage')) {
     buildWidget();
     bindSectionCta();
+    bindPersonalityCards();
   }
 
   document.addEventListener('qyraze:lang', function () {
     applyLabels();
     if (panel && !panel.hidden && messagesEl.childElementCount > 0 && !state.loading) {
-      resetConversation(state.scenario);
+      resetConversation(state.profile);
     }
   });
 })();

@@ -48,3 +48,4 @@ export const DEFAULT_QUALIFICATION_THRESHOLD = 70;
 export const MAX_CONVERSATION_HISTORY = 20;
 
 export * from './reply-delay.js';
+export * from './demo-personalities.js';

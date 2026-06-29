@@ -32,7 +32,40 @@ export interface ReplyDelayResult {
   intent: MessageIntent;
 }
 
+export interface ReplyDelaySettings {
+  businessOpenHour: number;
+  businessCloseHour: number;
+  timezone: string;
+}
+
 const MIN_HUMAN_MS = 3000;
+const DEFAULT_SETTINGS: ReplyDelaySettings = {
+  businessOpenHour: 8,
+  businessCloseHour: 20,
+  timezone: 'Europe/Paris',
+};
+
+export function parseReplyDelaySettings(settings: unknown): ReplyDelaySettings {
+  if (!settings || typeof settings !== 'object') return DEFAULT_SETTINGS;
+  const s = settings as Record<string, unknown>;
+  const open = Number(s.business_open_hour);
+  const close = Number(s.business_close_hour);
+  const tz = typeof s.timezone === 'string' ? s.timezone : DEFAULT_SETTINGS.timezone;
+  return {
+    businessOpenHour: Number.isFinite(open) ? open : DEFAULT_SETTINGS.businessOpenHour,
+    businessCloseHour: Number.isFinite(close) ? close : DEFAULT_SETTINGS.businessCloseHour,
+    timezone: tz,
+  };
+}
+
+export function getLocalHour(timezone = DEFAULT_SETTINGS.timezone, at = new Date()): number {
+  const hour = new Intl.DateTimeFormat('en-GB', {
+    timeZone: timezone,
+    hour: 'numeric',
+    hour12: false,
+  }).format(at);
+  return parseInt(hour, 10);
+}
 
 function randomBetween(minSec: number, maxSec: number): number {
   const minMs = minSec * 1000;

@@ -1,6 +1,8 @@
 /** Browser copy of packages/shared/src/reply-delay.ts — keep in sync. */
 (function (global) {
   var MIN_HUMAN_MS = 3000;
+  var DEFAULT_OPEN = 8;
+  var DEFAULT_CLOSE = 20;
 
   function randomBetween(minSec, maxSec) {
     var minMs = minSec * 1000;
@@ -80,12 +82,28 @@
     return 1;
   }
 
+  function isOutsideBusinessHours(hour, openHour, closeHour) {
+    return hour < openHour || hour >= closeHour;
+  }
+
   function compute(input) {
     var inbound = input.inboundMessage || '';
     var score = input.leadScore || 0;
     var exchanges = input.exchangeCount || 0;
     var replyLen = input.replyLength || Math.min(200, Math.max(40, inbound.length));
+    var hour = typeof input.localHour === 'number' ? input.localHour : new Date().getHours();
+    var openHour = typeof input.businessOpenHour === 'number' ? input.businessOpenHour : DEFAULT_OPEN;
+    var closeHour = typeof input.businessCloseHour === 'number' ? input.businessCloseHour : DEFAULT_CLOSE;
     var intent = detectIntent(inbound, input.signals);
+
+    if (isOutsideBusinessHours(hour, openHour, closeHour)) {
+      var hoursUntilOpen = hour >= closeHour ? openHour + 24 - hour : openHour - hour;
+      return {
+        delayMs: hoursUntilOpen * 3600 * 1000 + randomBetween(20, 90),
+        intent: intent,
+      };
+    }
+
     var fromIntent = intentDelayMs(intent, exchanges);
     var fromLength = lengthTierDelayMs(inbound.length);
     var fromReply = lengthTierDelayMs(replyLen) * 0.35;
@@ -93,6 +111,8 @@
 
     if (exchanges === 1) {
       delayMs = Math.round(delayMs * 1.1 + randomBetween(40, 180) * 0.3);
+    } else if (exchanges >= 2) {
+      delayMs = Math.round(delayMs * 1.05);
     }
 
     return {
