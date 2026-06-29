@@ -7,19 +7,6 @@
 
   const CALENDLY_URL = 'https://calendar.app.google/Tr3jnHzo7oHt8Ehd7';
 
-  const OPENERS = {
-    en: {
-      pizza: 'Hi! Do you do catering for a birthday party (~30 people) next Saturday?',
-      travel: 'Hello! I\'m looking for a 2-week trip to Bali in March. Do you have a guide?',
-      local: 'Hi, I need help organizing my client follow-ups. Is this something you can help with?',
-    },
-    fr: {
-      pizza: 'Bonjour ! Vous faites du traiteur pour un anniversaire (~30 personnes) samedi prochain ?',
-      travel: 'Bonjour ! Je cherche un voyage de 2 semaines à Bali en mars. Vous avez un guide ?',
-      local: 'Bonjour, j\'ai besoin d\'aide pour organiser le suivi de mes clients. Vous pouvez m\'aider ?',
-    },
-  };
-
   const HINTS = {
     en: {
       hot: 'Budget 800€, can we call tomorrow?',
@@ -86,24 +73,41 @@
     });
   }
 
-  /** Hotter lead → faster reply, but never instant. */
+  /** Hotter lead → faster reply. Cold leads can wait up to ~2 min (realistic DM pace). */
   function computeReplyDelay(score, textLength) {
     var s = Number(score) || 0;
     var len = Number(textLength) || 40;
-    var base;
+    var minMs;
+    var maxMs;
     var perChar;
     if (s >= 70) {
-      base = 1800;
-      perChar = 16;
+      minMs = 18000;
+      maxMs = 35000;
+      perChar = 80;
     } else if (s >= 40) {
-      base = 3600;
-      perChar = 26;
+      minMs = 45000;
+      maxMs = 75000;
+      perChar = 120;
     } else {
-      base = 5500;
-      perChar = 36;
+      minMs = 75000;
+      maxMs = 120000;
+      perChar = 150;
     }
-    var jitter = Math.floor(Math.random() * 500);
-    return Math.min(9500, Math.max(1600, base + len * perChar + jitter));
+    var jitter = Math.floor(Math.random() * (maxMs - minMs));
+    return Math.min(maxMs, Math.max(minMs, minMs + jitter * 0.4 + len * perChar));
+  }
+
+  function showEmptyPrompt() {
+    const el = document.createElement('div');
+    el.className = 'demo-chat-empty';
+    el.id = 'demoChatEmpty';
+    el.textContent = t('empty_prompt');
+    messagesEl.appendChild(el);
+  }
+
+  function clearEmptyPrompt() {
+    const el = document.getElementById('demoChatEmpty');
+    if (el) el.remove();
   }
 
   function showTypingIndicator() {
@@ -120,6 +124,7 @@
   }
 
   function renderMessage(role, content, extraClass) {
+    clearEmptyPrompt();
     const wrap = document.createElement('div');
     wrap.className = 'demo-chat-msg demo-chat-msg--' + role + (extraClass ? ' ' + extraClass : '');
     const bubble = document.createElement('div');
@@ -265,16 +270,13 @@
       btn.classList.toggle('is-active', btn.dataset.scenario === scenarioId);
     });
 
-    const opener = OPENERS[lang()][scenarioId];
-    if (opener) {
-      renderMessage('user', opener);
-      fetchReply(opener, [], true);
-    }
+    showEmptyPrompt();
   }
 
-  async function fetchReply(message, historyBefore, isOpener) {
+  async function fetchReply(message, historyBefore) {
     state.loading = true;
-    if (!isOpener) inputEl.disabled = true;
+    inputEl.disabled = true;
+    clearEmptyPrompt();
 
     const started = Date.now();
     const typing = showTypingIndicator();
@@ -327,7 +329,7 @@
 
     renderMessage('user', message);
     inputEl.value = '';
-    await fetchReply(message, state.history.slice(0, -1), false);
+    await fetchReply(message, state.history);
     if (state.open && !state.closed) inputEl.focus();
   }
 
@@ -445,6 +447,8 @@
       el.textContent = scenarioLabel(el.dataset.scenario);
     });
     if (statusEl) statusEl.textContent = statusLabel(state.status);
+    const emptyEl = document.getElementById('demoChatEmpty');
+    if (emptyEl) emptyEl.textContent = t('empty_prompt');
     buildHints();
 
     ['demo-section-kicker', 'demo-section-title', 'demo-section-sub'].forEach((id, i) => {
