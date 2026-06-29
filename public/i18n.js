@@ -21,6 +21,7 @@
         home: 'Home',
         solutions: 'Solutions',
         method: 'How it works',
+        demo: 'Demo',
         work: 'Examples',
         about: 'About',
         contact: 'Contact',
@@ -125,6 +126,7 @@
         home: 'Accueil',
         solutions: 'Solutions',
         method: 'Comment ça marche',
+        demo: 'Démo',
         work: 'Exemples',
         about: 'À propos',
         contact: 'Contact',
@@ -303,6 +305,7 @@
     setText('nav-home', s.nav.home);
     setText('nav-solutions', s.nav.solutions);
     setText('nav-method', s.nav.method);
+    setText('nav-demo', s.nav.demo);
     setText('nav-work', s.nav.work);
     setText('nav-about', s.nav.about);
     setText('nav-contact', s.nav.contact);
@@ -422,6 +425,8 @@
   function applyLang(lang) {
     if (document.getElementById('marketingPage')) applyHome(lang);
     if (document.getElementById('link-page')) applyLink(lang);
+    document.dispatchEvent(new CustomEvent('qyraze:lang', { detail: { lang: lang } }));
+    if (window.QyrazeDemoChat?.refresh) window.QyrazeDemoChat.refresh();
   }
 
   function initLangSwitcher() {
@@ -459,6 +464,105 @@
       else showScene();
     }
   }
+
+  window.QyrazeDemoStrings = {
+    en: {
+      fab: 'Try AI demo',
+      title: 'Instagram DM demo',
+      subtitle: 'AI qualifies → you get alerted or the lead is routed',
+      score: 'Lead score',
+      hints_label: 'Try a reply to see what happens:',
+      hint_hot: 'Hot lead path',
+      hint_warm: 'Warm lead path',
+      hint_cold: 'Cold lead path',
+      placeholder: 'Reply as a prospect…',
+      closed_placeholder: 'Conversation ended',
+      send: 'Send',
+      note: 'Demo only — simulates Instagram DMs + Telegram alert.',
+      error: 'Demo temporarily unavailable. Try again shortly.',
+      section_kicker: 'Live demo',
+      section_title: 'See what your clients experience',
+      section_sub: 'Chat as a prospect. Watch the AI qualify the lead — then see a Telegram alert, a booking link, or a polite goodbye.',
+      section_cta: 'Open the demo chat',
+      status_new: 'New',
+      status_qualifying: 'Qualifying',
+      status_hot: 'Hot lead',
+      status_lost: 'Closed',
+      conversation_ended: 'Conversation ended',
+      calendar_title: 'Book a slot',
+      calendar_desc: 'The AI sends your calendar link to interested prospects.',
+      calendar_cta: 'Open calendar (demo)',
+      telegram_now: 'now',
+      telegram_bot: 'Qyraze Setter Bot',
+      telegram_title: 'Qualified lead',
+      telegram_name: 'Name',
+      telegram_platform: 'Platform',
+      telegram_score: 'Score',
+      telegram_summary: 'Summary',
+      telegram_footer: '↑ This is what you receive on Telegram',
+      default_prospect: 'Prospect',
+      default_summary: 'Interested, ready to move forward',
+      outcome_hot_title: 'Hot lead',
+      outcome_hot_desc: 'Score 70+ → instant Telegram alert to you',
+      outcome_warm_title: 'Warm lead',
+      outcome_warm_desc: 'Interested but not urgent → calendar link sent',
+      outcome_cold_title: 'Not a fit',
+      outcome_cold_desc: 'Low interest → polite goodbye, conversation closed',
+      scenarios: {
+        pizza: 'Sandjo Pizza',
+        travel: 'Jiwa Voyage',
+        local: 'Local business',
+      },
+    },
+    fr: {
+      fab: 'Démo IA',
+      title: 'Démo DM Instagram',
+      subtitle: 'L\u2019IA qualifie → vous êtes alerté ou le lead est routé',
+      score: 'Score lead',
+      hints_label: 'Essayez une réponse pour voir le résultat :',
+      hint_hot: 'Lead chaud',
+      hint_warm: 'Lead tiède',
+      hint_cold: 'Lead froid',
+      placeholder: 'Répondez comme un prospect…',
+      closed_placeholder: 'Conversation terminée',
+      send: 'Envoyer',
+      note: 'Démo uniquement — simule les DM Instagram + alerte Telegram.',
+      error: 'Démo temporairement indisponible. Réessayez dans un instant.',
+      section_kicker: 'Démo live',
+      section_title: 'Voyez ce que vivent vos clients',
+      section_sub: 'Discutez comme un prospect. L\u2019IA qualifie le lead — puis alerte Telegram, lien de RDV ou au revoir poli.',
+      section_cta: 'Ouvrir le chat démo',
+      status_new: 'Nouveau',
+      status_qualifying: 'En cours',
+      status_hot: 'Lead chaud',
+      status_lost: 'Fermé',
+      conversation_ended: 'Conversation terminée',
+      calendar_title: 'Réserver un créneau',
+      calendar_desc: 'L\u2019IA envoie votre lien agenda aux prospects intéressés.',
+      calendar_cta: 'Ouvrir l\u2019agenda (démo)',
+      telegram_now: 'maintenant',
+      telegram_bot: 'Qyraze Setter Bot',
+      telegram_title: 'Lead qualifié',
+      telegram_name: 'Nom',
+      telegram_platform: 'Plateforme',
+      telegram_score: 'Score',
+      telegram_summary: 'Résumé',
+      telegram_footer: '↑ C\u2019est ce que vous recevez sur Telegram',
+      default_prospect: 'Prospect',
+      default_summary: 'Intéressé, prêt à avancer',
+      outcome_hot_title: 'Lead brûlant',
+      outcome_hot_desc: 'Score 70+ → alerte Telegram instantanée',
+      outcome_warm_title: 'Lead tiède',
+      outcome_warm_desc: 'Intéressé mais pas urgent → lien agenda envoyé',
+      outcome_cold_title: 'Pas qualifié',
+      outcome_cold_desc: 'Peu d\u2019intérêt → au revoir poli, conversation fermée',
+      scenarios: {
+        pizza: 'Sandjo Pizza',
+        travel: 'Jiwa Voyage',
+        local: 'Commerce local',
+      },
+    },
+  };
 
   window.QyrazeI18n = {
     getLang: getLang,
