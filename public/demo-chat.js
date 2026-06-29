@@ -73,28 +73,19 @@
     });
   }
 
-  /** Hotter lead → faster reply. Cold leads can wait up to ~2 min (realistic DM pace). */
-  function computeReplyDelay(score, textLength) {
-    var s = Number(score) || 0;
-    var len = Number(textLength) || 40;
-    var minMs;
-    var maxMs;
-    var perChar;
-    if (s >= 70) {
-      minMs = 18000;
-      maxMs = 35000;
-      perChar = 80;
-    } else if (s >= 40) {
-      minMs = 45000;
-      maxMs = 75000;
-      perChar = 120;
-    } else {
-      minMs = 75000;
-      maxMs = 120000;
-      perChar = 150;
+  /** Research-backed delay — see packages/shared/src/reply-delay.ts */
+  function computeReplyDelay(message, replyText, signals) {
+    if (window.QyrazeReplyDelay && window.QyrazeReplyDelay.compute) {
+      var exchanges = Math.floor(state.history.length / 2);
+      return window.QyrazeReplyDelay.compute({
+        inboundMessage: message,
+        leadScore: state.score,
+        exchangeCount: exchanges,
+        replyLength: replyText ? replyText.length : 0,
+        signals: signals || {},
+      }).delayMs;
     }
-    var jitter = Math.floor(Math.random() * (maxMs - minMs));
-    return Math.min(maxMs, Math.max(minMs, minMs + jitter * 0.4 + len * perChar));
+    return 45000;
   }
 
   function showEmptyPrompt() {
@@ -301,7 +292,7 @@
         return;
       }
 
-      const delay = computeReplyDelay(data.score ?? state.score, data.reply?.length ?? 0);
+      const delay = computeReplyDelay(message, data.reply, data.signals);
       const elapsed = Date.now() - started;
       await sleep(Math.max(0, delay - elapsed));
 

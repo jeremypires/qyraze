@@ -2,6 +2,7 @@ import {
   MAX_CONVERSATION_HISTORY,
   QUEUE_NAMES,
   SIGNAL_SCORES,
+  computeReplyDelay,
   type AIResponse,
   type NotifyTelegramJob,
   type ProcessMessageJob,
@@ -11,6 +12,10 @@ import { createWorkerSupabase } from '../lib/supabase.js';
 import { generateAIResponse } from '../services/ai.js';
 import { sendInstagramReply } from '../services/meta.js';
 import { notifyHotLead } from '../services/telegram.js';
+
+function sleep(ms: number) {
+  return new Promise((resolve) => setTimeout(resolve, ms));
+}
 
 function scoreSignals(signals: QualificationSignals): number {
   return (Object.entries(signals) as Array<[keyof QualificationSignals, boolean | undefined]>)
@@ -78,6 +83,17 @@ export async function handleProcessMessage(job: ProcessMessageJob) {
     .single();
 
   if (outboundError || !outboundMessage) throw outboundError;
+
+  const exchangeCount = Math.floor((history ?? []).length / 2);
+  const { delayMs } = computeReplyDelay({
+    inboundMessage: job.inboundContent,
+    leadScore: lead.score ?? 0,
+    exchangeCount,
+    replyLength: ai.reply.length,
+    signals: ai.signals,
+  });
+
+  await sleep(delayMs);
 
   const delta = scoreSignals(ai.signals);
   const nextScore = Math.min(100, (lead.score ?? 0) + delta);
