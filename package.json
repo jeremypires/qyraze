@@ -8,8 +8,8 @@
     "packages/*"
   ],
   "scripts": {
-    "build": "npm run build -w @qyraze/shared && npm run build -w @qyraze/web && npm run build -w @qyraze/worker",
-    "build:shared": "npm run build -w @qyraze/shared",
+    "build": "npm run build -w @qyraze/shared && cp packages/shared/dist/demo-personalities.js api/lib/demo-personalities.js && npm run build -w @qyraze/web && npm run build -w @qyraze/worker",
+    "build:shared": "npm run build -w @qyraze/shared && cp packages/shared/dist/demo-personalities.js api/lib/demo-personalities.js",
     "dev:web": "npm run dev -w @qyraze/web",
     "dev:worker": "npm run dev -w @qyraze/worker",
     "site:build": "echo \"No build step for marketing site\""

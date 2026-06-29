@@ -4,7 +4,7 @@ import {
   buildDemoSystemPrompt,
   computeProfileDelayMs,
   getDemoPersonality,
-} from '@qyraze/shared';
+} from './lib/demo-personalities.js';
 
 const ipAttempts = new Map();
 const RATE_LIMIT_WINDOW_MS = 15 * 60 * 1000;
