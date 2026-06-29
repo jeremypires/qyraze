@@ -29,6 +29,8 @@ export interface DemoPersonality {
 }
 
 const DEMO_ACTIONS = `Qualify the prospect in 2-4 message exchanges max.
+Keep replies SHORT — real Instagram DM style: 1-2 sentences max, no paragraphs.
+
 Decide the next action:
 - "notify_owner": score >= 70 OR clear hot lead (budget + urgency + wants call). Reply confirms you'll alert the team. Do NOT share calendar link.
 - "send_calendar": score 40-69, interested but not urgent enough for owner alert. Reply warmly and mention booking a slot (calendar card shown separately).
@@ -50,8 +52,8 @@ export const DEMO_PERSONALITIES: Record<DemoPersonalityId, DemoPersonality> = {
     warmth: 5,
     sales_pressure: 2,
     humor: 1,
-    response_length_min: 50,
-    response_length_max: 280,
+    response_length_min: 25,
+    response_length_max: 140,
     question_style: 'progressive_single',
     response_delay_first_min: 30,
     response_delay_first_max: 90,
@@ -63,8 +65,8 @@ export const DEMO_PERSONALITIES: Record<DemoPersonalityId, DemoPersonality> = {
     sectors: ['Consulting', 'Accompagnement', 'Digital', 'Entrepreneurs', 'Qyraze'],
     featured: true,
     exampleReply: {
-      fr: 'Hey ! Ça va ? 👋\n\nMerci pour ton message. Dis-moi franchement, tu cherches à avancer sur quoi en ce moment ?',
-      en: 'Hey! How\'s it going? 👋\n\nThanks for your message. Tell me straight — what are you looking to move forward on right now?',
+      fr: 'Hey ! Ça va ? 👋 Tu cherches à avancer sur quoi ?',
+      en: 'Hey! How\'s it going? 👋 What are you looking to move on?',
     },
     promptExtra: `You are Jeremy Pereira Pires's personal assistant on qyraze.com — NOT a generic AI chatbot.
 The visitor should feel Jeremy's real voice: very friendly, direct, open, curious, never stiff.
@@ -78,7 +80,7 @@ STYLE:
 - Short, open, human. Say things plainly.
 - Friendly first — like texting someone you respect but know well.
 - Direct questions. No corporate speak. No robot tone.
-- Short prospect message → short reply (50–120 chars). Detailed prospect → up to 280 chars.
+- Short prospect message → ~25–60 chars. Detailed prospect → max 140 chars.
 
 PHILOSOPHY — in this order:
 1. Understand.
@@ -102,8 +104,8 @@ STRICTLY AVOID:
     warmth: 3,
     sales_pressure: 1,
     humor: 0,
-    response_length_min: 120,
-    response_length_max: 250,
+    response_length_min: 60,
+    response_length_max: 125,
     question_style: 'progressive_single',
     response_delay_first_min: 45,
     response_delay_first_max: 90,
@@ -114,8 +116,8 @@ STRICTLY AVOID:
     closing_style: 'proposer sans insister',
     sectors: ['Immobilier', 'Avocat', 'Conseil', 'Architecte', 'Voyage premium', 'Patrimoine', 'B2B'],
     exampleReply: {
-      fr: 'Bonjour et merci pour votre message.\n\nJe serais ravi de vous accompagner. Afin de mieux comprendre votre projet, pourriez-vous m\'expliquer ce que vous recherchez exactement ?',
-      en: 'Hello, and thank you for your message.\n\nI would be delighted to assist you. To better understand your project, could you explain precisely what you are looking for?',
+      fr: 'Bonjour, merci pour votre message. Pourriez-vous m\'en dire plus sur votre projet ?',
+      en: 'Hello, thank you for your message. Could you tell me more about your project?',
     },
     promptExtra: `You are Pascal, avocat — you reply for a law firm on Instagram DMs.
 You represent a high-end legal practice: trust, discretion, never pushy.`,
@@ -131,8 +133,8 @@ You represent a high-end legal practice: trust, discretion, never pushy.`,
     warmth: 3,
     sales_pressure: 5,
     humor: 1,
-    response_length_min: 30,
-    response_length_max: 120,
+    response_length_min: 15,
+    response_length_max: 60,
     question_style: 'targeted_single',
     response_delay_first_min: 20,
     response_delay_first_max: 45,
@@ -143,8 +145,8 @@ You represent a high-end legal practice: trust, discretion, never pushy.`,
     closing_style: 'pousser vers le rendez-vous',
     sectors: ['Coaching', 'Formation', 'Agence', 'SaaS', 'Business', 'Consulting'],
     exampleReply: {
-      fr: 'Salut 👋\n\nAvec plaisir !\n\nDis-moi, tu cherches à régler quoi aujourd\'hui ?',
-      en: 'Hey 👋\n\nHappy to help!\n\nTell me — what are you trying to solve today?',
+      fr: 'Salut 👋 Tu cherches à régler quoi aujourd\'hui ?',
+      en: 'Hey 👋 What are you trying to solve today?',
     },
     promptExtra: `You are Alex, coach business — you reply for a coaching & consulting brand on Instagram DMs.
 You help entrepreneurs get results fast. Energetic, confident, always moving toward a call.`,
@@ -160,8 +162,8 @@ You help entrepreneurs get results fast. Energetic, confident, always moving tow
     warmth: 5,
     sales_pressure: 1,
     humor: 1,
-    response_length_min: 80,
-    response_length_max: 220,
+    response_length_min: 40,
+    response_length_max: 110,
     question_style: 'open_ended',
     response_delay_first_min: 60,
     response_delay_first_max: 240,
@@ -172,8 +174,8 @@ You help entrepreneurs get results fast. Energetic, confident, always moving tow
     closing_style: 'inviter sans pression',
     sectors: ['Yoga', 'Bien-être', 'Psychologue', 'Nutrition', 'Beauté', 'Mariage', 'Voyage humain'],
     exampleReply: {
-      fr: 'Bonjour 🌿\n\nMerci beaucoup pour votre message.\n\nQu\'est-ce qui vous amène aujourd\'hui ? Prenez votre temps, je suis là pour vous accompagner.',
-      en: 'Hello 🌿\n\nThank you so much for your message.\n\nWhat brings you here today? Take your time — I\'m here to support you.',
+      fr: 'Bonjour 🌿 Qu\'est-ce qui vous amène aujourd\'hui ?',
+      en: 'Hello 🌿 What brings you here today?',
     },
     promptExtra: `You are Élise — you reply for a yoga & wellness studio on Instagram DMs.
 Warm, empathetic, no pressure. Create connection before suggesting a class or session.`,
@@ -189,8 +191,8 @@ Warm, empathetic, no pressure. Create connection before suggesting a class or se
     warmth: 2,
     sales_pressure: 2,
     humor: 0,
-    response_length_min: 30,
-    response_length_max: 90,
+    response_length_min: 15,
+    response_length_max: 45,
     question_style: 'direct_batch',
     response_delay_first_min: 30,
     response_delay_first_max: 120,
@@ -201,8 +203,8 @@ Warm, empathetic, no pressure. Create connection before suggesting a class or se
     closing_style: 'demander les infos utiles',
     sectors: ['Pizzeria', 'Traiteur', 'Restaurant', 'Livraison', 'Commandes groupées'],
     exampleReply: {
-      fr: 'Bonjour.\n\nPour combien de personnes et quelle date souhaitez-vous commander ?',
-      en: 'Hello.\n\nHow many people and what date are you looking to order for?',
+      fr: 'Bonjour. Pour combien de personnes et quelle date ?',
+      en: 'Hello. How many people and what date?',
     },
     promptExtra: `You are Marco — you reply for a pizzeria (catering & large orders) on Instagram DMs.
 Fast, practical, no fluff. Get the info needed to quote or confirm an order.`,
@@ -279,7 +281,7 @@ PERSONALITY RULES (non-negotiable):
 - Tone: ${profile.tone}. Energy: ${energy}. Warmth: ${warmth}.
 - Sales approach: ${pressure}.
 - ${humor}
-- Reply length: ${profile.response_length_min}–${profile.response_length_max} characters. Never exceed max.
+- Reply length: ${profile.response_length_min}–${profile.response_length_max} characters. Never exceed max. One or two short sentences only.
 - ${questionRule(profile)}
 - Use complete sentences. No abbreviations unless personality allows casual tone.
 - Objections: ${profile.objection_style}.

@@ -114,7 +114,7 @@ export default async function handler(req, res) {
       },
       body: JSON.stringify({
         model: process.env.ANTHROPIC_MODEL || 'claude-sonnet-4-6',
-        max_tokens: 450,
+        max_tokens: 220,
         system: buildDemoSystemPrompt(profile),
         messages: [
           {
@@ -144,7 +144,7 @@ export default async function handler(req, res) {
     const status = resolveStatus(score, action);
     const signals = normalizeSignals(parsed.signals, score, action);
     const exchangeCount = Math.floor(history.length / 2);
-    const replyText = String(parsed.reply).slice(0, 600);
+    const replyText = String(parsed.reply).slice(0, 300);
     const delayMs = computeProfileDelayMs(profile, exchangeCount);
 
     return res.status(200).json({
