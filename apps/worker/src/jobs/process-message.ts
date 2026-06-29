@@ -72,7 +72,7 @@ export async function handleProcessMessage(job: ProcessMessageJob) {
       direction: 'outbound',
       role: 'setter',
       content: ai.reply,
-      ai_model: process.env.ANTHROPIC_MODEL ?? 'claude-sonnet-4-20250514',
+      ai_model: process.env.ANTHROPIC_MODEL ?? 'claude-sonnet-4-6',
     })
     .select('id')
     .single();

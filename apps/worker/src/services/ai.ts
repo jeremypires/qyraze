@@ -23,7 +23,7 @@ export async function generateAIResponse(input: GenerateAIInput) {
       'anthropic-version': '2023-06-01',
     },
     body: JSON.stringify({
-      model: process.env.ANTHROPIC_MODEL ?? 'claude-sonnet-4-20250514',
+      model: process.env.ANTHROPIC_MODEL ?? 'claude-sonnet-4-6',
       max_tokens: 500,
       system: `${input.systemPrompt}\n\nReturn JSON only:\n{"reply":"...","signals":{"budget_confirmed":false,"urgency":false,"wants_call":false,"interested":false}}`,
       messages: [
