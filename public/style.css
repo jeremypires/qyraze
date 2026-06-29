@@ -1706,7 +1706,16 @@ img {
   z-index: 2;
 }
 
-.demo-chat-scenarios {
+.demo-chat-panel.is-compact .demo-chat-messages {
+  max-height: min(380px, calc(100dvh - 200px));
+  min-height: 260px;
+}
+
+.demo-chat-scenarios[hidden],
+.demo-chat-hints[hidden],
+.demo-chat-hints-label[hidden] {
+  display: none !important;
+}
   display: flex;
   gap: 8px;
   padding: 10px 12px;

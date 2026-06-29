@@ -60,7 +60,14 @@
     lastAction: null,
   };
 
-  let root, panel, fabEl, messagesEl, inputEl, formEl, scoreEl, statusEl, hintsEl, telegramRoot;
+  let root, panel, fabEl, messagesEl, inputEl, formEl, scoreEl, statusEl, hintsEl, hintsLabelEl, scenariosEl, scoreWrapEl, telegramRoot;
+
+  function setCompactMode(compact) {
+    if (panel) panel.classList.toggle('is-compact', compact);
+    if (scenariosEl) scenariosEl.hidden = compact;
+    if (hintsEl) hintsEl.hidden = compact || state.closed;
+    if (hintsLabelEl) hintsLabelEl.hidden = compact;
+  }
 
   function setOpen(open) {
     state.open = open;
@@ -161,6 +168,9 @@
     inputEl.placeholder = t('closed_placeholder');
     formEl.querySelector('button').disabled = true;
     if (hintsEl) hintsEl.hidden = true;
+    if (hintsLabelEl) hintsLabelEl.hidden = true;
+    if (scenariosEl) scenariosEl.hidden = true;
+    setCompactMode(true);
 
     const banner = document.createElement('div');
     banner.className = 'demo-chat-ended';
@@ -176,6 +186,9 @@
     inputEl.placeholder = t('placeholder');
     formEl.querySelector('button').disabled = false;
     if (hintsEl) hintsEl.hidden = false;
+    if (hintsLabelEl) hintsLabelEl.hidden = false;
+    if (scenariosEl) scenariosEl.hidden = false;
+    setCompactMode(false);
   }
 
   function handleAction(data) {
@@ -204,6 +217,7 @@
     state.score = 0;
     state.status = 'new';
     clearEndedState();
+    setCompactMode(false);
     messagesEl.innerHTML = '';
     updateScoreUI(0, 'new');
 
@@ -270,6 +284,8 @@
     const message = text.trim();
     if (!message || state.loading || state.closed) return;
 
+    setCompactMode(true);
+
     renderMessage('user', message);
     inputEl.value = '';
     await fetchReply(message, state.history.slice(0, -1), false);
@@ -312,7 +328,7 @@
           <button type="button" class="demo-chat-close" id="demoChatClose" aria-label="Close">×</button>
         </header>
         <div class="demo-chat-scenarios" id="demoChatScenarios"></div>
-        <div class="demo-chat-score">
+        <div class="demo-chat-score" id="demoChatScoreWrap">
           <div class="demo-chat-score-label">
             <span id="demoChatScoreLabel"></span>
             <span class="demo-chat-status" id="demoChatStatus" data-status="new"></span>
@@ -344,8 +360,10 @@
     scoreEl = document.getElementById('demoChatScoreFill');
     statusEl = document.getElementById('demoChatStatus');
     hintsEl = document.getElementById('demoChatHints');
+    hintsLabelEl = document.getElementById('demoChatHintsLabel');
+    scoreWrapEl = document.getElementById('demoChatScoreWrap');
+    scenariosEl = document.getElementById('demoChatScenarios');
 
-    const scenariosEl = document.getElementById('demoChatScenarios');
     SCENARIOS.forEach((s) => {
       const btn = document.createElement('button');
       btn.type = 'button';
