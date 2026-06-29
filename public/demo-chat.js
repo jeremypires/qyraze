@@ -60,7 +60,18 @@
     lastAction: null,
   };
 
-  let root, panel, messagesEl, inputEl, formEl, scoreEl, statusEl, hintsEl, telegramRoot;
+  let root, panel, fabEl, messagesEl, inputEl, formEl, scoreEl, statusEl, hintsEl, telegramRoot;
+
+  function setOpen(open) {
+    state.open = open;
+    if (panel) panel.hidden = !open;
+    if (root) root.classList.toggle('is-open', open);
+    if (fabEl) fabEl.hidden = open;
+    if (open && messagesEl && messagesEl.childElementCount === 0) {
+      resetConversation(state.scenario);
+    }
+    if (open && !state.closed && inputEl) inputEl.focus();
+  }
 
   function renderMessage(role, content, extraClass) {
     const wrap = document.createElement('div');
@@ -326,6 +337,7 @@
     document.body.appendChild(telegramRoot);
 
     panel = document.getElementById('demoChatPanel');
+    fabEl = document.getElementById('demoChatFab');
     messagesEl = document.getElementById('demoChatMessages');
     inputEl = document.getElementById('demoChatInput');
     formEl = document.getElementById('demoChatForm');
@@ -344,18 +356,14 @@
       scenariosEl.appendChild(btn);
     });
 
-    document.getElementById('demoChatFab').addEventListener('click', () => {
-      state.open = !state.open;
-      panel.hidden = !state.open;
-      if (state.open && messagesEl.childElementCount === 0) {
-        resetConversation(state.scenario);
-      }
-      if (state.open && !state.closed) inputEl.focus();
+    fabEl.addEventListener('click', () => {
+      setOpen(true);
     });
 
-    document.getElementById('demoChatClose').addEventListener('click', () => {
-      state.open = false;
-      panel.hidden = true;
+    document.getElementById('demoChatClose').addEventListener('click', (e) => {
+      e.preventDefault();
+      e.stopPropagation();
+      setOpen(false);
     });
 
     formEl.addEventListener('submit', (e) => {
@@ -407,10 +415,8 @@
     const cta = document.getElementById('demo-section-cta');
     if (!cta) return;
     cta.addEventListener('click', () => {
-      state.open = true;
-      panel.hidden = false;
-      if (messagesEl.childElementCount === 0) resetConversation(state.scenario);
-      if (!state.closed) inputEl.focus();
+      setOpen(true);
+      panel.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
     });
   }
 
@@ -418,9 +424,7 @@
     refresh: applyLabels,
     open: function () {
       if (!panel) return;
-      state.open = true;
-      panel.hidden = false;
-      if (messagesEl.childElementCount === 0) resetConversation(state.scenario);
+      setOpen(true);
     },
   };
 

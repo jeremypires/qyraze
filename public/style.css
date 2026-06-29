@@ -1660,6 +1660,14 @@ img {
   overflow: hidden;
 }
 
+.demo-chat-panel[hidden] {
+  display: none !important;
+}
+
+.demo-chat-fab[hidden] {
+  display: none !important;
+}
+
 .demo-chat-header {
   display: flex;
   align-items: flex-start;
@@ -1694,6 +1702,8 @@ img {
   line-height: 1;
   cursor: pointer;
   flex-shrink: 0;
+  position: relative;
+  z-index: 2;
 }
 
 .demo-chat-scenarios {
